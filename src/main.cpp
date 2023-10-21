@@ -4,19 +4,12 @@
 #include <Adafruit_BNO055.h>
 #include <utility/imumaths.h>
 #include <SD.h>
-// #include <Adafruit_GFX.h>
-// #include <Adafruit_SSD1306.h>
-
 #include <U8g2lib.h>
 
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
 #define SCREEN_HEIGHT 32 // OLED display height, in pixels
 
 U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C u8g2(U8G2_R0, U8X8_PIN_NONE,  SCL, SDA);   
-
-
-Adafruit_BNO055 bno = Adafruit_BNO055(55, 0x29, &Wire);
-File file;
 
 // ==============================================
 
@@ -28,7 +21,7 @@ void displayAll(void);
 void displayAll2(void);
 void displayLcd(void);
 
-void initializeCard(void);
+void initializeSd(void);
 void initializeImu(void);
 
 void initializeLcd(void);
@@ -40,18 +33,15 @@ void setup(void)
 {
   Serial.begin(57600); delay(10);
   
-  // initializeCard();
+  initializeSd();
   initializeImu();
   initializeLcd();
 
   delay(1000);
 
-  displaySensorDetails();
-  displaySensorStatus();
-
-  bno.setExtCrystalUse(true);
+  //displaySensorDetails();
+  //displaySensorStatus();
 }
-
 
 void loop(void) 
 {
@@ -67,6 +57,8 @@ void loop(void)
 
 // ==============================================
 
+Adafruit_BNO055 bno = Adafruit_BNO055(55, 0x29, &Wire);
+
 void lcd( const char* msg ) {
   u8g2.clearBuffer();					        
   // u8g2.setFont(u8g2_font_ncenB14_tr);	
@@ -81,9 +73,11 @@ void initializeLcd(void) {
     lcd( "Starting..." );
 }
 
+// ==============================================
 
+File file;
 
-void initializeCard(void) {
+void initializeSd(void) {
 
   Serial.print("Initializing SD card...");
   pinMode(D8, OUTPUT);  // CS
@@ -94,17 +88,32 @@ void initializeCard(void) {
   }
   Serial.println("SD initialization done.");
 
-  file = SD.open("cave.csv", FILE_WRITE);
- 
-  // if the file opened okay, write to it:
-  if (file) {
-    Serial.print("Writing to test.txt...");
-    file.println("testing 1, 2, 3.");
-    file.flush();
-    Serial.println("done.");
-  } else {
-    Serial.println("error opening cave.csv");
+  int i = 0;
+  char name[] = "cave00.csv";
+  while (SD.exists(name)) {
+    Serial.print( name );
+    Serial.println( " found.");
+    i++;
+    name[4] = '0' + i/10;
+    name[5] = '0' + i%10;
   }
+
+  file = SD.open( name, FILE_WRITE );
+ 
+  if (file) {
+    file.println();
+    Serial.println("File is OK");
+  } else {
+    Serial.println("File error");
+  }
+}
+
+void saveToSd( char* msg ) {
+  file.println( msg );
+}
+
+void flushSd(void) {
+   file.flush();
 }
 
 // ==============================================
@@ -116,7 +125,9 @@ void initializeImu(void) {
   {
     Serial.print("Ooops, no BNO055 detected ... Check your wiring or I2C ADDR!");
     while(1);
-  }
+  } 
+
+  bno.setExtCrystalUse(true);
 }
 
 void displaySensorDetails(void)
@@ -260,11 +271,11 @@ void displayAll2(void) {
 
   if (i==4) {
     if (file) {
-      file.println(queue[0]);
-      file.println(queue[1]);
-      file.println(queue[2]);
-      file.println(queue[3]);
-      file.flush();
+      saveToSd(queue[0]);
+      saveToSd(queue[1]);
+      saveToSd(queue[2]);
+      saveToSd(queue[3]);
+      flushSd();
     } 
     i = 0;
   }

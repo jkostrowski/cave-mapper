@@ -6,6 +6,25 @@
 #include <SD.h>
 #include <U8g2lib.h>
 
+#include <ESP8266WiFi.h>
+
+#include <Arduino.h>
+#include <ArduinoOTA.h>
+
+#include "secrets.h"
+
+#ifndef WIFI_SSID
+#define WIFI_SSID ""
+#endif
+
+#ifndef WIFI_PASS
+#define WIFI_PASS ""
+#endif
+
+
+
+
+
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
 #define SCREEN_HEIGHT 32 // OLED display height, in pixels
 
@@ -25,6 +44,9 @@ void initializeSd(void);
 void initializeImu(void);
 
 void initializeLcd(void);
+void initializeOta(void);
+
+void pollOta(void);
 
 // ==============================================
 
@@ -36,15 +58,17 @@ void setup(void)
   initializeSd();
   initializeImu();
   initializeLcd();
+  initializeOta();
 
-  delay(1000);
-
+  // delay(1000);
   //displaySensorDetails();
   //displaySensorStatus();
 }
 
 void loop(void) 
 {
+  pollOta();
+
   // displayPosition();
   // displayCalStatus();
 
@@ -56,6 +80,36 @@ void loop(void)
 
 
 // ==============================================
+
+void initializeOta(void) {
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(WIFI_SSID, WIFI_PASS);
+
+  if (WiFi.waitForConnectResult() != WL_CONNECTED) {
+      Serial.printf("WiFi Failed!\n");
+      return;
+  }
+  Serial.print("IP Address: ");
+  Serial.println(WiFi.localIP());
+
+  // TelnetStream.begin();
+  // ArduinoOTA.begin(WiFi.localIP(), "Arduino", "abc123", InternalStorage);
+  
+  ArduinoOTA.setHostname( "CaveMapper");
+  ArduinoOTA.begin(); 
+ 
+  delay(10);
+
+}
+
+void pollOta(void) {
+  // ArduinoOTA.poll();
+  ArduinoOTA.handle();
+}
+
+// ==============================================
+
+
 
 Adafruit_BNO055 bno = Adafruit_BNO055(55, 0x29, &Wire);
 

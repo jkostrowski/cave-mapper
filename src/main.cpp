@@ -1,83 +1,105 @@
+#include <Arduino.h>
+#include <ArduinoOTA.h>
+#include <U8g2lib.h>
+#include <WiFi.h>
+
 #include <SPI.h>
 #include <Wire.h>
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BNO055.h>
-#include <utility/imumaths.h>
-#include <SD.h>
-#include <U8g2lib.h>
 
-#include <ESP8266WiFi.h>
+// #include <SD.h>
 
-#include <Arduino.h>
-#include <ArduinoOTA.h>
+#include <RTClib.h>
 
 #include "secrets.h"
 
-#ifndef WIFI_SSID
-#define WIFI_SSID ""
-#endif
+U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R2, 21, 18, 17); // screen on heltec
 
-#ifndef WIFI_PASS
-#define WIFI_PASS ""
-#endif
-
-
-
-
-
-#define SCREEN_WIDTH 128 // OLED display width, in pixels
-#define SCREEN_HEIGHT 32 // OLED display height, in pixels
-
-U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C u8g2(U8G2_R0, U8X8_PIN_NONE,  SCL, SDA);   
+// U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C u8g2(U8G2_R0, U8X8_PIN_NONE,  SCL, SDA); - mini external screen 
 
 // ==============================================
 
-void displaySensorDetails(void);
-void displaySensorStatus(void);
-void displayCalStatus(void);
-void displayPosition(void);
-void displayAll(void);
-void displayAll2(void);
-void displayLcd(void);
 
-void initializeSd(void);
-void initializeImu(void);
+void initializeOta(void);
+void handleOta(void );
 
 void initializeLcd(void);
-void initializeOta(void);
+void lcd1(char *);
+void lcd2(char *);
 
-void pollOta(void);
+void initializeImu(void);
+void showImu(void);
+
+void initializeRtc(void);
+void showRtc(void);
+
+// void displaySensorDetails(void);
+// void displaySensorStatus(void);
+// void displayCalStatus(void);
+// void displayPosition(void);
+// void displayImu(void);
+// void saveImuData(void);
+
+// void initializeSd(void);
+
 
 // ==============================================
 
 
 void setup(void) 
 {
-  Serial.begin(57600); delay(10);
-  
-  initializeSd();
-  initializeImu();
-  initializeLcd();
-  initializeOta();
+    Serial.begin(115200); delay(20);
 
-  // delay(1000);
-  //displaySensorDetails();
-  //displaySensorStatus();
+    initializeLcd();    
+    initializeOta();
+    initializeImu();
+    initializeRtc();
+  // initializeSd();
 }
 
 void loop(void) 
 {
-  pollOta();
+  handleOta();
 
   // displayPosition();
   // displayCalStatus();
+  // displayLcd();
 
-  // displayAll2();
-  displayLcd();
+  // displayCalStatus();
+  // saveImuData();
 
-  delay(50);
+    showImu();
+    showRtc();
+
+    delay(250);
 }
 
+
+// ==============================================
+
+void initializeLcd(void) {
+    u8g2.begin();
+    u8g2.clearBuffer();					        
+  // u8g2.setFont(u8g2_font_ncenB14_tr);	
+   u8g2.setFont(u8g2_font_fub11_tr);	
+  //  u8g2.setFont(u8g2_font_profont10_tf);
+    u8g2.setFontPosTop();
+    u8g2.drawStr(10,10, "Ello!");	
+    u8g2.sendBuffer();					        
+}
+
+void lcd1(char * msg) {
+    u8g2.clearBuffer();
+    u8g2.drawStr(5,5, msg);	
+    u8g2.sendBuffer();					        
+}
+
+void lcd2(char * msg) {
+    // u8g2.clearBuffer();
+    u8g2.drawStr(5,20, msg);	
+    u8g2.sendBuffer();					        
+}
 
 // ==============================================
 
@@ -91,44 +113,22 @@ void initializeOta(void) {
   }
   Serial.print("IP Address: ");
   Serial.println(WiFi.localIP());
-
-  // TelnetStream.begin();
-  // ArduinoOTA.begin(WiFi.localIP(), "Arduino", "abc123", InternalStorage);
   
-  ArduinoOTA.setHostname( "CaveMapper");
+  ArduinoOTA.setHostname( "CaveMapper32");
   ArduinoOTA.begin(); 
  
   delay(10);
 
 }
 
-void pollOta(void) {
-  // ArduinoOTA.poll();
-  ArduinoOTA.handle();
+void handleOta(void ) {
+    ArduinoOTA.handle();
 }
+
 
 // ==============================================
 
-
-
-Adafruit_BNO055 bno = Adafruit_BNO055(55, 0x29, &Wire);
-
-void lcd( const char* msg ) {
-  u8g2.clearBuffer();					        
-  // u8g2.setFont(u8g2_font_ncenB14_tr);	
-  u8g2.setFont(u8g2_font_fub11_tr);	
-  u8g2.drawStr(0,20, msg );	
-  u8g2.sendBuffer();					        
-}
-
-
-void initializeLcd(void) {
-    u8g2.begin();
-    lcd( "Starting..." );
-}
-
-// ==============================================
-
+/* 
 File file;
 
 void initializeSd(void) {
@@ -170,19 +170,72 @@ void flushSd(void) {
    file.flush();
 }
 
+*/
+
+// ==============================================================
+
+RTC_DS3231 rtc;
+
+void initializeRtc(void) {
+    if (! rtc.begin(&Wire1)) {
+        Serial.println("Couldn't find RTC");
+        Serial.flush();
+        while (1) delay(10);
+    }
+
+    if (rtc.lostPower()) {
+        Serial.println("RTC lost power, let's set the time!");
+        rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
+    }
+}
+
+void showRtc(void) {
+    DateTime now = rtc.now();
+    char msg[100];
+    sprintf( msg, "%02d:%02d:%02d", now.hour(), now.minute(), now.second()  );
+    lcd2( msg );
+}
+
+
 // ==============================================
 
+#define SDA2 33
+#define SCL2 34
+
+// Adafruit_BNO055 bno = Adafruit_BNO055(55, 0x29, &Wire);   // external lcd
+Adafruit_BNO055 bno = Adafruit_BNO055(55, 0x29, &Wire1);
+
 void initializeImu(void) {
-  Serial.println("IMU Orientation Sensor Test"); Serial.println("");
+    
+    if (!Wire1.begin(SDA2, SCL2)) {
+        Serial.println("Problem with Wire1");     
+        lcd1("Wire1 error.");
+    }
 
-  if(!bno.begin())
-  {
-    Serial.print("Ooops, no BNO055 detected ... Check your wiring or I2C ADDR!");
-    while(1);
-  } 
+    if(!bno.begin())
+    {
+        Serial.print("Ooops, no BNO055 detected ... Check your wiring or I2C ADDR!");
+        while(1);
+    } 
 
-  bno.setExtCrystalUse(true);
+    Serial.println("IMU Orientation Sensor OK."); 
+    bno.setExtCrystalUse(true);
 }
+
+
+void showImu(void) {
+  sensors_event_t event; 
+  bno.getEvent(&event);
+
+  char msg[100];
+
+  sprintf(msg, "X: %.1f Y: %.1f Z: %.1f\n", event.orientation.x, event.orientation.y, event.orientation.z );
+  Serial.print( msg );
+  lcd1( msg );
+}
+
+
+
 
 void displaySensorDetails(void)
 {
@@ -221,52 +274,29 @@ void displaySensorStatus(void)
 
 void displayCalStatus(void)
 {
-  /* Get the four calibration values (0..3) */
-  /* Any sensor data reporting 0 should be ignored, */
-  /* 3 means 'fully calibrated" */
-  uint8_t system, gyro, accel, mag;
-  system = gyro = accel = mag = 0;
-  bno.getCalibration(&system, &gyro, &accel, &mag);
+  uint8_t sys, gyro, accel, mag;
+  sys = gyro = accel = mag = 0;
+  bno.getCalibration(&sys, &gyro, &accel, &mag);
 
-  /* The data should be ignored until the system calibration is > 0 */
+  char buff[20];
+  sprintf( buff, "S%1d|G%1d|A%1d|M%1d", sys, gyro, accel, mag );
 
-  Serial.print("\t");
-  if (!system)
-  {
-    Serial.print("! ");
-  }
-
-  /* Display the individual values */
-  Serial.print("Sys:");
-  Serial.print(system, DEC);
-  Serial.print(" G:");
-  Serial.print(gyro, DEC);
-  Serial.print(" A:");
-  Serial.print(accel, DEC);
-  Serial.print(" M:");
-  Serial.print(mag, DEC);
-  Serial.print(" | ");
-  
+  Serial.print( buff );
+  lcd1( buff );
 }
 
-void displayPosition(void)
-{
+void displayPosition(void) {
   sensors_event_t event; 
   bno.getEvent(&event);
   
-  /* Display the floating point data */
-  Serial.print("X: ");
-  Serial.print(event.orientation.x, 2);
-  Serial.print("\tY: ");
-  Serial.print(event.orientation.y, 2);
-  Serial.print("\tZ: ");
-  Serial.print(event.orientation.z, 2);
+  Serial.print("\tX: "); Serial.print(event.orientation.x, 2);
+  Serial.print("\tY: "); Serial.print(event.orientation.y, 2);
+  Serial.print("\tZ: "); Serial.print(event.orientation.z, 2);
   Serial.println("");
 }
 
-char buffer[100];
-
-void displayLcd(void) {
+void displayImu(void) {
+  char buffer[100];
 
   sensors_event_t orientationData , angVelocityData , linearAccelData, magnetometerData, accelerometerData, gravityData;
   bno.getEvent(&orientationData, Adafruit_BNO055::VECTOR_EULER);
@@ -291,140 +321,50 @@ void displayLcd(void) {
     csys, cgyro, cacc, cmag
     );  
 
-  lcd( buffer );
+  lcd1( buffer );
 }
 
-char queue[4][300];
+char queue[5][300];
 int i = 0;
 
-void displayAll2(void) {
-  sensors_event_t orientationData , angVelocityData , linearAccelData, magnetometerData, accelerometerData, gravityData;
-  bno.getEvent(&orientationData, Adafruit_BNO055::VECTOR_EULER);
-  bno.getEvent(&angVelocityData, Adafruit_BNO055::VECTOR_GYROSCOPE);
-  bno.getEvent(&linearAccelData, Adafruit_BNO055::VECTOR_LINEARACCEL);
-  bno.getEvent(&magnetometerData, Adafruit_BNO055::VECTOR_MAGNETOMETER);
-  bno.getEvent(&accelerometerData, Adafruit_BNO055::VECTOR_ACCELEROMETER);
-  bno.getEvent(&gravityData, Adafruit_BNO055::VECTOR_GRAVITY);
+void saveImuData(void) {
+  sensors_event_t orientation, gyro, linaccel, magn, accel, gravity;
+  bno.getEvent(&orientation, Adafruit_BNO055::VECTOR_EULER);
+  bno.getEvent(&gyro, Adafruit_BNO055::VECTOR_GYROSCOPE);
+  bno.getEvent(&linaccel, Adafruit_BNO055::VECTOR_LINEARACCEL);
+  bno.getEvent(&magn, Adafruit_BNO055::VECTOR_MAGNETOMETER);
+  bno.getEvent(&accel, Adafruit_BNO055::VECTOR_ACCELEROMETER);
+  bno.getEvent(&gravity, Adafruit_BNO055::VECTOR_GRAVITY);
 
   uint8_t csys, cgyro, cacc, cmag = 0;
   bno.getCalibration(&csys, &cgyro, &cacc, &cmag);
 
 
-  sprintf(queue[i],"O,%.2f,%.2f,%.2f,G,%.2f,%.2f,%.2f,L,%.2f,%.2f,%.2f,M,%.2f,%.2f,%.2f,L,%.2f,%.2f,%.2f,G,%.2f,%.2f,%.2f,T,%d,CS,%d,CG,%d,CA,%d,CM,%d", 
-    orientationData.orientation.x,  orientationData.orientation.y, orientationData.orientation.z,
-    angVelocityData.gyro.x, angVelocityData.gyro.y, angVelocityData.gyro.z, 
-    linearAccelData.acceleration.x, linearAccelData.acceleration.y, linearAccelData.acceleration.z,
-    magnetometerData.magnetic.x, magnetometerData.magnetic.y, magnetometerData.magnetic.z,
-    accelerometerData.acceleration.x,accelerometerData.acceleration.y,accelerometerData.acceleration.z,
-    gravityData.acceleration.x,gravityData.acceleration.y,gravityData.acceleration.z,
-    bno.getTemp(), csys, cgyro, cacc, cmag
+  sprintf(queue[i],"O,%.1f,%.1f,%.1f,GY,%.1f,%.1f,%.1f,LA,%.1f,%.1f,%.1f,AC,%.1f,%.1f,%.1f,MA,%.1f,%.1f,%.1f,GR,%.1f,%.1f,%.1f,T,%d,CS,%d,CG,%d,CA,%d,CM,%d", 
+    orientation.orientation.x,  orientation.orientation.y, orientation.orientation.z,
+    gyro.gyro.x, gyro.gyro.y, gyro.gyro.z, 
+    linaccel.acceleration.x, linaccel.acceleration.y, linaccel.acceleration.z,
+    accel.acceleration.x,accel.acceleration.y,accel.acceleration.z,
+    magn.magnetic.x, magn.magnetic.y, magn.magnetic.z,
+    gravity.acceleration.x,gravity.acceleration.y,gravity.acceleration.z,
+    bno.getTemp(), 
+    csys, cgyro, cacc, cmag
     );  
 
   Serial.println(queue[i]); 
   i++;
 
-  if (i==4) {
-    if (file) {
-      saveToSd(queue[0]);
-      saveToSd(queue[1]);
-      saveToSd(queue[2]);
-      saveToSd(queue[3]);
-      flushSd();
-    } 
+  if (i==5) {
+    // if (file) {
+    //   saveToSd(queue[0]);
+    //   saveToSd(queue[1]);
+    //   saveToSd(queue[2]);
+    //   saveToSd(queue[3]);
+    //   saveToSd(queue[4]);
+    //   flushSd();
+    // } 
     i = 0;
   }
 
-}
-
-void printEvent(sensors_event_t* event) {
-  double x = -1000000, y = -1000000 , z = -1000000; //dumb values, easy to spot problem
-  if (event->type == SENSOR_TYPE_ACCELEROMETER) {
-    Serial.print("A,");
-    x = event->acceleration.x;
-    y = event->acceleration.y;
-    z = event->acceleration.z;
-  }
-  else if (event->type == SENSOR_TYPE_ORIENTATION) {
-    Serial.print("O,");
-    x = event->orientation.x;
-    y = event->orientation.y;
-    z = event->orientation.z;
-  }
-  else if (event->type == SENSOR_TYPE_MAGNETIC_FIELD) {
-    Serial.print("M,");
-    x = event->magnetic.x;
-    y = event->magnetic.y;
-    z = event->magnetic.z;
-  }
-  else if (event->type == SENSOR_TYPE_GYROSCOPE) {
-    Serial.print("G,");
-    x = event->gyro.x;
-    y = event->gyro.y;
-    z = event->gyro.z;
-  }
-  else if (event->type == SENSOR_TYPE_ROTATION_VECTOR) {
-    Serial.print("R,");
-    x = event->gyro.x;
-    y = event->gyro.y;
-    z = event->gyro.z;
-  }
-  else if (event->type == SENSOR_TYPE_LINEAR_ACCELERATION) {
-    Serial.print("L,");
-    x = event->acceleration.x;
-    y = event->acceleration.y;
-    z = event->acceleration.z;
-  }
-  else if (event->type == SENSOR_TYPE_GRAVITY) {
-    Serial.print("G,");
-    x = event->acceleration.x;
-    y = event->acceleration.y;
-    z = event->acceleration.z;
-  }
-  else {
-    Serial.print("?,");
-  }
-
-  Serial.print(x);
-  Serial.print(","); 
-  Serial.print(y); 
-  Serial.print(",");  
-  Serial.print(z);
-  Serial.print(",");  
-}
-
-void displayAll(void)
-{
-  //could add VECTOR_ACCELEROMETER, VECTOR_MAGNETOMETER,VECTOR_GRAVITY...
-  sensors_event_t orientationData , angVelocityData , linearAccelData, magnetometerData, accelerometerData, gravityData;
-  bno.getEvent(&orientationData, Adafruit_BNO055::VECTOR_EULER);
-  bno.getEvent(&angVelocityData, Adafruit_BNO055::VECTOR_GYROSCOPE);
-  bno.getEvent(&linearAccelData, Adafruit_BNO055::VECTOR_LINEARACCEL);
-  bno.getEvent(&magnetometerData, Adafruit_BNO055::VECTOR_MAGNETOMETER);
-  bno.getEvent(&accelerometerData, Adafruit_BNO055::VECTOR_ACCELEROMETER);
-  bno.getEvent(&gravityData, Adafruit_BNO055::VECTOR_GRAVITY);
-
-  printEvent(&orientationData);
-  printEvent(&angVelocityData);
-  printEvent(&linearAccelData);
-  printEvent(&magnetometerData);
-  printEvent(&accelerometerData);
-  printEvent(&gravityData);
-
-  int8_t boardTemp = bno.getTemp();
-  Serial.print(F(" T: "));
-  Serial.print(boardTemp);
-
-  uint8_t system, gyro, accel, mag = 0;
-  bno.getCalibration(&system, &gyro, &accel, &mag);
-  Serial.print(" CS=");
-  Serial.print(system);
-  Serial.print(" CG=");
-  Serial.print(gyro);
-  Serial.print(" CA=");
-  Serial.print(accel);
-  Serial.print(" CM=");
-  Serial.print(mag);
-
-  Serial.println("");
 }
 

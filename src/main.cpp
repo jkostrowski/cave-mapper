@@ -8,15 +8,36 @@
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BNO055.h>
 
-// #include <SD.h>
-
+#include <SD.h>
 #include <RTClib.h>
 
 #include "secrets.h"
 
-U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R2, 21, 18, 17); // screen on heltec
+// I2C 
+
+#define SDA1 17  // oled
+#define SCL1 18  // oled
+#define RST  21  // oled
+
+#define SDA2 33  // BNO and RTC
+#define SCL2 34  // BNO and RTC
+
+U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R2, RST, SCL1, SDA1); // screen on heltec
 
 // U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C u8g2(U8G2_R0, U8X8_PIN_NONE,  SCL, SDA); - mini external screen 
+
+
+// SPI
+
+// #define SD_SCLK  5 // 17 used, 9 hiddedn
+// #define SD_MISO 19 // 11 13 hidden
+// #define SD_MOSI 35 // 45 35 34 used 10 23 hidden
+// #define SD_CS   36 // 46 36 8, 22 hidden
+
+#define SD_CS    7         // 26 good         // GPIO26       
+#define SD_MOSI 21         // GPIO21
+#define SD_SCLK 20         // GPIO20
+#define SD_MISO 19         // GPIO19
 
 // ==============================================
 
@@ -35,6 +56,8 @@ void initializeRtc(void);
 void showRtc(void);
 
 void showBat(void);
+
+void initializeSd(void);
 
 // void displaySensorDetails(void);
 // void displaySensorStatus(void);
@@ -56,7 +79,7 @@ void setup(void)
     initializeOta();
     initializeImu();
     initializeRtc();
-  // initializeSd();
+    initializeSd();
 }
 
 void loop(void) 
@@ -78,8 +101,36 @@ void loop(void)
   updateLcd();
 
   delay(250);
+
 }
 
+
+// ==============================================
+
+SPIClass spi1;
+File sd;
+
+void initializeSd(void) {
+    SPIClass( HSPI );
+
+    spi1.begin(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
+
+    if(!SD.begin(SD_CS, spi1)){
+        Serial.println("Card Mount Failed");
+        return;
+    }
+
+  sd = SD.open( "/cave123.txt", FILE_WRITE );
+ 
+  if (sd) {
+    sd.println("aaaaa");
+    sd.flush();
+    Serial.println("File is OK");
+  } else {
+    Serial.println("File error");
+  }
+
+}
 
 // ==============================================
 
@@ -229,9 +280,6 @@ void showBat(void) {
 
 // ==============================================
 
-#define SDA2 33
-#define SCL2 34
-
 // Adafruit_BNO055 bno = Adafruit_BNO055(55, 0x29, &Wire);   // external lcd
 Adafruit_BNO055 bno = Adafruit_BNO055(55, 0x29, &Wire1);
 
@@ -239,7 +287,7 @@ void initializeImu(void) {
     
     if (!Wire1.begin(SDA2, SCL2)) {
         Serial.println("Problem with Wire1");     
-        lcd1("Wire1 error.");
+        // lcd1("Wire1 error.");
     }
 
     if(!bno.begin())

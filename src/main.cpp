@@ -27,18 +27,6 @@ U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R2, RST, SCL1, SDA1); // screen on
 // U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C u8g2(U8G2_R0, U8X8_PIN_NONE,  SCL, SDA); - mini external screen 
 
 
-// SPI
-
-// #define SD_SCLK  5 // 17 used, 9 hiddedn
-// #define SD_MISO 19 // 11 13 hidden
-// #define SD_MOSI 35 // 45 35 34 used 10 23 hidden
-// #define SD_CS   36 // 46 36 8, 22 hidden
-
-#define SD_CS    7         // 26 good         // GPIO26       
-#define SD_MOSI 21         // GPIO21
-#define SD_SCLK 20         // GPIO20
-#define SD_MISO 19         // GPIO19
-
 // ==============================================
 
 
@@ -107,21 +95,41 @@ void loop(void)
 
 // ==============================================
 
-SPIClass spi1;
 File sd;
+SPIClass spi1( HSPI );
+
+#define SD_CS   5         // good: 7,  26 
+#define SD_MOSI 4         // good: 21 (CONFLICT)
+#define SD_MISO 3         // good: 19
+#define SD_SCLK 2         // good: 20
+
+
+// SPI.begin(CLK 18, SO 36, SO 26, CS 19)
+// spi1.begin(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
+
 
 void initializeSd(void) {
-    SPIClass( HSPI );
+    pinMode(SD_CS, OUTPUT); 
+
+    Serial.println("SPI 1");
 
     spi1.begin(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
+    Serial.println("SPI 2");
+
+    spi1.setDataMode(SPI_MODE0);
+    Serial.println("SPI 3");
 
     if(!SD.begin(SD_CS, spi1)){
         Serial.println("Card Mount Failed");
         return;
     }
 
+  Serial.println("SPI 4");
+
   sd = SD.open( "/cave123.txt", FILE_WRITE );
  
+  Serial.println("SPI 5");
+
   if (sd) {
     sd.println("aaaaa");
     sd.flush();

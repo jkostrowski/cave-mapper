@@ -42,10 +42,14 @@ void showCalibration(void);
 
 void initializeRtc(void);
 void showRtc(void);
+DateTime rtcTimestamp(void);
 
 void showBat(void);
+int getBat(void);
 
 void initializeSd(void);
+
+void updateLog(void);
 
 // void displaySensorDetails(void);
 // void displaySensorStatus(void);
@@ -87,48 +91,46 @@ void loop(void)
   showBat();
 
   updateLcd();
+  updateLog();
 
   delay(250);
 
 }
-
 
 // ==============================================
 
 File sd;
 SPIClass spi1( HSPI );
 
-#define SD_CS   5         // good: 7,  26 
-#define SD_MOSI 4         // good: 21 (CONFLICT)
-#define SD_MISO 3         // good: 19
-#define SD_SCLK 2         // good: 20
-
-
-// SPI.begin(CLK 18, SO 36, SO 26, CS 19)
-// spi1.begin(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
+#define SD_CS   7          // good: 5, 7,  26 
+#define SD_MOSI 6          // good: 4, 21 (CONFLICT)
+#define SD_MISO 5          // good: 3, 19
+#define SD_SCLK 4          // good: 2, 20
 
 
 void initializeSd(void) {
-    pinMode(SD_CS, OUTPUT); 
+  pinMode(SD_CS, OUTPUT); 
 
-    Serial.println("SPI 1");
+  spi1.begin(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
+  spi1.setDataMode(SPI_MODE0);
 
-    spi1.begin(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
-    Serial.println("SPI 2");
+  if(!SD.begin(SD_CS, spi1)){
+      Serial.println("Card Mount Failed");
+      return;
+  }
+  Serial.println("SD initialization complete.");
 
-    spi1.setDataMode(SPI_MODE0);
-    Serial.println("SPI 3");
+  int i = 0;
+  char name[] = "/cave00.csv";
+  while (SD.exists(name)) {
+    Serial.print( name );
+    Serial.println( " found.");
+    i++;
+    name[5] = '0' + i/10;
+    name[6] = '0' + i%10;
+  }
 
-    if(!SD.begin(SD_CS, spi1)){
-        Serial.println("Card Mount Failed");
-        return;
-    }
-
-  Serial.println("SPI 4");
-
-  sd = SD.open( "/cave123.txt", FILE_WRITE );
- 
-  Serial.println("SPI 5");
+  sd = SD.open( name, FILE_WRITE );
 
   if (sd) {
     sd.println("aaaaa");
@@ -137,8 +139,17 @@ void initializeSd(void) {
   } else {
     Serial.println("File error");
   }
-
 }
+
+void saveToSd( char* msg ) {
+  sd.println( msg );
+}
+
+void flushSd(void) {
+  sd.flush();
+}
+
+
 
 // ==============================================
 
@@ -207,51 +218,6 @@ void updateOta(void ) {
 }
 
 
-// ==============================================
-
-/* 
-File file;
-
-void initializeSd(void) {
-
-  Serial.print("Initializing SD card...");
-  pinMode(D8, OUTPUT);  // CS
- 
-  if (!SD.begin(D8)) {
-    Serial.println("SD initialization failed!");
-    return;
-  }
-  Serial.println("SD initialization done.");
-
-  int i = 0;
-  char name[] = "cave00.csv";
-  while (SD.exists(name)) {
-    Serial.print( name );
-    Serial.println( " found.");
-    i++;
-    name[4] = '0' + i/10;
-    name[5] = '0' + i%10;
-  }
-
-  file = SD.open( name, FILE_WRITE );
- 
-  if (file) {
-    file.println();
-    Serial.println("File is OK");
-  } else {
-    Serial.println("File error");
-  }
-}
-
-void saveToSd( char* msg ) {
-  file.println( msg );
-}
-
-void flushSd(void) {
-   file.flush();
-}
-
-*/
 
 // ==============================================================
 
@@ -277,8 +243,17 @@ void showRtc(void) {
     lcd3( msg );
 }
 
+DateTime rtcTimestamp(void) {
+    return rtc.now();
+}
+
+
 
 // ==============================================
+
+int getBat(void) {
+  return analogReadMilliVolts(1);
+}
 
 void showBat(void) {
   char msg[20];
@@ -449,6 +424,20 @@ void saveImuData(void) {
     // } 
     i = 0;
   }
-
 }
 
+// ==============================================
+
+int logPass = 0; 
+
+void updateLog(void) {
+  logPass++;
+  if (logPass == 9*4) {
+    logPass = 0;
+    DateTime now = rtcTimestamp();
+    char msg[100];
+    sprintf( msg, "%02d:%02d:%02d Bat:%4d", now.hour(), now.minute(), now.second(), getBat() );
+    saveToSd( msg );
+    flushSd();
+  }
+}

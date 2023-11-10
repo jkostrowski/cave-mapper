@@ -7,6 +7,7 @@
 #include "rtc.h"
 #include "sdc.h"
 #include "bat.h"
+#include "gps.h"
 
 // ==============================================
 
@@ -49,24 +50,30 @@ void setup(void) {
     Serial.begin(115200); delay(20);
 
     initializeLcd();    
-    initializeOta();
-    initializeImu();
-    initializeRtc();
-    initializeSd();
+    // initializeOta();
+    // initializeImu();
+    // initializeRtc();
+    // initializeSd();
+    initializeGps();
 }
 
 
 void loop(void) {
-  updateOta();
+  // updateOta();
 
-  lcd1( getImuPosition() );
-  lcd2( getImuCalibration() );
-  lcd3( getRtc() );
-  lcd4( getBat() );
+  // lcd1( getImuPosition() );
+  // lcd2( getImuCalibration() );
+  // lcd3( getRtc() );
+  // lcd4( getBat() );
 
-  updateLcd();
-  enqueue( getLog() );
+  // enqueue( getLog() );
 
-  delay(LOOP_SLEEP);
+  handleGps();
+
+  // lcd1( gpsFix() );
+  // lcd2( gpsPos() );
+  // lcd3( gpsSpeed() );
+
+  // delay(LOOP_SLEEP);
 }
 

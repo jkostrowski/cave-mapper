@@ -1,9 +1,9 @@
 #include "lcd.h"
 
-char l1[100] = {0};
-char l2[100] = {0};
-char l3[100] = {0};
-char l4[100] = {0};
+char l1[100] = "";
+char l2[100] = "";
+char l3[100] = "";
+char l4[100] = "";
 
 U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R2, RST, SCL1, SDA1); // screen on heltec
 // U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C u8g2(U8G2_R0, U8X8_PIN_NONE,  SCL, SDA); - mini external screen 

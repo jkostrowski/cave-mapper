@@ -3,8 +3,8 @@
 
 
 #define GPSSerial Serial2
-#define RX2 3
-#define TX2 4
+#define RX2 2
+#define TX2 3
 
 Adafruit_GPS GPS(&GPSSerial);
 
@@ -46,8 +46,8 @@ void handleGps(void) {
   loops++;
 
   if (GPS.newNMEAreceived()) {
-    if (!GPS.parse(GPS.lastNMEA())) // this also sets the newNMEAreceived() flag to false
-      return; // we can fail to parse a sentence in which case we should just wait for another
+    if (!GPS.parse(GPS.lastNMEA())) 
+      return;
 
     nme++;
 
@@ -69,7 +69,8 @@ void handleGps(void) {
 char buff1[100];
 
 char* gpsFix(void) {
-  sprintf( buff1, "fix: %1d sat:%02d dop:%5.2f", (int)GPS.fix, GPS.satellites, GPS.PDOP );
+  // sprintf( buff1, "fix: %1d sat:%02d dop:%5.2f", (int)GPS.fix, GPS.satellites, GPS.PDOP );
+  sprintf( buff1, "fix: %1d dop:%5.2f", (int)GPS.fix, GPS.PDOP );
   return buff1;
 }
 

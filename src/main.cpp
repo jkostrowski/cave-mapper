@@ -47,7 +47,7 @@ void enqueue( char * msg ) {
 // ==============================================
 
 void setup(void) {
-    Serial.begin(115200); delay(20);
+    Serial.begin(115200); delay(50);
 
     initializeLcd();    
     // initializeOta();

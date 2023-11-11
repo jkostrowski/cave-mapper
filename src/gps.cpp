@@ -12,41 +12,20 @@ long t0 = millis();
 long t1 = millis();
 
 void initializeGps(void) {
-
   GPSSerial.begin(9600, SERIAL_8N1, RX2, TX2);
-
-  //  GPSSerial.println("$PMTK251,57600*2C");  //set baud rate to 57600
-  //  GPSSerial.println("$PMTK251,38400*27");  //set baud rate to 38400
-  //  GPSSerial.println("$PMTK251,19200*22");  //set baud rate to 19200
-  //  GPSSerial.println("$PMTK251,9600*17");   //set baud rate to 9600
- 
-  GPSSerial.println("$PMTK251,19200*22");  //set baud rate to 19200
+  GPSSerial.println("$PMTK251,38400*27");  
   delay(100);
   GPSSerial.end();
   delay(100);
-
-  GPSSerial.begin(19200, SERIAL_8N1, RX2, TX2);
-  GPSSerial.println("$PMTK251,19200*22");  //set baud rate to 19200
+  GPSSerial.begin(38400, SERIAL_8N1, RX2, TX2);
+  GPSSerial.println("$PMTK251,38400*27");  
   GPSSerial.println(PMTK_SET_NMEA_OUTPUT_RMCGGA);
-  GPSSerial.println(PMTK_SET_NMEA_UPDATE_10HZ);  // 10 Hz update rate
-  
-  delay(500);
-  
-  //  GPSSerial.println(PMTK_SET_NMEA_OUTPUT_RMCONLY);
-  //  GPSSerial.println(PMTK_SET_NMEA_UPDATE_1HZ);
-  //  GPS.sendCommand(PGCMD_ANTENNA);
-  //  GPS.begin(57600);
+  GPSSerial.println(PMTK_SET_NMEA_UPDATE_10HZ);  
+  delay(100);
  
-  // GPS.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCONLY);
-  // GPS.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCGGA);
-  // GPS.sendCommand(PMTK_SET_NMEA_OUTPUT_ALLDATA);
- 
-  // GPS.sendCommand(PMTK_SET_NMEA_UPDATE_1HZ);
-  // GPS.sendCommand(PMTK_SET_NMEA_UPDATE_5HZ);
-  // GPS.sendCommand(PMTK_SET_NMEA_UPDATE_10HZ);
-  
-  // GPSSerial.println(PMTK_Q_RELEASE);
+  GPSSerial.println(PMTK_Q_RELEASE);
 }
+
 
 int loops = 0;
 int nme = 0;
@@ -56,7 +35,13 @@ char buff5[30];
 void handleGps(void) {
 
   char c = GPS.read();
-  // Serial.print(c);
+
+  if(c == 0) {
+    delay(1);
+    return;
+  }
+
+  Serial.print(c);
 
   loops++;
 
@@ -76,15 +61,15 @@ void handleGps(void) {
   }
 
  
-  t1 = millis();
-  Serial.printf( "%s | %s | %s | %08d | %08d | %08d \n", gpsLat(), gpsLon(), gpsSpeed(), loops, nme, t1 - t0 );
-  t0 = t1;
+  // t1 = millis();
+  // Serial.printf( "%s | %s | %s | %08d | %08d | %08d \n", gpsLat(), gpsLon(), gpsSpeed(), loops, nme, t1 - t0 );
+  // t0 = t1;
 }
 
 char buff1[100];
 
 char* gpsFix(void) {
-  sprintf( buff1, "fix: %1d (%1d) sat:%02d", (int)GPS.fix, (int)GPS.fixquality, GPS.satellites );
+  sprintf( buff1, "fix: %1d sat:%02d dop:%5.2f", (int)GPS.fix, GPS.satellites, GPS.PDOP );
   return buff1;
 }
 

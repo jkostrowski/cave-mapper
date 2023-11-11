@@ -15,14 +15,15 @@
 #define QUEUE_SIZE (1000/LOOP_SLEEP)
 
 
-char log1[400];
+char log1[500];
 char * getLog(void) {
   DateTime now = rtcTimestamp();
-  sprintf( log1, "%4d-%02d-%02d %02d:%02d:%02d %s %s %s"
+  sprintf( log1, "%4d-%02d-%02d %02d:%02d:%02d %s %s %s %s"
     , now.year(), now.month(), now.day(), now.hour(), now.minute(), now.second()
     , getBat()
     , getImuCalibration()
     , getImu9pof()
+    , getGps()
     );
   return log1;
 }
@@ -44,31 +45,20 @@ void enqueue( char * msg ) {
 
 }
 
-// ==============================================
 
-void setup(void) {
-    Serial.begin(115200); delay(50);
+void loopUiRefresh(void) {
+  lcd1( getImuPosition() );
+  lcd2( getImuCalibration() );
+  lcd3( getRtc() );
+// lcd4( getBat() );
 
-    initializeLcd();    
-    // initializeOta();
-    // initializeImu();
-    // initializeRtc();
-    // initializeSd();
-    initializeGps();
-}
+  lcd4( gpsLat() );
 
+  // lcd1( gpsFix() );
+  // lcd3( gpsLon() );
+  // lcd4( gpsSpeed() );
 
-void loop(void) {
-  // updateOta();
-
-  // lcd1( getImuPosition() );
-  // lcd2( getImuCalibration() );
-  // lcd3( getRtc() );
-  // lcd4( getBat() );
-
-  // enqueue( getLog() );
-
-  handleGps();
+  updateLcd();
 
   // lcd1( gpsFix() );
   // lcd2( gpsPos() );
@@ -76,4 +66,35 @@ void loop(void) {
 
   // delay(LOOP_SLEEP);
 }
+
+// ==============================================
+
+void setup(void) {
+    Serial.begin(115200); delay(50);
+
+    initializeLcd();    
+    // initializeOta();
+    initializeImu();
+    initializeRtc();
+    initializeSd();
+    initializeGps();
+}
+
+// ==============================================
+
+
+void loop(void) {
+  // updateOta();
+  // enqueue( getLog() );
+  // handleGps();
+
+  for (int i=0; i<100; i++) {
+    if (gpsSinglePass()) 
+          Serial.println(getLog());
+  }
+
+  loopUiRefresh();
+}
+
+
 

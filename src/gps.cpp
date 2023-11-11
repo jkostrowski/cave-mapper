@@ -1,5 +1,4 @@
 #include "gps.h"
-#include "lcd.h"
 
 
 #define GPSSerial Serial2
@@ -27,47 +26,40 @@ void initializeGps(void) {
 }
 
 
-int loops = 0;
-int nme = 0;
 
-char buff5[30];
-
-void handleGps(void) {
+bool gpsSinglePass(void) {  // returns true when it is safe to write to Serial.
 
   char c = GPS.read();
-
   if(c == 0) {
-    delay(1);
-    return;
+    return false;
   }
 
-  Serial.print(c);
+  // Serial.print(c);
 
-  loops++;
+  return GPS.newNMEAreceived() && GPS.parse(GPS.lastNMEA()); 
 
-  if (GPS.newNMEAreceived()) {
-    if (!GPS.parse(GPS.lastNMEA())) 
-      return;
-
-    nme++;
-
-    lcd1( gpsFix() );
-    lcd2( gpsLat() );
-    lcd3( gpsLon() );
-    lcd4( gpsSpeed() );
-    sprintf( buff5, "%06d %06d", loops, nme);
-    lcd4( buff5 );
-    updateLcd();
-  }
-
- 
   // t1 = millis();
   // Serial.printf( "%s | %s | %s | %08d | %08d | %08d \n", gpsLat(), gpsLon(), gpsSpeed(), loops, nme, t1 - t0 );
   // t0 = t1;
 }
 
-char buff1[100];
 
+char buff0[100];
+char* getGps(void) {
+  sprintf( buff0, "|%1d|%09.4f|%09.4f|P%5.2f|S%08.5f|%02d"
+  , (int) GPS.fix
+  , GPS.latitude 
+  , GPS.longitude
+  , GPS.PDOP
+  , GPS.speed 
+  , GPS.satellites
+  );
+  return buff0;
+}
+
+
+
+char buff1[100];
 char* gpsFix(void) {
   // sprintf( buff1, "fix: %1d sat:%02d dop:%5.2f", (int)GPS.fix, GPS.satellites, GPS.PDOP );
   sprintf( buff1, "fix: %1d dop:%5.2f", (int)GPS.fix, GPS.PDOP );

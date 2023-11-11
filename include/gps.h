@@ -3,7 +3,9 @@
 #include <SoftwareSerial.h>
 
 void initializeGps(void);
-void handleGps(void);
+bool gpsSinglePass(void);
+
+char* getGps(void);
 
 char* gpsFix(void);
 char* gpsLat(void);

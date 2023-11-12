@@ -1,0 +1,129 @@
+<html>
+<head>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/4.2.6/jquery.canvaswrapper.min.js" integrity="sha512-Vj7rQBCQNDAbJNM5crhM6nzBoR1oIeE82OQDmx0l1ptN+7T5AQuRzzsQ+rqkuibqT14JjChkpB+8DW5fmjrjnw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/4.2.6/jquery.colorhelpers.min.js" integrity="sha512-fOvetjhMPbrraqJeIs0HQpIF/EQ3ejpUV/N5K1KZSxXSBYZGOO93DQ0g86nYHJJaXU/gydnyzX346OvxwPJl5A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/4.2.6/jquery.flot.js" integrity="sha512-b0/xA9839WwDovAHA0nMyu/6/Vtd58xyMub+i9MRpz7Lv6PbeasD5Ww4SB3QEZHC/KZTsj1+cJFJY9Ivei1wfQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/4.2.6/jquery.flot.uiConstants.min.js" integrity="sha512-02f7kh8oGru0zDziDj2PSAa6OIhkh0FR8StvcTvmN6bsqzxnrD9TFP7TffYVbX5HLMjgL8syriRbn7W1zTq9DQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/4.2.6/jquery.flot.axislabels.min.js" integrity="sha512-9BIz5PU+h3PzHGNkhwSih80oUSSFcfpyWnHpFx6sotmZpPwp6/whZe4wfUnTCy5HknRifm8rENPGiXxFmvK11g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/4.2.6/jquery.flot.browser.min.js" integrity="sha512-VQd/q4C1w/PN6MI00uurfwSiFb6tLkt/ocprvkNjh7Dgf7phD3Z970CSxX5ni5aYC4bsinQtfKUk7aCL5bTQfQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/4.2.6/jquery.flot.categories.min.js" integrity="sha512-FDoTxnOUSiAr2wieDGcWsc04tGtv+TRZ7rUm9qSp4ouhjJ+sofEwm6sAbmojsrq7vK/dhANBtudENr9rktXDhA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/4.2.6/jquery.flot.composeImages.min.js" integrity="sha512-0V/Eri0sql5xg9rxVZL4bPZ4PNYgnFJMYTdO7/1pOD5Fx+K9gAbcaoZ4eqRwD+bZByOMq50Y2kUC7UsZBigyCA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/4.2.6/jquery.flot.crosshair.min.js" integrity="sha512-VfTwGWD5bcQd8V4EhyMVBEomLxtrXcaNd01GV4CH0UCTvjQ27npwHl0NZqnj720VOvf2jeLi4Jita25wmY91vg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/4.2.6/jquery.flot.drawSeries.min.js" integrity="sha512-9Fp66i1Z/ZSW1sjrQVnjucgz2oV8tTSzOI6BgdvmMi6zbVuuVPLiicuGMkUn7kCVsWr6lA5U/EyigK1VOVmTUA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/4.2.6/jquery.flot.errorbars.min.js" integrity="sha512-61xuDFYdw9aXklIaFWrSCc+rAFZ4oiR9Q6oy2mn418cC4d5pu/HVDzLSEr6JaOQJCCYwIa5Z3IT2Vvuvq5Ythw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/4.2.6/jquery.flot.fillbetween.min.js" integrity="sha512-2lo0O1rxfNZmWKkLl2PZnQeuura4kWm0Fo4tLJVwFzvq8GhKotZkULuVHDQIfCGdFrs9yTRTuyPAB+rF+1PN5g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/4.2.6/jquery.flot.flatdata.min.js" integrity="sha512-P9mr2DsCEzz7ioqrXV5y0HSz0rgAFSdboYb7PsgtRQWCzhS4oy2BK+WuvsuH5XoemZ39JVZl2rEdphNLMbk0gQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/4.2.6/jquery.flot.hover.min.js" integrity="sha512-5dlTH96pGbJLJAqVdRtQ/cTIVa8TSv6KvCQtxIkuXaBNUC4NKTmzOWsoyZSSby2pn9ChBu+MUyd9eW7h2pNJXw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/4.2.6/jquery.flot.image.min.js" integrity="sha512-BOTGr9xCcG82GBjg8gdnexkc+i9a4UbxT2+VLPenXidR9MmYxCy6Z2b4Wabw9oBgD4b3COWgLzkfevTZ/FdWiA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/4.2.6/jquery.flot.legend.min.js" integrity="sha512-OoMnSElCHfaoCFzWC/nKtI2H4Hzl9qtnC1yWJFfPShZzdepHtMOL58HMgDbKymfSMWS4WvWXdrMHoN927V/VFw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/4.2.6/jquery.flot.logaxis.min.js" integrity="sha512-5uQiRAhCW3s/1ucbXIoFSo7OnPEyaitorGNap+wdCvUN+19Dw/hc5O9mt0hOIjYdlYn+ZGxiDV+3/55wgTBTrw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/4.2.6/jquery.flot.navigate.min.js" integrity="sha512-NpPD6+072hR1wedV3wIvoePKOQ+mPs9ptTcc1IfO2o55UfXo3XtvXBfDAHR8lZR9mIZfXn5dWakFu5JCVXch6Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/4.2.6/jquery.flot.pie.min.js" integrity="sha512-tok3wODGpLPrvlJ4RIoYCfN1zsNynuGrESF9XssU7GoI5M04W8GtKZ7eKYsmRZTjKteglP8FYWZ5Y6/3Efv7IA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/4.2.6/jquery.flot.resize.min.js" integrity="sha512-lYwbi9l8oGVDGhETmeuz7IzL395KVM6j2Uiys4ypuRHLLhzXl8q4WzV/98pg6mgewkZExl/NMXUA/AxVZW/+uQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/4.2.6/jquery.flot.saturated.min.js" integrity="sha512-D0IA9fF9uH3Q6dTdjIOmnOrwROGVxXC3CO1dz5TxNNT10zRS/fCiAdxCovyLtYPS9v1S3usVL8lonvqb4Nr8JQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/4.2.6/jquery.flot.selection.min.js" integrity="sha512-AZUK45XSuHkAhbin0y3Kw3JHFNPqnB8OgwJYxvBju/VhoZu07LYfiQ/gJvMh/BEpS83zSu+QWRppZleoLryaQQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/4.2.6/jquery.flot.stack.min.js" integrity="sha512-tQbHmmMWvKjuUrOkOP9R2XERvLQeae8QR1TRwvwQlBVNr/QtFtaq33RbqIufdPUvHKb0nqlTdH4TFpYp5R5Ryg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/4.2.6/jquery.flot.symbol.min.js" integrity="sha512-zmoWCM3BbWybJN6ztoH6c46yqftNY16oPo8uSmM7J4kqey2+JvB1F1UaJ7NhlTChFpHv4TaGT5LXIPR08MhI2A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/4.2.6/jquery.flot.threshold.min.js" integrity="sha512-9n1k7jkiuR3uT3RozyiLI3xNguSMP1FRPDc8jHMYKP1+db9WRYOgxAxaVYQ4MaL7X5ufj5GBybj+o5Bj0IIzRg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/4.2.6/jquery.flot.time.min.js" integrity="sha512-wARN3zVErYletJDgWZddKYlnRbWf8FLc/+CjmKF4TqXHu728ENDyTfpekd5YIK3VvjSZwGGS/pSNwkY4lvsNZA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/4.2.6/jquery.flot.touch.min.js" integrity="sha512-sKZ+ef5clWdb7Mx9pUTIHJqYZeh70nVbMQush6I+II90JahFXMB8Vr6r8IKk3Zc30bfCD0tpp9d5ozEyEfMfeA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/4.2.6/jquery.flot.touchNavigate.min.js" integrity="sha512-3JkTbH87wn/FlNVneAYh6+THjcCg4q9q8KfQXZdiOwHjpzfi/ch5MtOHJkUDLzIm/mCT6fw4WPHiYWsemcoKGg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+    <!-- <script language="javascript" type="text/javascript" src="../../source/jquery.flot.js"></script>
+	<script language="javascript" type="text/javascript" src="../../source/jquery.flot.saturated.js"></script>
+	<script language="javascript" type="text/javascript" src="../../source/jquery.flot.browser.js"></script>
+	<script language="javascript" type="text/javascript" src="../../source/jquery.flot.drawSeries.js"></script>
+	<script language="javascript" type="text/javascript" src="../../source/jquery.flot.uiConstants.js"></script> -->
+
+</head>
+<body>
+
+    <form enctype="multipart/form-data">
+        <input id="cavelog" type=file  name="files[]" size=30>
+        <textarea class="form-control" rows=35 cols=120 id="ms_word_filtered_html"></textarea>
+    </form>
+    
+    <button id="_show">show</button>
+    <button id="_test">test</button>
+
+    <div id="placeholder" style="width:600px;height:300px"></div>
+
+<script>
+	$(function() {
+
+        var d2 = [];
+
+        var opt = {
+			series: {
+                shadowSize: 0	// faster without shadows
+			},
+			yaxis: {
+				min: 0,
+				max: 100
+			},
+			xaxis: {
+				show: false
+			}
+        }
+
+        var plot = $.plot("#placeholder", [ d2 ], opt);
+
+        $("#footer").prepend("Flot " + $.plot.version + " &ndash; ");
+
+        $("#_show").click(function(){
+            let lines =  $("#ms_word_filtered_html").val();
+            lines.split("\n").forEach(function(line) {
+                // console.log(line);
+                let fields = line.split(",");
+                let dt = fields.pop();
+                let dy = fields.pop();
+                let dx = fields.pop();
+                console.log( `${dx} | ${dy}` )
+                // d2.push( [Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)] );
+                d2.push( [ dx, dy] );
+                $.plot("#placeholder", [d2], opt);
+            });
+        });
+
+        $("#_test").click(function(){
+            d2.push( [1,1], [2,2], [3,6], [4,8]);
+            $.plot("#placeholder", [d2], opt);
+            // plot.setData([d2]);
+            // plot.setupGrid();
+            // plot.draw();            
+        });
+
+
+
+        // var plot = $.plot(placeholder, data, options)
+        // $.plot($("#placeholder"), [ [[0, 0], [100, 100]] ], { yaxis: { max: 200 } });
+
+
+        function handleFileSelect(evt) {
+            let files = evt.target.files; // FileList object
+            let f = files[0];
+            let reader = new FileReader();
+
+            // Closure to capture the file information.
+            reader.onload = (function(theFile) {
+                return function(e) {
+                    jQuery( '#ms_word_filtered_html' ).val( e.target.result );
+                };
+            })(f);
+
+            // Read in the image file as a data URL.
+            reader.readAsText(f);
+        }
+
+        document.getElementById('cavelog').addEventListener('change', handleFileSelect, false);
+
+
+    });
+
+</script>
+
+</body>
+</html>

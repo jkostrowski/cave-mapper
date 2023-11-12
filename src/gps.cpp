@@ -46,7 +46,7 @@ bool gpsSinglePass(void) {  // returns true when it is safe to write to Serial.
 
 char buff0[100];
 char* getGps(void) {
-  sprintf( buff0, "|%1d|%09.4f|%09.4f|P%5.2f|S%08.5f|%02d"
+  sprintf( buff0, "F,%1d,LA,%09.4f,LO,%09.4f,P,%5.2f,V,%08.5f,S,%02d"
   , (int) GPS.fix
   , GPS.latitude 
   , GPS.longitude

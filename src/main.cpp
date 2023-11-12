@@ -11,14 +11,11 @@
 
 // ==============================================
 
-#define LOOP_SLEEP 200
-#define QUEUE_SIZE (1000/LOOP_SLEEP)
+char log1[SDLOG_SIZE];
 
-
-char log1[500];
 char * getLog(void) {
   DateTime now = rtcTimestamp();
-  sprintf( log1, "%4d-%02d-%02d %02d:%02d:%02d %s %s %s %s"
+  sprintf( log1, "%4d-%02d-%02d,%02d:%02d:%02d,%s,%s,%s,%s"
     , now.year(), now.month(), now.day(), now.hour(), now.minute(), now.second()
     , getBat()
     , getImuCalibration()
@@ -28,43 +25,21 @@ char * getLog(void) {
   return log1;
 }
 
-int queueHead = 0; 
-char queue[QUEUE_SIZE][512];
 
-void enqueue( char * msg ) {
-  strcpy( queue[queueHead], msg);
-  queueHead++;
-
-  if (queueHead == QUEUE_SIZE) {
-    queueHead = 0;
-    for (int i=0; i<QUEUE_SIZE; i++) {
-      saveToSd( queue[i]);
-      flushSd();
-    }
-  }
-
-}
-
+// ==============================================
 
 void loopUiRefresh(void) {
   lcd1( getImuPosition() );
   lcd2( getImuCalibration() );
   lcd3( getRtc() );
-// lcd4( getBat() );
-
   lcd4( gpsLat() );
 
+  // lcd4( getBat() );
   // lcd1( gpsFix() );
   // lcd3( gpsLon() );
   // lcd4( gpsSpeed() );
 
   updateLcd();
-
-  // lcd1( gpsFix() );
-  // lcd2( gpsPos() );
-  // lcd3( gpsSpeed() );
-
-  // delay(LOOP_SLEEP);
 }
 
 // ==============================================
@@ -72,11 +47,11 @@ void loopUiRefresh(void) {
 void setup(void) {
     Serial.begin(115200); delay(50);
 
+    // otaInitialize();
     initializeLcd();    
-    // initializeOta();
     initializeImu();
     initializeRtc();
-    initializeSd();
+    sdInitialize();
     initializeGps();
 }
 
@@ -84,16 +59,18 @@ void setup(void) {
 
 
 void loop(void) {
-  // updateOta();
-  // enqueue( getLog() );
-  // handleGps();
+  // otaLoop();
 
   for (int i=0; i<100; i++) {
-    if (gpsSinglePass()) 
-          Serial.println(getLog());
+    if (gpsSinglePass()) {
+        char* log = getLog();
+        Serial.println( log );
+        sdSaveTo( log );
+    }
   }
 
   loopUiRefresh();
+  sdFlush();
 }
 
 

@@ -5,7 +5,7 @@ File sd;
 SPIClass spi1( HSPI );
 
 
-void initializeSd(void) {
+void sdInitialize(void) {
   pinMode(SD_CS, OUTPUT); 
 
   spi1.begin(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
@@ -38,10 +38,33 @@ void initializeSd(void) {
   }
 }
 
-void saveToSd( char* msg ) {
+void sdSaveTo( char* msg ) {
   sd.println( msg );
 }
 
-void flushSd(void) {
+void sdFlush(void) {
   sd.flush();
+}
+
+
+// =================================
+
+#define QUEUE_SIZE 10
+
+int queueHead = 0; 
+char queue[QUEUE_SIZE][SDLOG_SIZE];
+
+void sdQueue(char* log) {
+  
+  strcpy( queue[queueHead], log);
+  queueHead++;
+
+  if (queueHead == QUEUE_SIZE) {
+    queueHead = 0;
+    for (int i=0; i<QUEUE_SIZE; i++) {
+      sdSaveTo(queue[i]);
+    }
+    sdFlush();
+  }
+
 }

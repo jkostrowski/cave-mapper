@@ -28,7 +28,7 @@ char* getImuCalibration(void) {
   sys = gyro = accel = mag = 0;
   bno.getCalibration(&sys, &gyro, &accel, &mag);
 
-  sprintf( msgImu1, "|%1d|%1d|%1d|%1d|", sys, gyro, accel, mag );
+  sprintf( msgImu1, "CS,%1d,CG,%1d,CA,%1d,CM,%1d", sys, gyro, accel, mag );
   return msgImu1;
 }
 
@@ -36,7 +36,7 @@ char* getImuPosition(void) {
   sensors_event_t event; 
   bno.getEvent(&event);
 
-  sprintf(msgImu2, "X: %.1f Y: %.1f Z: %.1f\n", event.orientation.x, event.orientation.y, event.orientation.z );
+  sprintf(msgImu2, "X,%.1f,Y,%.1f,Z,%.1f", event.orientation.x, event.orientation.y, event.orientation.z );
   return msgImu2;
 }
 
@@ -49,7 +49,7 @@ char* getImu9pof(void) {
   bno.getEvent(&accelerometerData, Adafruit_BNO055::VECTOR_ACCELEROMETER);
   bno.getEvent(&gravityData      , Adafruit_BNO055::VECTOR_GRAVITY);
 
-  sprintf(msgImu3,"|%3.0f,%3.0f,%3.0f|%3.0f,%3.0f,%3.0f|%3.0f,%3.0f,%3.0f|%3.0f,%3.0f,%3.0f|%3.0f,%3.0f,%3.0f|%3.0f,%3.0f,%3.0f|%02d|", 
+  sprintf(msgImu3,"EU,% 4.0f,% 4.0f,% 4.0f,GY,% 4.0f,% 4.0f,% 4.0f,LA,% 4.0f,% 4.0f,% 4.0f,MA,% 4.0f,% 4.0f,% 4.0f,AC,% 4.0f,% 4.0f,% 4.0f,GR,% 4.0f,% 4.0f,% 4.0f,T,%02d", 
     orientationData.orientation.x,  orientationData.orientation.y, orientationData.orientation.z,
     angVelocityData.gyro.x, angVelocityData.gyro.y, angVelocityData.gyro.z, 
     linearAccelData.acceleration.x, linearAccelData.acceleration.y, linearAccelData.acceleration.z,

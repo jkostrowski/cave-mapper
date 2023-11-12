@@ -4,6 +4,6 @@
 
 #include "secrets.h"
 
-void initializeOta(void);
-void updateOta(void );
+void otaInitialize(void);
+void otaLoop(void );
 

@@ -1,7 +1,7 @@
 #include "ota.h"
 
 
-void initializeOta(void) {
+void otaInitialize(void) {
   WiFi.mode(WIFI_STA);
   WiFi.begin(WIFI_SSID, WIFI_PASS);
 
@@ -20,7 +20,7 @@ void initializeOta(void) {
 }
 
 
-void updateOta(void ) {
+void otaLoop(void ) {
     ArduinoOTA.handle();
 }
 

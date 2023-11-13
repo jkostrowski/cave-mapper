@@ -2,8 +2,8 @@
 
 #include "pinout.h"
 
-void initializeLcd(void);
-void updateLcd(void);
+void lcdInitialize(void);
+void lcdUpdate(void);
 
 void lcd1(char * msg);
 void lcd2(char * msg);

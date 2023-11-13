@@ -2,7 +2,7 @@
 #include <Adafruit_GPS.h>
 #include <SoftwareSerial.h>
 
-void initializeGps(void);
+void gpsInitialize(void);
 bool gpsSinglePass(void);
 
 char* getGps(void);

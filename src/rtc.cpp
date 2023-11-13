@@ -1,10 +1,8 @@
 #include "rtc.h"
 
 RTC_DS3231 rtc;
-char msgRtc[100];
 
-
-void initializeRtc(void) {
+void rtcInitialize(void) {
     if (! rtc.begin(&Wire1)) {
         Serial.println("Couldn't find RTC");
         Serial.flush();
@@ -17,10 +15,10 @@ void initializeRtc(void) {
     }
 }
 
-char* getRtc(void) {
+char msgRtc[30];
+char* rtcLog(void) {
     DateTime now = rtc.now();
-    sprintf( msgRtc, "%02d:%02d:%02d", now.hour(), now.minute(), now.second()  );
-    // lcd3( msgRtc );
+    sprintf( msgRtc, "%04d-%02d-%02dT%02d:%02d:%02d", now.year(), now.month(), now.day(), now.hour(), now.minute(), now.second() );
     return msgRtc;
 }
 

@@ -5,11 +5,10 @@
 
 #include "pinout.h"
 
-void initializeImu(void);
-char* getImuPosition(void);
-char* getImu9pof(void);
-
-char* getImuCalibration(void);
+void imuInitialize(void);
+char* imuPosition(void);
+char* imu9pof(void);
+char* imuCalibration(void);
 
 
 // void displaySensorDetails(void);

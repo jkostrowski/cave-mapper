@@ -10,7 +10,7 @@ Adafruit_GPS GPS(&GPSSerial);
 long t0 = millis();
 long t1 = millis();
 
-void initializeGps(void) {
+void gpsInitialize(void) {
   GPSSerial.begin(9600, SERIAL_8N1, RX2, TX2);
   GPSSerial.println("$PMTK251,38400*27");  
   delay(100);
@@ -26,23 +26,17 @@ void initializeGps(void) {
 }
 
 
-
 bool gpsSinglePass(void) {  // returns true when it is safe to write to Serial.
-
   char c = GPS.read();
-  if(c == 0) {
+  if (c == 0) 
     return false;
-  }
 
-  // Serial.print(c);
+  Serial.print(c);
 
   return GPS.newNMEAreceived() && GPS.parse(GPS.lastNMEA()); 
-
-  // t1 = millis();
-  // Serial.printf( "%s | %s | %s | %08d | %08d | %08d \n", gpsLat(), gpsLon(), gpsSpeed(), loops, nme, t1 - t0 );
-  // t0 = t1;
 }
 
+ // 1/10000000 of a degree.
 
 char buff0[100];
 char* getGps(void) {
@@ -66,9 +60,9 @@ char* gpsFix(void) {
   return buff1;
 }
 
-char buff2[100];
 char noFix[20] = "pos: no fix";
 
+char buff2[100];
 char* gpsLat(void) {
   if (GPS.fix) {
     sprintf( buff2, "lat: %09.4f", GPS.latitude );

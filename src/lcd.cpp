@@ -8,7 +8,7 @@ char l4[100] = "";
 U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R2, RST, SCL1, SDA1); // screen on heltec
 // U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C u8g2(U8G2_R0, U8X8_PIN_NONE,  SCL, SDA); - mini external screen 
 
-void initializeLcd(void) {
+void lcdInitialize(void) {
     u8g2.begin();
     u8g2.clearBuffer();					        
     u8g2.setFont(u8g2_font_fub11_tr);	
@@ -34,7 +34,7 @@ void lcd4(char * msg) {
   strcpy( l4, msg );
 }
 
-void updateLcd() {
+void lcdUpdate() {
     u8g2.clearBuffer();
     u8g2.drawStr(0, 0, l1);	
     u8g2.drawStr(0,15, l2);	

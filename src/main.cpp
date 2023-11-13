@@ -18,8 +18,8 @@ char * getLog(void) {
   sprintf( log1, "%4d-%02d-%02d,%02d:%02d:%02d,%s,%s,%s,%s"
     , now.year(), now.month(), now.day(), now.hour(), now.minute(), now.second()
     , getBat()
-    , getImuCalibration()
-    , getImu9pof()
+    , imuCalibration()
+    , imu9pof()
     , getGps()
     );
   return log1;
@@ -29,17 +29,17 @@ char * getLog(void) {
 // ==============================================
 
 void loopUiRefresh(void) {
-  lcd1( getImuPosition() );
-  lcd2( getImuCalibration() );
-  lcd3( getRtc() );
-  lcd4( gpsLat() );
+  lcd1( rtcLog() );
+  lcd2( gpsLat() );
+  lcd3( imuCalibration() );
+  lcd4( gpsSpeed());
 
   // lcd4( getBat() );
   // lcd1( gpsFix() );
   // lcd3( gpsLon() );
   // lcd4( gpsSpeed() );
 
-  updateLcd();
+  lcdUpdate();
 }
 
 // ==============================================
@@ -48,11 +48,11 @@ void setup(void) {
     Serial.begin(115200); delay(50);
 
     // otaInitialize();
-    initializeLcd();    
-    initializeImu();
-    initializeRtc();
+    lcdInitialize();    
+    imuInitialize();
+    rtcInitialize();
     sdInitialize();
-    initializeGps();
+    gpsInitialize();
 }
 
 // ==============================================

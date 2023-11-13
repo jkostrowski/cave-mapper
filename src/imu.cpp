@@ -6,7 +6,7 @@ char msgImu1[100];
 char msgImu2[100];
 char msgImu3[100];
 
-void initializeImu(void) {
+void imuInitialize(void) {
     
     if (!Wire1.begin(SDA2, SCL2)) {
         Serial.println("Problem with Wire1");     
@@ -23,7 +23,7 @@ void initializeImu(void) {
     bno.setExtCrystalUse(true);
 }
 
-char* getImuCalibration(void) {
+char* imuCalibration(void) {
   uint8_t sys, gyro, accel, mag;
   sys = gyro = accel = mag = 0;
   bno.getCalibration(&sys, &gyro, &accel, &mag);
@@ -32,7 +32,7 @@ char* getImuCalibration(void) {
   return msgImu1;
 }
 
-char* getImuPosition(void) {
+char* imuPosition(void) {
   sensors_event_t event; 
   bno.getEvent(&event);
 
@@ -40,7 +40,7 @@ char* getImuPosition(void) {
   return msgImu2;
 }
 
-char* getImu9pof(void) {
+char* imu9pof(void) {
   sensors_event_t orientationData , angVelocityData , linearAccelData, magnetometerData, accelerometerData, gravityData;
   bno.getEvent(&orientationData  , Adafruit_BNO055::VECTOR_EULER);
   bno.getEvent(&angVelocityData  , Adafruit_BNO055::VECTOR_GYROSCOPE);

@@ -10,6 +10,13 @@ Adafruit_GPS GPS(&GPSSerial);
 long t0 = millis();
 long t1 = millis();
 
+bool onFixSent = false;
+int32_t homeLo = 0;  // Longitude_fixed of the location when fix was reported
+int32_t homeLa = 0;  // Lattitude_fixed of the location when fix was reported
+
+
+void (*onFix)(void) = NULL;
+
 void gpsInitialize(void) {
   GPSSerial.begin(9600, SERIAL_8N1, RX2, TX2);
   GPSSerial.println("$PMTK251,38400*27");  
@@ -25,6 +32,9 @@ void gpsInitialize(void) {
   GPSSerial.println(PMTK_Q_RELEASE);
 }
 
+void gpsOnFix( void (*f)(void) ) {
+  onFix = f;
+}
 
 bool gpsSinglePass(void) {  // returns true when it is safe to write to Serial.
   char c = GPS.read();
@@ -33,50 +43,59 @@ bool gpsSinglePass(void) {  // returns true when it is safe to write to Serial.
 
   Serial.print(c);
 
-  return GPS.newNMEAreceived() && GPS.parse(GPS.lastNMEA()); 
+  bool fullMessage = GPS.newNMEAreceived() && GPS.parse(GPS.lastNMEA()); 
+
+  if (!onFixSent && fullMessage && GPS.fix ) {
+    // if (onFix) onFix();
+    Serial.println("======================================================");
+    onFixSent = true;
+    homeLo = GPS.longitude_fixed;
+    homeLa = GPS.latitude_fixed;
+  }
+ 
+  return fullMessage;
 }
 
- // 1/10000000 of a degree.
-
-char buff0[100];
+char buff0[140];   
 char* getGps(void) {
-  sprintf( buff0, "F,%1d,LA,%09.4f,LO,%09.4f,P,%5.2f,V,%08.5f,S,%02d"
+  sprintf( buff0, "F,%1d,LA,%10d,LO,%10d,HD,%09.4f,VD,%09.4f,PD,%09.4f,V,%08.5f,S,%02d,DA,% 10d,DO,% 10d,Q,%1d"
   , (int) GPS.fix
-  , GPS.latitude 
-  , GPS.longitude
+  , GPS.latitude_fixed 
+  , GPS.longitude_fixed
+  , GPS.HDOP
+  , GPS.VDOP
   , GPS.PDOP
   , GPS.speed 
   , GPS.satellites
+  , GPS.latitude_fixed - homeLa
+  , GPS.longitude_fixed - homeLo
+  , GPS.fixquality
   );
   return buff0;
 }
 
-
+char noFix[10] = "no fix";
 
 char buff1[100];
 char* gpsFix(void) {
-  // sprintf( buff1, "fix: %1d sat:%02d dop:%5.2f", (int)GPS.fix, GPS.satellites, GPS.PDOP );
-  sprintf( buff1, "fix: %1d dop:%5.2f", (int)GPS.fix, GPS.PDOP );
+  sprintf( buff1, "F:%1d H:%5.2f", (int)GPS.fix, GPS.HDOP );
   return buff1;
 }
-
-char noFix[20] = "pos: no fix";
 
 char buff2[100];
 char* gpsLat(void) {
   if (GPS.fix) {
-    sprintf( buff2, "lat: %09.4f", GPS.latitude );
+    sprintf( buff2, "LA:%09.4f", GPS.latitude );
     return buff2;
   } else {
     return noFix;
   }
 }
 
-
 char buff3[100];
 char* gpsLon(void) {
   if (GPS.fix) {
-    sprintf( buff3, "lat: %09.4f", GPS.longitude );
+    sprintf( buff3, "LO: %09.4f", GPS.longitude );
     return buff3;
   } else {
     return noFix;
@@ -84,8 +103,15 @@ char* gpsLon(void) {
 }
 
 
-char buff4[100];
+char buff4[30];
 char* gpsSpeed(void) {
-  sprintf( buff4, "vel: %08.5f ", GPS.speed );
+  sprintf( buff4, "VE: %08.5f", GPS.speed );
   return buff4;
+}
+
+
+char buff5[30];
+char* gpsError(void) {
+  sprintf( buff5, "HD:%6.2f VD:%6.2f", GPS.HDOP, GPS.VDOP );
+  return buff5;
 }

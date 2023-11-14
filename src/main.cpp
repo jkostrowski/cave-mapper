@@ -30,10 +30,9 @@ char * getLog(void) {
 
 void loopUiRefresh(void) {
   lcd1( rtcLog() );
-  lcd2( gpsLat() );
+  lcd2( gpsFix());
   lcd3( imuCalibration() );
-  lcd4( gpsSpeed());
-
+  
   // lcd4( getBat() );
   // lcd1( gpsFix() );
   // lcd3( gpsLon() );
@@ -45,14 +44,14 @@ void loopUiRefresh(void) {
 // ==============================================
 
 void setup(void) {
-    Serial.begin(115200); delay(50);
+  Serial.begin(115200); delay(50);
 
-    // otaInitialize();
-    lcdInitialize();    
-    imuInitialize();
-    rtcInitialize();
-    sdInitialize();
-    gpsInitialize();
+  // otaInitialize();
+  lcdInitialize();    
+  imuInitialize();
+  rtcInitialize();
+  sdInitialize();
+  gpsInitialize();
 }
 
 // ==============================================

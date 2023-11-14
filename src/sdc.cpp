@@ -29,13 +29,7 @@ void sdInitialize(void) {
 
   sd = SD.open( name, FILE_WRITE );
 
-  if (sd) {
-    sd.println("aaaaa");
-    sd.flush();
-    Serial.println("File is OK");
-  } else {
-    Serial.println("File error");
-  }
+  Serial.println(sd ? "File is OK": "File error");
 }
 
 void sdSaveTo( char* msg ) {

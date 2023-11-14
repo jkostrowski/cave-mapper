@@ -2,9 +2,9 @@
 
 // Adafruit_BNO055 bno = Adafruit_BNO055(55, 0x29, &Wire); 
 Adafruit_BNO055 bno = Adafruit_BNO055(55, 0x29, &Wire1);
-char msgImu1[100];
-char msgImu2[100];
-char msgImu3[100];
+char msgImu1[50];
+char msgImu2[50];
+char msgImu3[150];
 
 void imuInitialize(void) {
     
@@ -36,7 +36,7 @@ char* imuPosition(void) {
   sensors_event_t event; 
   bno.getEvent(&event);
 
-  sprintf(msgImu2, "X,%.1f,Y,%.1f,Z,%.1f", event.orientation.x, event.orientation.y, event.orientation.z );
+  sprintf(msgImu2, "X,% 6.1f,Y,% 6.1f,Z,% 6.1f", event.orientation.x, event.orientation.y, event.orientation.z );
   return msgImu2;
 }
 
@@ -62,7 +62,7 @@ char* imu9pof(void) {
 }
 
 
-
+/*
 void displaySensorDetails(void)
 {
   sensor_t sensor;
@@ -80,12 +80,10 @@ void displaySensorDetails(void)
 }
 
 void displaySensorStatus(void) {
-  /* Get the system status values (mostly for debugging purposes) */
   uint8_t system_status, self_test_results, system_error;
   system_status = self_test_results = system_error = 0;
   bno.getSystemStatus(&system_status, &self_test_results, &system_error);
 
-  /* Display the results in the Serial Monitor */
   Serial.println("");
   Serial.print("System Status: 0x");
   Serial.println(system_status, HEX);
@@ -96,18 +94,4 @@ void displaySensorStatus(void) {
   Serial.println("");
   delay(500);
 }
-
-
-// char queue[5][300];
-// int i = 0;
-// i++;
-// if (i==5) {
-// // if (file) {
-// //   saveToSd(queue[0]);
-// //   saveToSd(queue[1]);
-// //   saveToSd(queue[2]);
-// //   saveToSd(queue[3]);
-// //   saveToSd(queue[4]);
-// //   flushSd();
-// // } 
-// i = 0;
+*/

@@ -9,7 +9,7 @@ U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R2, RST, SCL1, SDA1); // screen on
 // U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C u8g2(U8G2_R0, U8X8_PIN_NONE,  SCL, SDA); - mini external screen 
 
 void lcdInitialize(void) {
-    u8g2.begin();
+    u8g2.begin();   
     u8g2.clearBuffer();					        
     u8g2.setFont(u8g2_font_fub11_tr);	
   //  u8g2.setFont(u8g2_font_profont10_tf);

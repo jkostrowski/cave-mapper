@@ -57,12 +57,12 @@
                 shadowSize: 0	// faster without shadows
 			},
 			yaxis: {
-				min: -5,
-				max: 10
+				min: -2000,
+				max:  2000
 			},
 			xaxis: {
-				min: -10, 
-				max:  50
+				min: -2000, 
+				max:  2000
 			}
         }
 
@@ -79,8 +79,8 @@
             if (lines.length > 0) {
                 let line   = lines.shift();
                 let fields = line.split(",");
-                let dt = fields.pop();
                 let dy = fields.pop();
+                let xx = fields.pop();
                 let dx = fields.pop();
                 console.log( `${dx} | ${dy}` )
                 d2.push( [ dx, dy] );

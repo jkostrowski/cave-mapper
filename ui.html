@@ -43,7 +43,6 @@
     </form>
     
     <button id="_show">show</button>
-    <button id="_test">test</button>
 
     <div id="placeholder" style="width:900px;height:900px"></div>
 
@@ -57,12 +56,12 @@
                 shadowSize: 0	// faster without shadows
 			},
 			yaxis: {
-				min: -2000,
-				max:  2000
+				min: -20,
+				max:  20
 			},
 			xaxis: {
-				min: -2000, 
-				max:  2000
+				min: -20, 
+				max:  20
 			}
         }
 
@@ -76,28 +75,28 @@
         });
 
 		function updatePlot( lines ) {
-            if (lines.length > 0) {
-                let line   = lines.shift();
-                let fields = line.split(",");
-                let dy = fields.pop();
-                let xx = fields.pop();
-                let dx = fields.pop();
-                console.log( `${dx} | ${dy}` )
-                d2.push( [ dx, dy] );
+            if (lines.length == 0) 
+                return;
+
+            for(let i = 0; i < 10; i++){
+                if (lines.length > 0) {
+                    let line   = lines.shift();
+                    let fields = line.split(",");
+                    let qq = fields.pop();
+                    let ql = fields.pop();
+                    let yy = fields.pop();
+                    let yl = fields.pop();
+                    let xx = fields.pop();
+                    let xl = fields.pop();
+
+                    console.log( `${xx} | ${yy}` )
+                    d2.push( [ Math.round(xx/100), Math.round(yy/100)] );
+                }
                 plot.setData([ d2 ]);
                 plot.draw();
-                setTimeout(updatePlot, 10, lines );
+                setTimeout(updatePlot, 5, lines );
             }
         }
-
-        $("#_test").click(function(){
-            d2.push( [1,1], [2,2], [3,6], [4,8]);
-            $.plot("#placeholder", [d2], opt);
-            // plot.setData([d2]);
-            // plot.setupGrid();
-            // plot.draw();            
-        });
-
 
         function handleFileSelect(evt) {
             let files = evt.target.files; // FileList object

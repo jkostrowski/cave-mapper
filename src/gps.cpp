@@ -78,7 +78,7 @@ char noFix[10] = "no fix";
 
 char buff1[100];
 char* gpsFix(void) {
-  sprintf( buff1, "F:%1d H:%5.2f", (int)GPS.fix, GPS.HDOP );
+  sprintf( buff1, "F:%1d S:%2d", (int)GPS.fix, GPS.satellites );
   return buff1;
 }
 
@@ -111,7 +111,7 @@ char* gpsSpeed(void) {
 
 
 char buff5[30];
-char* gpsError(void) {
-  sprintf( buff5, "HD:%6.2f VD:%6.2f", GPS.HDOP, GPS.VDOP );
+char* gpsQuality(void) {
+  sprintf( buff5, "H:%4.1f V:%4.1f", GPS.HDOP, GPS.VDOP );
   return buff5;
 }

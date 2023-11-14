@@ -12,7 +12,7 @@ char* gpsLat(void);
 char* gpsLon(void);
 char* gpsSpeed(void);
 
-char* gpsError(void);
+char* gpsQuality(void);
 
 void gpsOnFix( void (*f)(void) );
 

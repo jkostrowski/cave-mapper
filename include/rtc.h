@@ -3,4 +3,6 @@
 
 void rtcInitialize(void);
 char* rtcLog(void);
+char* rtcTime(void);
+
 DateTime rtcTimestamp(void);

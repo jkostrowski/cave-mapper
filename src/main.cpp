@@ -29,10 +29,11 @@ char * getLog(void) {
 // ==============================================
 
 void loopUiRefresh(void) {
-  lcd1( rtcLog() );
+  lcd1( rtcTime() );
   lcd2( gpsFix());
-  lcd3( imuCalibration() );
-  
+  lcd3( gpsQuality());
+  lcd4( imuCalibration() );
+    
   // lcd4( getBat() );
   // lcd1( gpsFix() );
   // lcd3( gpsLon() );

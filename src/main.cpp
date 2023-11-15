@@ -11,6 +11,16 @@
 
 // ==============================================
 
+void onFix(void) {
+    char label[]= "FIX";
+    lcd2( label );
+    rtcSet( gpsNow() );
+    Serial.println( rtcTime() );
+}
+
+
+// ==============================================
+
 char log1[SDLOG_SIZE];
 
 char * getLog(void) {
@@ -30,7 +40,7 @@ char * getLog(void) {
 
 void loopUiRefresh(void) {
   lcd1( rtcTime() );
-  lcd2( gpsFix());
+  // lcd2( gpsFix());
   lcd3( gpsQuality());
   lcd4( imuCalibration() );
     
@@ -53,6 +63,8 @@ void setup(void) {
   rtcInitialize();
   sdInitialize();
   gpsInitialize();
+
+  gpsOnFix( &onFix );
 }
 
 // ==============================================

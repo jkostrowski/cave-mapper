@@ -29,6 +29,10 @@ char* rtcTime(void) {
     return msgRtc2;
 }
 
+void rtcSet(DateTime now) {
+    return rtc.adjust(now);
+}
+
 
 DateTime rtcTimestamp(void) {
     return rtc.now();

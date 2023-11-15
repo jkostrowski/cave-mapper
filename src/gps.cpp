@@ -46,8 +46,11 @@ bool gpsSinglePass(void) {  // returns true when it is safe to write to Serial.
   bool fullMessage = GPS.newNMEAreceived() && GPS.parse(GPS.lastNMEA()); 
 
   if (!onFixSent && fullMessage && GPS.fix ) {
-    // if (onFix) onFix();
-    Serial.println("======================================================");
+    if (onFix) {
+      Serial.println("=On Fix===============================================");
+      onFix();
+      Serial.println("======================================================");
+    }
     onFixSent = true;
     homeLo = GPS.longitude_fixed;
     homeLa = GPS.latitude_fixed;
@@ -114,4 +117,9 @@ char buff5[30];
 char* gpsQuality(void) {
   sprintf( buff5, "H:%4.1f V:%4.1f", GPS.HDOP, GPS.VDOP );
   return buff5;
+}
+
+
+DateTime gpsNow(void) {
+  return DateTime( GPS.year, GPS.month, GPS.day, GPS.hour, GPS.minute, GPS.seconds ) - TimeSpan(6 * 3600);
 }

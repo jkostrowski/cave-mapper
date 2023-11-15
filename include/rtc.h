@@ -5,4 +5,5 @@ void rtcInitialize(void);
 char* rtcLog(void);
 char* rtcTime(void);
 
+void rtcSet(DateTime);
 DateTime rtcTimestamp(void);

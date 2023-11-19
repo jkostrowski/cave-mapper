@@ -37,14 +37,14 @@
 </head>
 <body>
 
-    <form enctype="multipart/form-data">
+    <!-- <form enctype="multipart/form-data">
         <input id="cavelog" type=file  name="files[]" size=30>
         <textarea class="form-control" rows=10 cols=240 id="ms_word_filtered_html"></textarea>
     </form>
     
-    <button id="_show">show</button>
+    <button id="_show">show</button> -->
 
-    <div id="placeholder" style="width:900px;height:900px"></div>
+    <div id="placeholder" style="width:1100px;height:1100px"></div>
 
 <script>
 	$(function() {
@@ -56,29 +56,29 @@
                 shadowSize: 0	// faster without shadows
 			},
 			yaxis: {
-				min: -20,
-				max:  20
+				min: -300,
+				max:  500
 			},
 			xaxis: {
-				min: -20, 
-				max:  20
+				min: -300, 
+				max:  500
 			}
         }
 
         var plot = $.plot("#placeholder", [ d2 ], opt);
 
-        $("#footer").prepend("Flot " + $.plot.version + " &ndash; ");
+        // $("#footer").prepend("Flot " + $.plot.version + " &ndash; ");
 
-        $("#_show").click(function(){
-            let content =  $("#ms_word_filtered_html").val();
-            updatePlot( content.split("\n") );
-        });
+        // $("#_show").click(function(){
+        //     let content =  $("#ms_word_filtered_html").val();
+        //     updatePlot( content.split("\n") );
+        // });
 
 		function updatePlot( lines ) {
             if (lines.length == 0) 
                 return;
 
-            for(let i = 0; i < 10; i++){
+            for(let i = 0; i < 20; i++){
                 if (lines.length > 0) {
                     let line   = lines.shift();
                     let fields = line.split(",");
@@ -89,30 +89,56 @@
                     let xx = fields.pop();
                     let xl = fields.pop();
 
+                    
                     console.log( `${xx} | ${yy}` )
-                    d2.push( [ Math.round(xx/100), Math.round(yy/100)] );
+                    if (Math.abs(xx) + Math.abs(yy) < 10_000_000 )
+                        d2.push( [Math.round(yy/100,0), Math.round(xx/100,0)] );
+                    else 
+                        console.warn( `${xx} | ${yy} | is invalid` );
                 }
                 plot.setData([ d2 ]);
                 plot.draw();
-                setTimeout(updatePlot, 5, lines );
+                setTimeout(updatePlot, 1, lines );
             }
         }
 
-        function handleFileSelect(evt) {
-            let files = evt.target.files; // FileList object
-            let f = files[0];
-            let reader = new FileReader();
+        // function handleFileSelect(evt) {
+        //     let files = evt.target.files; // FileList object
+        //     let f = files[0];
+        //     let reader = new FileReader();
 
-            // Closure to capture the file information.
-            reader.onload = (function(theFile) {
-                return function(e) {
-                    jQuery( '#ms_word_filtered_html' ).val( e.target.result );
+        //     // Closure to capture the file information.
+        //     reader.onload = (function(theFile) {
+        //         return function(e) {
+        //             jQuery( '#ms_word_filtered_html' ).val( e.target.result );
+        //         };
+        //     })(f);
+
+        //     // Read in the image file as a data URL.
+        //     reader.readAsText(f);
+        // }
+
+        $('#placeholder').on('dragover', function(ev) {
+            ev.preventDefault();
+        });
+
+        $('#placeholder').on( 'drop', function(ev) {
+            ev.preventDefault();
+            console.log("File(s) dropped");
+
+            const files = event.dataTransfer.files;
+            for (const file of files) {
+                const reader = new FileReader();
+
+                reader.onload = function() {
+                    // console.log(reader.result);
+                    updatePlot( reader.result.split("\n") );
                 };
-            })(f);
 
-            // Read in the image file as a data URL.
-            reader.readAsText(f);
-        }
+                reader.readAsText(file);
+            }
+
+        });
 
         document.getElementById('cavelog').addEventListener('change', handleFileSelect, false);
     });

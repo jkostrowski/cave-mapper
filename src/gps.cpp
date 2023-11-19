@@ -10,12 +10,14 @@ Adafruit_GPS GPS(&GPSSerial);
 long t0 = millis();
 long t1 = millis();
 
-bool onFixSent = false;
+bool onFix1Sent = false;
+bool onFix2Sent = false;
+
 int32_t homeLo = 0;  // Longitude_fixed of the location when fix was reported
 int32_t homeLa = 0;  // Lattitude_fixed of the location when fix was reported
 
-
-void (*onFix)(void) = NULL;
+void (*onFix1)(void) = NULL;
+void (*onFix2)(void) = NULL;
 
 void gpsInitialize(void) {
   GPSSerial.begin(9600, SERIAL_8N1, RX2, TX2);
@@ -25,7 +27,8 @@ void gpsInitialize(void) {
   delay(100);
   GPSSerial.begin(38400, SERIAL_8N1, RX2, TX2);
   GPSSerial.println("$PMTK251,38400*27");  
-  GPSSerial.println(PMTK_SET_NMEA_OUTPUT_RMCGGA);
+  // GPSSerial.println(PMTK_SET_NMEA_OUTPUT_RMCGGA);
+  GPSSerial.println(PMTK_SET_NMEA_OUTPUT_RMCGGAGSA);
   GPSSerial.println(PMTK_SET_NMEA_UPDATE_10HZ);  
   delay(100);
  
@@ -33,8 +36,14 @@ void gpsInitialize(void) {
 }
 
 void gpsOnFix( void (*f)(void) ) {
-  onFix = f;
+  onFix1 = f;
 }
+
+void gpsOnFixGood( void (*f)(void) ) {
+  onFix2 = f;
+}
+
+
 
 bool gpsSinglePass(void) {  // returns true when it is safe to write to Serial.
   char c = GPS.read();
@@ -45,23 +54,34 @@ bool gpsSinglePass(void) {  // returns true when it is safe to write to Serial.
 
   bool fullMessage = GPS.newNMEAreceived() && GPS.parse(GPS.lastNMEA()); 
 
-  if (!onFixSent && fullMessage && GPS.fix ) {
-    if (onFix) {
-      Serial.println("=On Fix===============================================");
-      onFix();
+  if (!onFix1Sent && fullMessage && GPS.fix ) {
+    if (onFix1) {
+      Serial.println("=On Fix 1=============================================");
+      onFix1();
       Serial.println("======================================================");
     }
-    onFixSent = true;
+    onFix1Sent = true;
+  }
+
+  if (!onFix2Sent && fullMessage && GPS.fixquality >= 2) {
+    if (onFix2) {
+      Serial.println("=On Fix 2=============================================");
+      onFix2();
+      Serial.println("======================================================");
+    }
+    onFix2Sent = true;
     homeLo = GPS.longitude_fixed;
     homeLa = GPS.latitude_fixed;
+    Serial.println("home set");
   }
- 
+
+
   return fullMessage;
 }
 
 char buff0[140];   
 char* getGps(void) {
-  sprintf( buff0, "F,%1d,LA,%10d,LO,%10d,HD,%09.4f,VD,%09.4f,PD,%09.4f,V,%08.5f,S,%02d,DA,% 10d,DO,% 10d,Q,%1d"
+  sprintf( buff0, "F,%1d,LA,%10d,LO,%10d,HD,%6.2f,VD,%6.2f,PD,%6.2f,V,%6.2f,S,%2d,DA,% 10d,DO,% 10d,Q,%1d"
   , (int) GPS.fix
   , GPS.latitude_fixed 
   , GPS.longitude_fixed
@@ -70,8 +90,8 @@ char* getGps(void) {
   , GPS.PDOP
   , GPS.speed 
   , GPS.satellites
-  , GPS.latitude_fixed - homeLa
-  , GPS.longitude_fixed - homeLo
+  , onFix2Sent ? GPS.latitude_fixed - homeLa : 0
+  , onFix2Sent ? GPS.longitude_fixed - homeLo : 0
   , GPS.fixquality
   );
   return buff0;
@@ -108,14 +128,14 @@ char* gpsLon(void) {
 
 char buff4[30];
 char* gpsSpeed(void) {
-  sprintf( buff4, "VE: %08.5f", GPS.speed );
+  sprintf( buff4, "VE: %05.2f", GPS.speed );
   return buff4;
 }
 
 
 char buff5[30];
 char* gpsQuality(void) {
-  sprintf( buff5, "H:%4.1f V:%4.1f", GPS.HDOP, GPS.VDOP );
+  sprintf( buff5, "H:%5.2f V:%5.2f", GPS.HDOP, GPS.VDOP );
   return buff5;
 }
 

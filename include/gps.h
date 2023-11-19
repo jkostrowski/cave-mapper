@@ -16,6 +16,7 @@ char* gpsSpeed(void);
 char* gpsQuality(void);
 
 void gpsOnFix( void (*f)(void) );
+void gpsOnFixGood( void (*f)(void) );
 
 DateTime gpsNow(void);
 

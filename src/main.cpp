@@ -18,6 +18,12 @@ void onFix(void) {
     Serial.println( rtcTime() );
 }
 
+void onFixHighAccuracy(void) {
+    char label[]= "FIX Good";
+    lcd2( label );
+}
+
+
 
 // ==============================================
 
@@ -36,14 +42,24 @@ char * getLog(void) {
 }
 
 
+char * getLogMini(void) {
+  DateTime now = rtcTimestamp();
+  sprintf( log1, "%4d-%02d-%02d,%02d:%02d:%02d"
+    , now.year(), now.month(), now.day(), now.hour(), now.minute(), now.second()
+    );
+  return log1;
+}
+
+
+
 // ==============================================
 
 void loopUiRefresh(void) {
   lcd1( rtcTime() );
-  // lcd2( gpsFix());
   lcd3( gpsQuality());
   lcd4( imuCalibration() );
     
+  // lcd2( gpsFix());
   // lcd4( getBat() );
   // lcd1( gpsFix() );
   // lcd3( gpsLon() );
@@ -65,6 +81,7 @@ void setup(void) {
   gpsInitialize();
 
   gpsOnFix( &onFix );
+  gpsOnFixGood( &onFixHighAccuracy );
 }
 
 // ==============================================
@@ -75,7 +92,7 @@ void loop(void) {
 
   for (int i=0; i<100; i++) {
     if (gpsSinglePass()) {
-        char* log = getLog();
+        char* log = getLogMini();
         Serial.println( log );
         sdSaveTo( log );
     }

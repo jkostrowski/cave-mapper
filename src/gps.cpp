@@ -7,8 +7,8 @@
 
 Adafruit_GPS GPS(&GPSSerial);
 
-long t0 = millis();
-long t1 = millis();
+unsigned long t0 = millis();
+unsigned long t1 = millis();
 
 bool onFix1Sent = false;
 bool onFix2Sent = false;
@@ -16,8 +16,29 @@ bool onFix2Sent = false;
 int32_t homeLo = 0;  // Longitude_fixed of the location when fix was reported
 int32_t homeLa = 0;  // Lattitude_fixed of the location when fix was reported
 
-void (*onFix1)(void) = NULL;
-void (*onFix2)(void) = NULL;
+// ==================================================================
+
+void nop(void) {}
+
+void (*onFix1)(void) = &nop;
+void (*onFix2)(void) = &nop;
+void (*onNmea)(void) = &nop;
+
+// ==================================================================
+
+void gpsOnNmea( void (*f)(void) ) {
+  onNmea = f;
+}
+
+void gpsOnFix( void (*f)(void) ) {
+  onFix1 = f;
+}
+
+void gpsOnFixGood( void (*f)(void) ) {
+  onFix2 = f;
+}
+
+// ==================================================================
 
 void gpsInitialize(void) {
   GPSSerial.begin(9600, SERIAL_8N1, RX2, TX2);
@@ -35,49 +56,49 @@ void gpsInitialize(void) {
   GPSSerial.println(PMTK_Q_RELEASE);
 }
 
-void gpsOnFix( void (*f)(void) ) {
-  onFix1 = f;
-}
-
-void gpsOnFixGood( void (*f)(void) ) {
-  onFix2 = f;
-}
-
-
+//===================================================================
 
 bool gpsSinglePass(void) {  // returns true when it is safe to write to Serial.
-  char c = GPS.read();
-  if (c == 0) 
+
+  if (!GPS.available())
     return false;
 
+  char c = GPS.read();
   Serial.print(c);
 
   bool fullMessage = GPS.newNMEAreceived() && GPS.parse(GPS.lastNMEA()); 
 
   if (!onFix1Sent && fullMessage && GPS.fix ) {
-    if (onFix1) {
-      Serial.println("=On Fix 1=============================================");
-      onFix1();
-      Serial.println("======================================================");
-    }
+    onFix1();
     onFix1Sent = true;
   }
 
-  if (!onFix2Sent && fullMessage && GPS.fixquality >= 2) {
-    if (onFix2) {
-      Serial.println("=On Fix 2=============================================");
-      onFix2();
-      Serial.println("======================================================");
-    }
+  if (!onFix2Sent && fullMessage && GPS.satellites >= 8) {
+    onFix2();
     onFix2Sent = true;
     homeLo = GPS.longitude_fixed;
     homeLa = GPS.latitude_fixed;
-    Serial.println("home set");
   }
-
 
   return fullMessage;
 }
+
+//===================================================================
+
+void gpsLoop(void) {
+  unsigned long x0 = millis();
+  for (int i=0; i<500; i++) {
+      if (gpsSinglePass()) {
+        onNmea();
+      }
+    }
+  unsigned long x1 = millis();
+
+  // Serial.print( "loop: = " );
+  // Serial.println( x1-x0 );
+}
+
+//===================================================================
 
 char buff0[140];   
 char* getGps(void) {
@@ -97,8 +118,7 @@ char* getGps(void) {
   return buff0;
 }
 
-char noFix[10] = "no fix";
-
+char noFix[] = "no fix";
 char buff1[100];
 char* gpsFix(void) {
   sprintf( buff1, "F:%1d S:%2d", (int)GPS.fix, GPS.satellites );

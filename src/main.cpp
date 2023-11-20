@@ -11,22 +11,6 @@
 
 // ==============================================
 
-void onFix(void) {
-    char label[]= "FIX";
-    lcd2( label );
-    rtcSet( gpsNow() );
-    Serial.println( rtcTime() );
-}
-
-void onFixHighAccuracy(void) {
-    char label[]= "FIX Good";
-    lcd2( label );
-}
-
-
-
-// ==============================================
-
 char log1[SDLOG_SIZE];
 
 char * getLog(void) {
@@ -41,16 +25,36 @@ char * getLog(void) {
   return log1;
 }
 
-
 char * getLogMini(void) {
   DateTime now = rtcTimestamp();
-  sprintf( log1, "%4d-%02d-%02d,%02d:%02d:%02d"
+  sprintf( log1, "%4d-%02d-%02d,%02d:%02d:%02d,%s,%s,%s"
     , now.year(), now.month(), now.day(), now.hour(), now.minute(), now.second()
+    , getBat()
+    , imuCalibration()
+    , imu9pof()
     );
   return log1;
 }
 
+// ==============================================
 
+void onNmea(void) {
+    char* log = getLogMini();
+    Serial.println( log );
+    sdSaveTo( log );
+}
+
+void onFix(void) {
+    char label[]= "FIX";
+    lcd2( label );
+    rtcSet( gpsNow() );
+    Serial.println( rtcTime() );
+}
+
+void onFixHighAccuracy(void) {
+    char label[]= "FIX & Home Set";
+    lcd2( label );
+}
 
 // ==============================================
 
@@ -80,27 +84,21 @@ void setup(void) {
   sdInitialize();
   gpsInitialize();
 
+  gpsOnNmea( &onNmea );
   gpsOnFix( &onFix );
   gpsOnFixGood( &onFixHighAccuracy );
 }
 
 // ==============================================
 
-
 void loop(void) {
   // otaLoop();
-
-  for (int i=0; i<100; i++) {
-    if (gpsSinglePass()) {
-        char* log = getLogMini();
-        Serial.println( log );
-        sdSaveTo( log );
-    }
-  }
-
+  gpsLoop();
   loopUiRefresh();
   sdFlush();
 }
+
+// ==============================================
 
 
 

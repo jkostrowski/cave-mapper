@@ -4,7 +4,7 @@
 #include <RTClib.h>
 
 void gpsInitialize(void);
-bool gpsSinglePass(void);
+void gpsLoop(void);
 
 char* getGps(void);
 
@@ -15,6 +15,7 @@ char* gpsSpeed(void);
 
 char* gpsQuality(void);
 
+void gpsOnNmea( void (*f)(void) );
 void gpsOnFix( void (*f)(void) );
 void gpsOnFixGood( void (*f)(void) );
 

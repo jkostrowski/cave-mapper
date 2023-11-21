@@ -40,25 +40,52 @@ void gpsOnFixGood( void (*f)(void) ) {
 
 // ==================================================================
 
+// hw_timer_t * timer = NULL;
+// portMUX_TYPE timerMux = portMUX_INITIALIZER_UNLOCKED;
+
+// void IRAM_ATTR onTimer() {
+//   portENTER_CRITICAL_ISR(&timerMux);
+  
+//   if (GPS.available())
+//     char c = GPS.read();
+//   #ifdef UDR0
+//       if (GPSECHO)
+//         if (c) UDR0 = c;
+//       // writing direct to UDR0 is much much faster than Serial.print
+//   #endif
+
+//   portEXIT_CRITICAL_ISR(&timerMux);
+// }
+
+// void isrInitialize(void) {
+//   timer = timerBegin(0, 80, true);
+//   timerAttachInterrupt(timer, &onTimer, true);
+//   timerAlarmWrite(timer, 1000, true);
+//   timerAlarmEnable(timer);  
+// }
+
+// ==================================================================
+
 void gpsInitialize(void) {
   GPSSerial.begin(9600, SERIAL_8N1, RX2, TX2);
   GPSSerial.println("$PMTK251,38400*27");  
+  // delay(100);
+  // GPSSerial.end();
   delay(100);
-  GPSSerial.end();
-  delay(100);
-  GPSSerial.begin(38400, SERIAL_8N1, RX2, TX2);
-  GPSSerial.println("$PMTK251,38400*27");  
+  GPSSerial.updateBaudRate(38400);
+  // GPSSerial.println("$PMTK251,38400*27");  
   // GPSSerial.println(PMTK_SET_NMEA_OUTPUT_RMCGGA);
   GPSSerial.println(PMTK_SET_NMEA_OUTPUT_RMCGGAGSA);
   GPSSerial.println(PMTK_SET_NMEA_UPDATE_10HZ);  
   delay(100);
  
-  GPSSerial.println(PMTK_Q_RELEASE);
+  // isrInitialize();
 }
 
 //===================================================================
 
-bool gpsSinglePass(void) {  // returns true when it is safe to write to Serial.
+
+bool gpsSinglePass(void) {
 
   if (!GPS.available())
     return false;
@@ -67,6 +94,9 @@ bool gpsSinglePass(void) {  // returns true when it is safe to write to Serial.
   Serial.print(c);
 
   bool fullMessage = GPS.newNMEAreceived() && GPS.parse(GPS.lastNMEA()); 
+
+  if (fullMessage) 
+    Serial.println(GPS.lastNMEA());
 
   if (!onFix1Sent && fullMessage && GPS.fix ) {
     onFix1();
@@ -86,13 +116,14 @@ bool gpsSinglePass(void) {  // returns true when it is safe to write to Serial.
 //===================================================================
 
 void gpsLoop(void) {
-  unsigned long x0 = millis();
+  // unsigned long x0 = millis();
+  
   for (int i=0; i<500; i++) {
       if (gpsSinglePass()) {
         onNmea();
       }
-    }
-  unsigned long x1 = millis();
+  }
+  // unsigned long x1 = millis();
 
   // Serial.print( "loop: = " );
   // Serial.println( x1-x0 );
@@ -100,7 +131,7 @@ void gpsLoop(void) {
 
 //===================================================================
 
-char buff0[140];   
+char buff0[200];   
 char* getGps(void) {
   sprintf( buff0, "F,%1d,LA,%10d,LO,%10d,HD,%6.2f,VD,%6.2f,PD,%6.2f,V,%6.2f,S,%2d,DA,% 10d,DO,% 10d,Q,%1d"
   , (int) GPS.fix

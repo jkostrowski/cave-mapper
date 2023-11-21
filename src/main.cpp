@@ -11,6 +11,10 @@
 
 // ==============================================
 
+DateTime reboot;
+
+// ==============================================
+
 char log1[SDLOG_SIZE];
 
 char * getLog(void) {
@@ -58,7 +62,13 @@ void onFixHighAccuracy(void) {
 
 // ==============================================
 
+char buff7[100];
+
 void loopUiRefresh(void) {
+
+  // reboot.toString(buff7);
+  // lcd1( buff7 );
+  
   lcd1( rtcTime() );
   lcd3( gpsQuality());
   lcd4( imuCalibration() );
@@ -72,7 +82,9 @@ void loopUiRefresh(void) {
   lcdUpdate();
 }
 
+
 // ==============================================
+
 
 void setup(void) {
   Serial.begin(115200); delay(50);
@@ -83,6 +95,8 @@ void setup(void) {
   rtcInitialize();
   sdInitialize();
   gpsInitialize();
+
+  // reboot = rtcTimestamp();
 
   gpsOnNmea( &onNmea );
   gpsOnFix( &onFix );

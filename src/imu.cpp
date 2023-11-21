@@ -4,7 +4,7 @@
 Adafruit_BNO055 bno = Adafruit_BNO055(55, 0x29, &Wire1);
 char msgImu1[50];
 char msgImu2[50];
-char msgImu3[150];
+char msgImu3[200];
 
 void imuInitialize(void) {
     
@@ -41,7 +41,9 @@ char* imuPosition(void) {
 }
 
 char* imu9pof(void) {
-  sensors_event_t orientationData , angVelocityData , linearAccelData, magnetometerData, accelerometerData, gravityData;
+  // imu::Quaternion quat = bno.getQuat(); // TODO
+
+  sensors_event_t  orientationData , angVelocityData , linearAccelData, magnetometerData, accelerometerData, gravityData;
   bno.getEvent(&orientationData  , Adafruit_BNO055::VECTOR_EULER);
   bno.getEvent(&angVelocityData  , Adafruit_BNO055::VECTOR_GYROSCOPE);
   bno.getEvent(&linearAccelData  , Adafruit_BNO055::VECTOR_LINEARACCEL);
@@ -49,7 +51,7 @@ char* imu9pof(void) {
   bno.getEvent(&accelerometerData, Adafruit_BNO055::VECTOR_ACCELEROMETER);
   bno.getEvent(&gravityData      , Adafruit_BNO055::VECTOR_GRAVITY);
 
-  sprintf(msgImu3,"EU,% 4.0f,% 4.0f,% 4.0f,GY,% 4.0f,% 4.0f,% 4.0f,LA,% 4.0f,% 4.0f,% 4.0f,MA,% 4.0f,% 4.0f,% 4.0f,AC,% 4.0f,% 4.0f,% 4.0f,GR,% 4.0f,% 4.0f,% 4.0f,T,%02d", 
+  sprintf(msgImu3,"EU,% 7.2f,% 7.2f,% 7.2f,GY,% 7.2f,% 7.2f,% 7.2f,LA,% 7.2f,% 7.2f,% 7.2f,MA,% 7.2f,% 7.2f,% 7.2f,AC,% 7.2f,% 7.2f,% 7.2f,GR,% 7.2f,% 7.2f,% 7.2f,T,%02d", 
     orientationData.orientation.x,  orientationData.orientation.y, orientationData.orientation.z,
     angVelocityData.gyro.x, angVelocityData.gyro.y, angVelocityData.gyro.z, 
     linearAccelData.acceleration.x, linearAccelData.acceleration.y, linearAccelData.acceleration.z,

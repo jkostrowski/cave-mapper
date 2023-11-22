@@ -23,8 +23,8 @@
         // x1 = x0 * cos(θ) – y0 * sin(θ)
         // y1 = x0 * sin(θ) + y0 * cos(θ)
 
-        var d1 = [], d2 = [], d3 = [];
-        var ix = 0, iy = 0, iix = 0, iiy = 0; 
+        var d1 = [], d2 = [], d3 = [], d4 = [];
+        var ix = 0, iy = 0, iix = 0, iiy = 0, ix2 = 0, iy2 = 0;
        
         var opt = {
             xaxes: [
@@ -41,7 +41,7 @@
 			}
         }
 
-        var plot = $.plot("#placeholder", [ d2, d1 ], opt);
+        var plot = $.plot("#placeholder", [ d1, d2, d3, d4 ], opt);
 
         function updatePlot( lines ) {
             if (lines.length == 0) 
@@ -74,15 +74,27 @@
                     let dt = 1/30;                        // assume 30Hz GPS refresh
                     let cs = fields[5];
 
-                    let dx = Math.sin( eu ) * vl * dt;
-                    let dy = Math.cos( eu ) * vl * dt;
-
+                    let sinEu = Math.sin(eu);
+                    let cosEu = Math.cos(eu);
+                    
+                    let dx = sinEu * vl * dt;
+                    let dy = cosEu * vl * dt;
+                    
+                    let vl2 = 2.5*0.514444;                     // fixed speed
+                    let dx2 = sinEu * vl2 * dt;
+                    let dy2 = cosEu * vl2 * dt;
+                    
                     if (cs > 0) {
                         ix += dx;  
                         iy += dy;
                     } else {
                         iix = ix + dx;
                         iiy = iy + dy;
+                    }
+                    
+                    if (cs > 0 && yy != 0) {
+                        ix2 += dx2;  
+                        iy2 += dy2;
                     }
 
                     console.log( `xx=${xx}, yy=${yy} || cs=${cs} eu=${eu.toPrecision(2)} vl=${vl.toPrecision(2)} dt=${dt.toPrecision(2)} | dx=${dx.toPrecision(2)} | dy=${dy.toPrecision(2)} | ix=${ix.toPrecision(2)} | iy=${iy.toPrecision(2)}` )
@@ -93,14 +105,7 @@
                     else 
                         console.warn( `${xx} | ${yy} | is invalid` );
                 
-                    let rescale = 1.75    
-                    let phy = 10 * Math.PI / 180
-
-                    // x1 = x0 * cos(θ) – y0 * sin(θ)
-                    // y1 = x0 * sin(θ) + y0 * cos(θ)
-
-                    // x1 = x0 * cosPhy – y0 * sinPhy
-                    // y1 = x0 * sinPhy + y0 * cosPhy
+                    let rescale = 1.85    
 
                     if (cs > 0)  {
                         let x0 = -iy * rescale;
@@ -117,29 +122,21 @@
                         d3.push( [x1, y1] );
                     }
 
+                    if (cs > 0)  {
+                        let x0 = -iy2 * rescale;
+                        let y0 =  ix2 * rescale;
+                        let x1 = x0 * cosPhy - y0 * sinPhy;
+                        let y1 = x0 * sinPhy + y0 * cosPhy
+                        d4.push( [ x1, y1 ] );
+                    }
+
                 }
-                plot.setData([ d1, d2, { data: d3,lines: { show: false }, points: { show: true } } ]);
+                plot.setData([ d1, d2, { data: d3,lines: { show: false }, points: { show: true } }, d4 ]);
                 plot.setupGrid(true);
                 plot.draw();
                 setTimeout(updatePlot, 1, lines );
             }
         }
-
-        // function handleFileSelect(evt) {
-        //     let files = evt.target.files; // FileList object
-        //     let f = files[0];
-        //     let reader = new FileReader();
-
-        //     // Closure to capture the file information.
-        //     reader.onload = (function(theFile) {
-        //         return function(e) {
-        //             jQuery( '#ms_word_filtered_html' ).val( e.target.result );
-        //         };
-        //     })(f);
-
-        //     // Read in the image file as a data URL.
-        //     reader.readAsText(f);
-        // }
 
         $('#placeholder').on('dragover', function(ev) {
             ev.preventDefault();

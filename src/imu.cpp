@@ -20,15 +20,17 @@ void imuInitialize(void) {
     } 
 
     Serial.println("IMU Orientation Sensor OK."); 
+    bno.setMode( OPERATION_MODE_NDOF );
     bno.setExtCrystalUse(true);
+
+    // bno.isFullyCalibrated();
 }
 
 char* imuCalibration(void) {
   uint8_t sys, gyro, accel, mag;
-  sys = gyro = accel = mag = 0;
   bno.getCalibration(&sys, &gyro, &accel, &mag);
 
-  sprintf( msgImu1, "CS,%1d,CG,%1d,CA,%1d,CM,%1d", sys, gyro, accel, mag );
+  sprintf( msgImu1, "s,%1d,g,%1d,a,%1d,m,%1d", sys, gyro, accel, mag );
   return msgImu1;
 }
 
@@ -36,9 +38,16 @@ char* imuPosition(void) {
   sensors_event_t event; 
   bno.getEvent(&event);
 
-  sprintf(msgImu2, "X,% 6.1f,Y,% 6.1f,Z,% 6.1f", event.orientation.x, event.orientation.y, event.orientation.z );
+  sprintf(msgImu2, "EU,% 7.2f,% 7.2f,% 7.2f", event.orientation.x, event.orientation.y, event.orientation.z );
   return msgImu2;
 }
+
+sensors_event_t imuPositionEvent(void) {
+  sensors_event_t event; 
+  bno.getEvent(&event);
+  return event;
+}
+
 
 char* imu9pof(void) {
   // imu::Quaternion quat = bno.getQuat(); // TODO

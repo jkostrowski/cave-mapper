@@ -13,6 +13,8 @@ void rtcInitialize(void) {
         Serial.println("RTC lost power, let's set the time!");
         rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
     }
+
+    // reboot = rtcTimestamp();
 }
 
 char msgRtc1[30];

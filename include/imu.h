@@ -10,6 +10,7 @@ char* imuPosition(void);
 char* imu9pof(void);
 char* imuCalibration(void);
 
+sensors_event_t imuPositionEvent(void);
 
 // void displaySensorDetails(void);
 // void displaySensorStatus(void);

@@ -1,8 +1,8 @@
 #include "sdc.h"
 
-
 File sd;
 SPIClass spi1( HSPI );
+
 
 
 void sdInitialize(void) {
@@ -18,7 +18,7 @@ void sdInitialize(void) {
   Serial.println("SD initialization complete.");
 
   int i = 0;
-  char name[] = "/cave00.csv";
+  char name[] = "/cave00.v2.csv";
   while (SD.exists(name)) {
     Serial.print( name );
     Serial.println( " found.");
@@ -32,14 +32,13 @@ void sdInitialize(void) {
   Serial.println(sd ? "File is OK": "File error");
 }
 
-void sdSaveTo( char* msg ) {
-  sd.println( msg );
-}
+// void sdSaveTo( char* msg ) {
+//   sd.println( msg );
+// }
 
-void sdFlush(void) {
-  sd.flush();
-}
-
+// void sdFlush(void) {
+//   sd.flush();
+// }
 
 // =================================
 
@@ -56,9 +55,9 @@ void sdQueue(char* log) {
   if (queueHead == QUEUE_SIZE) {
     queueHead = 0;
     for (int i=0; i<QUEUE_SIZE; i++) {
-      sdSaveTo(queue[i]);
+      sd.println(queue[i]);
     }
-    sdFlush();
+    sd.flush();
   }
 
 }

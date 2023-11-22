@@ -1,6 +1,9 @@
 // #include <LowPower.h>
 #include <Arduino.h>
 
+// #include <AsyncTCP.h>
+// #include <ESPAsyncWebServer.h>
+
 #include "ota.h"
 #include "lcd.h"
 #include "imu.h"
@@ -43,21 +46,23 @@ char * getLogMini(void) {
 // ==============================================
 
 void onNmea(void) {
-    char* log = getLogMini();
+    char* log = getLog();
+//    char* log = getLogMini();
     Serial.println( log );
-    sdSaveTo( log );
+    // sdSaveTo( log );
+    sdQueue( log );
 }
 
 void onFix(void) {
     char label[]= "FIX";
-    lcd2( label );
+    lcd4( label );
     rtcSet( gpsNow() );
     Serial.println( rtcTime() );
 }
 
 void onFixHighAccuracy(void) {
     char label[]= "FIX & Home Set";
-    lcd2( label );
+    lcd4( label );
 }
 
 // ==============================================
@@ -66,53 +71,72 @@ char buff7[100];
 
 void loopUiRefresh(void) {
 
-  // reboot.toString(buff7);
-  // lcd1( buff7 );
-  
   lcd1( rtcTime() );
+  lcd2( imuCalibration() );
   lcd3( gpsQuality());
-  lcd4( imuCalibration() );
-    
-  // lcd2( gpsFix());
-  // lcd4( getBat() );
-  // lcd1( gpsFix() );
-  // lcd3( gpsLon() );
-  // lcd4( gpsSpeed() );
-
+   
   lcdUpdate();
 }
 
 
 // ==============================================
 
+volatile bool updateUi = false;
+
+hw_timer_t * timer = NULL;
+portMUX_TYPE timerMux = portMUX_INITIALIZER_UNLOCKED;
+
+void IRAM_ATTR onTimer() {
+  portENTER_CRITICAL_ISR(&timerMux);
+  updateUi = true;
+  portEXIT_CRITICAL_ISR(&timerMux);
+}
+
+void isrInitialize(void) {
+  timer = timerBegin(0, 80, true);
+  timerAttachInterrupt(timer, &onTimer, true);
+  timerAlarmWrite(timer, 100*1000, true);
+  timerAlarmEnable(timer);  
+}
+
+
+// ==============================================
 
 void setup(void) {
   Serial.begin(115200); delay(50);
 
-  // otaInitialize();
   lcdInitialize();    
   imuInitialize();
   rtcInitialize();
   sdInitialize();
+
   gpsInitialize();
-
-  // reboot = rtcTimestamp();
-
   gpsOnNmea( &onNmea );
   gpsOnFix( &onFix );
   gpsOnFixGood( &onFixHighAccuracy );
+
+  isrInitialize();
 }
 
 // ==============================================
 
 void loop(void) {
-  // otaLoop();
   gpsLoop();
-  loopUiRefresh();
-  sdFlush();
+  if (updateUi) {
+    loopUiRefresh();
+    updateUi = false;
+  }
 }
 
 // ==============================================
 
 
+
+// void setup(void) {
+//   Serial.begin(115200); delay(50);
+//   imuInitialize();
+// }
+//
+// void loop(void) {
+// }
 

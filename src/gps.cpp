@@ -13,8 +13,8 @@ unsigned long t1 = millis();
 bool onFix1Sent = false;
 bool onFix2Sent = false;
 
-int32_t homeLo = 0;  // Longitude_fixed of the location when fix was reported
-int32_t homeLa = 0;  // Lattitude_fixed of the location when fix was reported
+int32_t homeLo = 0;   // Longitude_fixed of the location when fix was reported
+int32_t homeLa = 0;   // Lattitude_fixed of the location when fix was reported
 
 // ==================================================================
 
@@ -40,63 +40,26 @@ void gpsOnFixGood( void (*f)(void) ) {
 
 // ==================================================================
 
-// hw_timer_t * timer = NULL;
-// portMUX_TYPE timerMux = portMUX_INITIALIZER_UNLOCKED;
-
-// void IRAM_ATTR onTimer() {
-//   portENTER_CRITICAL_ISR(&timerMux);
-  
-//   if (GPS.available())
-//     char c = GPS.read();
-//   #ifdef UDR0
-//       if (GPSECHO)
-//         if (c) UDR0 = c;
-//       // writing direct to UDR0 is much much faster than Serial.print
-//   #endif
-
-//   portEXIT_CRITICAL_ISR(&timerMux);
-// }
-
-// void isrInitialize(void) {
-//   timer = timerBegin(0, 80, true);
-//   timerAttachInterrupt(timer, &onTimer, true);
-//   timerAlarmWrite(timer, 1000, true);
-//   timerAlarmEnable(timer);  
-// }
-
-// ==================================================================
-
 void gpsInitialize(void) {
   GPSSerial.begin(9600, SERIAL_8N1, RX2, TX2);
   GPSSerial.println("$PMTK251,38400*27");  
-  // delay(100);
-  // GPSSerial.end();
   delay(100);
   GPSSerial.updateBaudRate(38400);
-  // GPSSerial.println("$PMTK251,38400*27");  
-  // GPSSerial.println(PMTK_SET_NMEA_OUTPUT_RMCGGA);
   GPSSerial.println(PMTK_SET_NMEA_OUTPUT_RMCGGAGSA);
   GPSSerial.println(PMTK_SET_NMEA_UPDATE_10HZ);  
   delay(100);
- 
-  // isrInitialize();
 }
 
 //===================================================================
 
-
-bool gpsSinglePass(void) {
-
+void gpsLoop(void) {
   if (!GPS.available())
-    return false;
+    return;
 
   char c = GPS.read();
   Serial.print(c);
 
   bool fullMessage = GPS.newNMEAreceived() && GPS.parse(GPS.lastNMEA()); 
-
-  if (fullMessage) 
-    Serial.println(GPS.lastNMEA());
 
   if (!onFix1Sent && fullMessage && GPS.fix ) {
     onFix1();
@@ -110,30 +73,17 @@ bool gpsSinglePass(void) {
     homeLa = GPS.latitude_fixed;
   }
 
-  return fullMessage;
-}
+  if (fullMessage) 
+    onNmea();
 
-//===================================================================
 
-void gpsLoop(void) {
-  // unsigned long x0 = millis();
-  
-  for (int i=0; i<500; i++) {
-      if (gpsSinglePass()) {
-        onNmea();
-      }
-  }
-  // unsigned long x1 = millis();
-
-  // Serial.print( "loop: = " );
-  // Serial.println( x1-x0 );
 }
 
 //===================================================================
 
 char buff0[200];   
 char* getGps(void) {
-  sprintf( buff0, "F,%1d,LA,%10d,LO,%10d,HD,%6.2f,VD,%6.2f,PD,%6.2f,V,%6.2f,S,%2d,DA,% 10d,DO,% 10d,Q,%1d"
+  sprintf( buff0, "F,%1d,LA,%10d,LO,%10d,HD,%6.2f,VD,%6.2f,PD,%6.2f,V,%6.2f,S,%2d,Q,%1d,DA,% 10d,DO,% 10d"
   , (int) GPS.fix
   , GPS.latitude_fixed 
   , GPS.longitude_fixed
@@ -142,9 +92,9 @@ char* getGps(void) {
   , GPS.PDOP
   , GPS.speed 
   , GPS.satellites
-  , onFix2Sent ? GPS.latitude_fixed - homeLa : 0
-  , onFix2Sent ? GPS.longitude_fixed - homeLo : 0
   , GPS.fixquality
+  , onFix2Sent ? GPS.latitude_fixed  - homeLa : 0
+  , onFix2Sent ? GPS.longitude_fixed - homeLo : 0
   );
   return buff0;
 }

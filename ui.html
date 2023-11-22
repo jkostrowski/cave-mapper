@@ -8,95 +8,118 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/4.2.6/jquery.flot.browser.min.js" integrity="sha512-VQd/q4C1w/PN6MI00uurfwSiFb6tLkt/ocprvkNjh7Dgf7phD3Z970CSxX5ni5aYC4bsinQtfKUk7aCL5bTQfQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/4.2.6/jquery.flot.saturated.min.js" integrity="sha512-D0IA9fF9uH3Q6dTdjIOmnOrwROGVxXC3CO1dz5TxNNT10zRS/fCiAdxCovyLtYPS9v1S3usVL8lonvqb4Nr8JQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/4.2.6/jquery.flot.drawSeries.min.js" integrity="sha512-9Fp66i1Z/ZSW1sjrQVnjucgz2oV8tTSzOI6BgdvmMi6zbVuuVPLiicuGMkUn7kCVsWr6lA5U/EyigK1VOVmTUA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<!--	
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/4.2.6/jquery.flot.axislabels.min.js" integrity="sha512-9BIz5PU+h3PzHGNkhwSih80oUSSFcfpyWnHpFx6sotmZpPwp6/whZe4wfUnTCy5HknRifm8rENPGiXxFmvK11g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/4.2.6/jquery.flot.categories.min.js" integrity="sha512-FDoTxnOUSiAr2wieDGcWsc04tGtv+TRZ7rUm9qSp4ouhjJ+sofEwm6sAbmojsrq7vK/dhANBtudENr9rktXDhA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/4.2.6/jquery.flot.composeImages.min.js" integrity="sha512-0V/Eri0sql5xg9rxVZL4bPZ4PNYgnFJMYTdO7/1pOD5Fx+K9gAbcaoZ4eqRwD+bZByOMq50Y2kUC7UsZBigyCA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/4.2.6/jquery.flot.crosshair.min.js" integrity="sha512-VfTwGWD5bcQd8V4EhyMVBEomLxtrXcaNd01GV4CH0UCTvjQ27npwHl0NZqnj720VOvf2jeLi4Jita25wmY91vg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/4.2.6/jquery.flot.errorbars.min.js" integrity="sha512-61xuDFYdw9aXklIaFWrSCc+rAFZ4oiR9Q6oy2mn418cC4d5pu/HVDzLSEr6JaOQJCCYwIa5Z3IT2Vvuvq5Ythw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/4.2.6/jquery.flot.fillbetween.min.js" integrity="sha512-2lo0O1rxfNZmWKkLl2PZnQeuura4kWm0Fo4tLJVwFzvq8GhKotZkULuVHDQIfCGdFrs9yTRTuyPAB+rF+1PN5g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/4.2.6/jquery.flot.flatdata.min.js" integrity="sha512-P9mr2DsCEzz7ioqrXV5y0HSz0rgAFSdboYb7PsgtRQWCzhS4oy2BK+WuvsuH5XoemZ39JVZl2rEdphNLMbk0gQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/4.2.6/jquery.flot.hover.min.js" integrity="sha512-5dlTH96pGbJLJAqVdRtQ/cTIVa8TSv6KvCQtxIkuXaBNUC4NKTmzOWsoyZSSby2pn9ChBu+MUyd9eW7h2pNJXw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/4.2.6/jquery.flot.image.min.js" integrity="sha512-BOTGr9xCcG82GBjg8gdnexkc+i9a4UbxT2+VLPenXidR9MmYxCy6Z2b4Wabw9oBgD4b3COWgLzkfevTZ/FdWiA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/4.2.6/jquery.flot.legend.min.js" integrity="sha512-OoMnSElCHfaoCFzWC/nKtI2H4Hzl9qtnC1yWJFfPShZzdepHtMOL58HMgDbKymfSMWS4WvWXdrMHoN927V/VFw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/4.2.6/jquery.flot.logaxis.min.js" integrity="sha512-5uQiRAhCW3s/1ucbXIoFSo7OnPEyaitorGNap+wdCvUN+19Dw/hc5O9mt0hOIjYdlYn+ZGxiDV+3/55wgTBTrw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/4.2.6/jquery.flot.navigate.min.js" integrity="sha512-NpPD6+072hR1wedV3wIvoePKOQ+mPs9ptTcc1IfO2o55UfXo3XtvXBfDAHR8lZR9mIZfXn5dWakFu5JCVXch6Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/4.2.6/jquery.flot.pie.min.js" integrity="sha512-tok3wODGpLPrvlJ4RIoYCfN1zsNynuGrESF9XssU7GoI5M04W8GtKZ7eKYsmRZTjKteglP8FYWZ5Y6/3Efv7IA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/4.2.6/jquery.flot.resize.min.js" integrity="sha512-lYwbi9l8oGVDGhETmeuz7IzL395KVM6j2Uiys4ypuRHLLhzXl8q4WzV/98pg6mgewkZExl/NMXUA/AxVZW/+uQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/4.2.6/jquery.flot.selection.min.js" integrity="sha512-AZUK45XSuHkAhbin0y3Kw3JHFNPqnB8OgwJYxvBju/VhoZu07LYfiQ/gJvMh/BEpS83zSu+QWRppZleoLryaQQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/4.2.6/jquery.flot.stack.min.js" integrity="sha512-tQbHmmMWvKjuUrOkOP9R2XERvLQeae8QR1TRwvwQlBVNr/QtFtaq33RbqIufdPUvHKb0nqlTdH4TFpYp5R5Ryg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/4.2.6/jquery.flot.symbol.min.js" integrity="sha512-zmoWCM3BbWybJN6ztoH6c46yqftNY16oPo8uSmM7J4kqey2+JvB1F1UaJ7NhlTChFpHv4TaGT5LXIPR08MhI2A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/4.2.6/jquery.flot.threshold.min.js" integrity="sha512-9n1k7jkiuR3uT3RozyiLI3xNguSMP1FRPDc8jHMYKP1+db9WRYOgxAxaVYQ4MaL7X5ufj5GBybj+o5Bj0IIzRg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/4.2.6/jquery.flot.time.min.js" integrity="sha512-wARN3zVErYletJDgWZddKYlnRbWf8FLc/+CjmKF4TqXHu728ENDyTfpekd5YIK3VvjSZwGGS/pSNwkY4lvsNZA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/4.2.6/jquery.flot.touch.min.js" integrity="sha512-sKZ+ef5clWdb7Mx9pUTIHJqYZeh70nVbMQush6I+II90JahFXMB8Vr6r8IKk3Zc30bfCD0tpp9d5ozEyEfMfeA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/4.2.6/jquery.flot.touchNavigate.min.js" integrity="sha512-3JkTbH87wn/FlNVneAYh6+THjcCg4q9q8KfQXZdiOwHjpzfi/ch5MtOHJkUDLzIm/mCT6fw4WPHiYWsemcoKGg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> 
--->
-
-
-
 </head>
 <body>
-
-    <!-- <form enctype="multipart/form-data">
-        <input id="cavelog" type=file  name="files[]" size=30>
-        <textarea class="form-control" rows=10 cols=240 id="ms_word_filtered_html"></textarea>
-    </form>
-    
-    <button id="_show">show</button> -->
 
     <div id="placeholder" style="width:1100px;height:1100px"></div>
 
 <script>
 	$(function() {
 
-        var d2 = [];
+        const phy = -12 * Math.PI / 180
+        const sinPhy = Math.sin(phy)
+        const cosPhy = Math.cos(phy)
 
+        // x1 = x0 * cos(θ) – y0 * sin(θ)
+        // y1 = x0 * sin(θ) + y0 * cos(θ)
+
+        var d1 = [], d2 = [], d3 = [];
+        var ix = 0, iy = 0, iix = 0, iiy = 0; 
+       
         var opt = {
-			series: {
-                shadowSize: 0	// faster without shadows
+            xaxes: [
+                { autoScale: 'loose', min: -100.0, max: 100.0, growOnly: true, autoScaleMargin:0.1  }
+            ],
+            yaxes: [
+                { autoScale: 'loose', min: -100.0, max: 100.0, growOnly: true, autoScaleMargin:0.1  }
+            ],
+			zoom: {
+				interactive: true
 			},
-			yaxis: {
-				min: -300,
-				max:  500
-			},
-			xaxis: {
-				min: -300, 
-				max:  500
+			pan: {
+				interactive: true
 			}
         }
 
-        var plot = $.plot("#placeholder", [ d2 ], opt);
+        var plot = $.plot("#placeholder", [ d2, d1 ], opt);
 
-        // $("#footer").prepend("Flot " + $.plot.version + " &ndash; ");
-
-        // $("#_show").click(function(){
-        //     let content =  $("#ms_word_filtered_html").val();
-        //     updatePlot( content.split("\n") );
-        // });
-
-		function updatePlot( lines ) {
+        function updatePlot( lines ) {
             if (lines.length == 0) 
                 return;
+
+
+    //  0| 2023-11-16,  1|  17:59:58,  2| VB,  3|       0833,  4|  CS,  5|         0,  6|  CG,  7|         0,  8| CA,  9|         1, 
+    // 10|         CM, 11|         1, 12| EU, 13|        163, 14|  12, 15|      -180, 16|  GY, 17|        -0, 18| -0, 19|        -0, 
+    // 20|         LA, 21|        -0, 22| -0, 23|         -0, 24|  MA, 25|        -6, 26| -13, 27|        33, 28| AC, 29|         2,   
+    // 30|         -0, 31|       -10, 32| GR, 33|          2, 34|   0, 35|       -10, 36|   T, 37|        20, 38|  F, 39|         1, 
+    // 40|         LA, 41| 331135360, 42| LO, 43| -972332288, 44|  HD, 45| 0000.8200, 46|  VD, 47| 0000.0000, 48| PD, 49| 0000.0000,
+    // 50|          V, 51|  00.02000, 52|  S, 53|         10, 54|   Q, 55|         2, 56|  DA, 57|      -384, 58| DO, 59|         0
+
+
+
 
             for(let i = 0; i < 20; i++){
                 if (lines.length > 0) {
                     let line   = lines.shift();
                     let fields = line.split(",");
-                    let qq = fields.pop();
-                    let ql = fields.pop();
-                    let yy = fields.pop();
-                    let yl = fields.pop();
-                    let xx = fields.pop();
-                    let xl = fields.pop();
 
+                    if (fields[58] != "DO") 
+                        console.log( `file format mismatch, expecting DO at #58, got ${fields[58]}` )
                     
-                    console.log( `${xx} | ${yy}` )
-                    if (Math.abs(xx) + Math.abs(yy) < 10_000_000 )
-                        d2.push( [Math.round(yy/100,0), Math.round(xx/100,0)] );
+                    let xx = fields[57];
+                    let yy = fields[59];
+
+                    let eu = fields[13] * Math.PI / 180;  // convert to radians
+                    let vl = fields[51] * 0.514444;       // convert to m/s
+                    let dt = 1/30;                        // assume 30Hz GPS refresh
+                    let cs = fields[5];
+
+                    let dx = Math.sin( eu ) * vl * dt;
+                    let dy = Math.cos( eu ) * vl * dt;
+
+                    if (cs > 0) {
+                        ix += dx;  
+                        iy += dy;
+                    } else {
+                        iix = ix + dx;
+                        iiy = iy + dy;
+                    }
+
+                    console.log( `xx=${xx}, yy=${yy} || cs=${cs} eu=${eu.toPrecision(2)} vl=${vl.toPrecision(2)} dt=${dt.toPrecision(2)} | dx=${dx.toPrecision(2)} | dy=${dy.toPrecision(2)} | ix=${ix.toPrecision(2)} | iy=${iy.toPrecision(2)}` )
+                    
+                    if (Math.abs(xx) + Math.abs(yy) < 10_000_000 ) {
+                        d1.push( [Math.round(yy/100,0), Math.round(xx/100,0)] );
+                    }
                     else 
                         console.warn( `${xx} | ${yy} | is invalid` );
+                
+                    let rescale = 1.75    
+                    let phy = 10 * Math.PI / 180
+
+                    // x1 = x0 * cos(θ) – y0 * sin(θ)
+                    // y1 = x0 * sin(θ) + y0 * cos(θ)
+
+                    // x1 = x0 * cosPhy – y0 * sinPhy
+                    // y1 = x0 * sinPhy + y0 * cosPhy
+
+                    if (cs > 0)  {
+                        let x0 = -iy * rescale;
+                        let y0 = ix * rescale;
+                        let x1 = x0 * cosPhy - y0 * sinPhy;
+                        let y1 = x0 * sinPhy + y0 * cosPhy
+                        d2.push( [ x1, y1 ] );
+                    }
+                    else {
+                        let x0 = -iiy * rescale;
+                        let y0 = iix * rescale;
+                        let x1 = x0 * cosPhy - y0 * sinPhy;
+                        let y1 = x0 * sinPhy + y0 * cosPhy
+                        d3.push( [x1, y1] );
+                    }
+
                 }
-                plot.setData([ d2 ]);
+                plot.setData([ d1, d2, { data: d3,lines: { show: false }, points: { show: true } } ]);
+                plot.setupGrid(true);
                 plot.draw();
                 setTimeout(updatePlot, 1, lines );
             }
@@ -139,8 +162,6 @@
             }
 
         });
-
-        document.getElementById('cavelog').addEventListener('change', handleFileSelect, false);
     });
 
 </script>

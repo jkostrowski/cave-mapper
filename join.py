@@ -20,15 +20,10 @@ for file in files:
             line += 1
             la  = int( row[41] )
             lo  = int( row[43] )
-            hd  = row[45]
-            vd  = row[47]
-            vel = row[51]
-            sat = row[53]
-            fq  = row[59]
-            # print(f' {la} | {lo} | {hd} | {vd} | {vel} | {sat} | {fq}')
-            # if not home and fq == "2":
+            sat = row[55]
+
             if not home and int(sat) > 7:
-                print("set home")
+                print("home set")
                 home = True
                 home_la = la
                 home_lo = lo
@@ -37,11 +32,11 @@ for file in files:
             do = lo - home_lo
 
             if home:
-                row[55] = str(da) 
-                row[57] = str(do)
+                row[57] = str(da) 
+                row[59] = str(do)
             else:
-                row[55] = "0"
                 row[57] = "0"
+                row[59] = "0"
 
             if (abs(da)<1_000_000 and abs(do)<1_000_000):
                 f.write( ", ".join( row ))

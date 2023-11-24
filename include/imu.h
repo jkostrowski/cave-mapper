@@ -4,13 +4,20 @@
 #include <Adafruit_BNO055.h>
 
 #include "pinout.h"
+#include "sdc.h"
 
-void imuInitialize(void);
+
+#define IMUDAT "/imu.dat"
+
+void  imuInitialize(void);
 char* imuPosition(void);
 char* imu9pof(void);
-char* imuCalibration(void);
+char* imuCalibrationLog(void);
+void  imuCalibrate(void);
 
 sensors_event_t imuPositionEvent(void);
+
+// void imuGetCalibration(adafruit_bno055_offsets_t &so );
 
 // void displaySensorDetails(void);
 // void displaySensorStatus(void);

@@ -63,7 +63,7 @@
                     let line   = lines.shift();
                     let fields = line.split(",");
 
-                    if (fields[58] != "DO") 
+                    if (fields[58].trim() != "DO") 
                         console.log( `file format mismatch, expecting DO at #58, got ${fields[58]}` )
                     
                     let xx = fields[57];

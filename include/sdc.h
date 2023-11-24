@@ -1,3 +1,4 @@
+
 #include <Arduino.h>
 #include <SD.h>
 #include <SPI.h>
@@ -6,9 +7,7 @@
 
 #define SDLOG_SIZE 512
 
+
 void sdInitialize(void);
 void sdQueue(char * log);
-
-// void sdSaveTo(char * log);
-// void sdFlush(void);
 

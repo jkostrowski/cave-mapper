@@ -20,7 +20,7 @@ void rtcInitialize(void) {
 char msgRtc1[30];
 char* rtcLog(void) {
     DateTime now = rtc.now();
-    sprintf( msgRtc1, "%04d-%02d-%02dT%02d:%02d:%02d", now.year(), now.month(), now.day(), now.hour(), now.minute(), now.second() );
+    sprintf( msgRtc1, "%04d-%02d-%02d,%02d:%02d:%02d", now.year(), now.month(), now.day(), now.hour(), now.minute(), now.second() );
     return msgRtc1;
 }
 

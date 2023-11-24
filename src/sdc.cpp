@@ -32,13 +32,6 @@ void sdInitialize(void) {
   Serial.println(sd ? "File is OK": "File error");
 }
 
-// void sdSaveTo( char* msg ) {
-//   sd.println( msg );
-// }
-
-// void sdFlush(void) {
-//   sd.flush();
-// }
 
 // =================================
 
@@ -61,3 +54,6 @@ void sdQueue(char* log) {
   }
 
 }
+
+// =================================
+

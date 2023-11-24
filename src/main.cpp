@@ -1,4 +1,3 @@
-// #include <LowPower.h>
 #include <Arduino.h>
 
 // #include <AsyncTCP.h>
@@ -21,24 +20,12 @@ DateTime reboot;
 char log1[SDLOG_SIZE];
 
 char * getLog(void) {
-  DateTime now = rtcTimestamp();
-  sprintf( log1, "%4d-%02d-%02d,%02d:%02d:%02d,%s,%s,%s,%s"
-    , now.year(), now.month(), now.day(), now.hour(), now.minute(), now.second()
+  sprintf( log1, "%.19s,%.9s,%.19s,%.199s,%.150s"
+    , rtcLog()
     , getBat()
-    , imuCalibration()
+    , imuCalibrationLog()
     , imu9pof()
     , getGps()
-    );
-  return log1;
-}
-
-char * getLogMini(void) {
-  DateTime now = rtcTimestamp();
-  sprintf( log1, "%4d-%02d-%02d,%02d:%02d:%02d,%s,%s,%s"
-    , now.year(), now.month(), now.day(), now.hour(), now.minute(), now.second()
-    , getBat()
-    , imuCalibration()
-    , imu9pof()
     );
   return log1;
 }
@@ -47,9 +34,7 @@ char * getLogMini(void) {
 
 void onNmea(void) {
     char* log = getLog();
-//    char* log = getLogMini();
     Serial.println( log );
-    // sdSaveTo( log );
     sdQueue( log );
 }
 
@@ -72,7 +57,7 @@ char buff7[100];
 void loopUiRefresh(void) {
 
   lcd1( rtcTime() );
-  lcd2( imuCalibration() );
+  lcd2( imuCalibrationLog() );
   lcd3( gpsQuality());
    
   lcdUpdate();
@@ -95,12 +80,21 @@ void IRAM_ATTR onTimer() {
 void isrInitialize(void) {
   timer = timerBegin(0, 80, true);
   timerAttachInterrupt(timer, &onTimer, true);
-  timerAlarmWrite(timer, 100*1000, true);
+  timerAlarmWrite(timer, 500*1000, true);
   timerAlarmEnable(timer);  
 }
 
 
 // ==============================================
+#define GPS 
+#undef GPS
+
+typedef struct {
+  int16_t a;
+  int16_t b;
+  int16_t c; 
+} tuple_t;
+
 
 void setup(void) {
   Serial.begin(115200); delay(50);
@@ -110,18 +104,28 @@ void setup(void) {
   rtcInitialize();
   sdInitialize();
 
+#ifdef GPS
   gpsInitialize();
   gpsOnNmea( &onNmea );
   gpsOnFix( &onFix );
   gpsOnFixGood( &onFixHighAccuracy );
+#endif
 
+  imuCalibrate();
   isrInitialize();
 }
 
 // ==============================================
 
 void loop(void) {
-  gpsLoop();
+#ifdef GPS
+    gpsLoop();
+#endif
+
+#ifndef GPS
+    delay(10);
+#endif
+
   if (updateUi) {
     loopUiRefresh();
     updateUi = false;
@@ -131,12 +135,4 @@ void loop(void) {
 // ==============================================
 
 
-
-// void setup(void) {
-//   Serial.begin(115200); delay(50);
-//   imuInitialize();
-// }
-//
-// void loop(void) {
-// }
 

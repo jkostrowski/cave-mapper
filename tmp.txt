@@ -1,0 +1,709 @@
+,,,,,,,,,,,,,*1E
+>> new nmea: 1, parsing |$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+>> new nmea: 0, parsing |$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+>> new nmea: 0, parsing |$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+
+$GPRMC,000025.600,V,,,,,0.00,0.00,050180,,,N*40
+>> new nmea: 1, parsing |$GPRMC,000025.600,V,,,,,0.00,0.00,050180,,,N*40
+>> new nmea: 0, parsing |$GPRMC,000025.600,V,,,,,0.00,0.00,050180,,,N*40
+
+$GPGGA,000025.700,,,,,0,0,,,M,,M,,*48
+>> new nmea: 1, parsing |$GPGGA,000025.700,,,,,0,0,,,M,,M,,*48
+
+$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+>> new nmea: 1, parsing |$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+>> new nmea: 0, parsing |$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+>> new nmea: 0, parsing |$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+
+$GPRMC,000025.700,V,,,,,0.00,0.00,050180,,,N*41
+>> new nmea: 1, parsing |$GPRMC,000025.700,V,,,,,0.00,0.00,050180,,,N*41
+>> new nmea: 0, parsing |$GPRMC,000025.700,V,,,,,0.00,0.00,050180,,,N*41
+
+$GPGGA,000025.799,,,,,0,0,,,M,,M,,*48
+>> new nmea: 1, parsing |$GPGGA,000025.799,,,,,0,0,,,M,,M,,*48
+>> new nmea: 0, parsing |$GPGGA,000025.799,,,,,0,0,,,M,,M,,*48
+>> new nmea: 0, parsing |$GPGGA,000025.799,,,,,0,0,,,M,,M,,*48
+
+$GPGSA,A,1,,,,,,,,,,,.000,V,,,,,0.00,0.00,050180,,,N*45
+>> new nmea: 0, parsing |$GPGSA,A,1,,,,,,,,,,,.000,V,,,,,0.00,0.00,050180,,,N*45
+
+$GPGGA,000026.100,,,,,0,0,,,M,,M,,*4D
+>> new nmea: 1, parsing |$GPGGA,000026.100,,,,,0,0,,,M,,M,,*4D
+>> new nmea: 0, parsing |$GPGGA,000026.100,,,,,0,0,,,M,,M,,*4D
+
+$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+>> new nmea: 1, parsing |$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+>> new nmea: 0, parsing |$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+
+$GPRMC,000026.100,V,,,,,0.00,0.00,050180,,,N*44
+>> new nmea: 1, parsing |$GPRMC,000026.100,V,,,,,0.00,0.00,050180,,,N*44
+>> new nmea: 0, parsing |$GPRMC,000026.100,V,,,,,0.00,0.00,050180,,,N*44
+
+$GPGGA,000026.200,,,,,0,0,,,M,,M,,*4E
+>> new nmea: 1, parsing |$GPGGA,000026.200,,,,,0,0,,,M,,M,,*4E
+>> new nmea: 0, parsing |$GPGGA,000026.200,,,,,0,0,,,M,,M,,*4E
+
+$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+>> new nmea: 1, parsing |$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+>> new nmea: 0, parsing |$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+
+$GPRMC,000026.200,V,,,,,0.00,0.00,050180,,,N*47
+>> new nmea: 1, parsing |$GPRMC,000026.200,V,,,,,0.00,0.00,050180,,,N*47
+>> new nmea: 0, parsing |$GPRMC,000026.200,V,,,,,0.00,0.00,050180,,,N*47
+
+$GPGGA,000026.299,,,,,0,0,,,M,,M,,*4E
+>> new nmea: 1, parsing |$GPGGA,000026.299,,,,,0,0,,,M,,M,,*4E
+
+$GPGSA,A,1,,,,,,,,,,,,,,
+>> new nmea: 0, parsing |$GPGGA,000026.299,,,,,0,0,,,M,,M,,*4E
+
+,*1E
+$GPRMC,000026.
+>> new nmea: 1, parsing |$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+
+rtcLog
+batLog
+imuPositionLog
+gpsLog
+2023-11-24,23:23:20,VB,000,s,3,g,3,a,3,m,3,EU, 340.00,   2.94, 177.31,GY,   0.00,   0.00,   0.00,LA,  -0.01,   0.00,   0.09,MA,  -8.88,  22.56,  35.75,AC,   0.49,  -0.45,  -9.69,GR,   0.50,  -0.45,  -9.78,T,27F,0,LA,           0,LO,           0,HD,  0.00,VD,  0.00,PD,  0.00,V,  0.00,S, 0,Q,0,DA,           0,DO,           0
+sdQueue
+299,V,,,,,0.00,0.00,
+>> new nmea: 0, parsing |$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+
+050180,,,N*47
+$GPGG
+>> new nmea: 1, parsing |$GPRMC,000026.299,V,,,,,0.00,0.00,050180,,,N*47
+
+rtcLog
+batLog
+imuPositionLog
+gpsLog
+2023-11-24,23:23:20,VB,000,s,3,g,3,a,3,m,3,EU, 340.00,   2.94, 177.31,GY,   0.00,   0.00,   0.00,LA,   0.00,  -0.02,   0.10,MA,  -8.50,  22.19,  36.88,AC,   0.49,  -0.47,  -9.68,GR,   0.50,  -0.45,  -9.78,T,27F,0,LA,           0,LO,           0,HD,  0.00,VD,  0.00,PD,  0.00,V,  0.00,S, 0,Q,0,DA,           0,DO,           0
+sdQueue
+A,000026.399,,,,,0,0
+>> new nmea: 0, parsing |$GPRMC,000026.299,V,,,,,0.00,0.00,050180,,,N*47
+
+,,,M,,M,,*4F
+$GPGSA
+>> new nmea: 1, parsing |$GPGGA,000026.399,,,,,0,0,,,M,,M,,*4F
+
+rtcLog
+batLog
+imuPositionLog
+gpsLog
+2023-11-24,23:23:20,VB,000,s,3,g,3,a,3,m,3,EU, 340.00,   2.94, 177.31,GY,  -0.00,  -0.00,   0.00,LA,   0.00,   0.00,   0.06,MA,  -8.88,  21.38,  36.50,AC,   0.49,  -0.45,  -9.68,GR,   0.50,  -0.45,  -9.78,T,27F,0,LA,           0,LO,           0,HD,  0.00,VD,  0.00,PD,  0.00,V,  0.00,S, 0,Q,0,DA,           0,DO,           0
+sdQueue
+,A,1,,,,,,,,,,,,,,,*
+>> new nmea: 0, parsing |$GPGGA,000026.399,,,,,0,0,,,M,,M,,*4F
+
+1E
+$GPRMC,000026.39
+>> new nmea: 1, parsing |$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+
+rtcLog
+batLog
+imuPositionLog
+gpsLog
+2023-11-24,23:23:20,VB,000,s,3,g,3,a,3,m,3,EU, 340.00,   2.94, 177.31,GY,   0.00,   0.00,  -0.00,LA,   0.00,   0.00,   0.09,MA,  -8.06,  21.38,  34.88,AC,   0.50,  -0.45,  -9.69,GR,   0.50,  -0.45,  -9.78,T,27F,0,LA,           0,LO,           0,HD,  0.00,VD,  0.00,PD,  0.00,V,  0.00,S, 0,Q,0,DA,           0,DO,           0
+sdQueue
+9,V,,,,,0.00,0.00,05
+>> new nmea: 0, parsing |$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+
+0180,,,N*46
+$GPG
+$
+>> new nmea: 0, parsing |$GPG
+
+GPGSA,A,1,,,,,,,,,,,
+>> new nmea: 0, parsing |$GPG
+
+,,,,*1E
+$GPRMC,0000
+>> new nmea: 1, parsing |$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+
+rtcLog
+batLog
+imuPositionLog
+gpsLog
+2023-11-24,23:23:20,VB,000,s,3,g,3,a,3,m,3,EU, 340.00,   2.94, 177.31,GY,   0.00,  -0.00,   0.00,LA,  -0.02,   0.00,   0.10,MA,  -8.06,  21.38,  36.06,AC,   0.48,  -0.44,  -9.67,GR,   0.50,  -0.45,  -9.78,T,27F,0,LA,           0,LO,           0,HD,  0.00,VD,  0.00,PD,  0.00,V,  0.00,S, 0,Q,0,DA,           0,DO,           0
+sdQueue
+26.799,V,,,,,0.00,0.
+>> new nmea: 0, parsing |$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+
+00,050180,,,N*42
+$G
+>> new nmea: 1, parsing |$GPRMC,000026.799,V,,,,,0.00,0.00,050180,,,N*42
+
+rtcLog
+batLog
+imuPositionLog
+gpsLog
+2023-11-24,23:23:20,VB,000,s,3,g,3,a,3,m,3,EU, 340.00,   2.94, 177.31,GY,  -0.00,  -0.00,  -0.00,LA,  -0.01,  -0.01,   0.07,MA,  -8.88,  22.19,  35.75,AC,   0.48,  -0.46,  -9.70,GR,   0.50,  -0.45,  -9.78,T,27F,0,LA,           0,LO,           0,HD,  0.00,VD,  0.00,PD,  0.00,V,  0.00,S, 0,Q,0,DA,           0,DO,           0
+sdQueue
+PGGA,000026.899,,,,,
+>> new nmea: 0, parsing |$GPRMC,000026.799,V,,,,,0.00,0.00,050180,,,N*42
+
+0,0,,,M,,M,,*44
+$GP
+>> new nmea: 1, parsing |$GPGGA,000026.899,,,,,0,0,,,M,,M,,*44
+
+rtcLog
+batLog
+imuPositionLog
+gpsLog
+2023-11-24,23:23:20,VB,000,s,3,g,3,a,3,m,3,EU, 340.00,   2.94, 177.31,GY,   0.00,   0.00,  -0.00,LA,   0.00,  -0.01,   0.09,MA,  -8.50,  21.06,  36.88,AC,   0.51,  -0.46,  -9.69,GR,   0.50,  -0.45,  -9.78,T,27F,0,LA,           0,LO,           0,HD,  0.00,VD,  0.00,PD,  0.00,V,  0.00,S, 0,Q,0,DA,           0,DO,           0
+sdQueue
+GSA,A,1,,,,,,,,,,,,,
+>> new nmea: 0, parsing |$GPGGA,000026.899,,,,,0,0,,,M,,M,,*44
+
+,,*1E
+$GPRMC,000026
+>> new nmea: 1, parsing |$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+
+rtcLog
+batLog
+imuPositionLog
+gpsLog
+2023-11-24,23:23:20,VB,000,s,3,g,3,a,3,m,3,EU, 340.00,   2.94, 177.31,GY,   0.00,  -0.00,   0.00,LA,   0.00,  -0.01,   0.09,MA,  -8.50,  21.06,  36.88,AC,   0.50,  -0.46,  -9.68,GR,   0.50,  -0.45,  -9.78,T,27F,0,LA,           0,LO,           0,HD,  0.00,VD,  0.00,PD,  0.00,V,  0.00,S, 0,Q,0,DA,           0,DO,           0
+sdQueue
+.899,V,,,,,0.00,0.00
+>> new nmea: 0, parsing |$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+
+,050180,,,N*4D
+$GPG
+>> new nmea: 1, parsing |$GPRMC,000026.899,V,,,,,0.00,0.00,050180,,,N*4D
+
+rtcLog
+batLog
+imuPositionLog
+gpsLog
+2023-11-24,23:23:20,VB,000,s,3,g,3,a,3,m,3,EU, 340.00,   2.94, 177.31,GY,  -0.00,   0.00,   0.00,LA,   0.01,   0.00,   0.09,MA,  -8.50,  22.19,  36.06,AC,   0.50,  -0.45,  -9.70,GR,   0.50,  -0.45,  -9.78,T,27F,0,LA,           0,LO,           0,HD,  0.00,VD,  0.00,PD,  0.00,V,  0.00,S, 0,Q,0,DA,           0,DO,           0
+sdQueue
+GA,000027.000,,,,,0,
+>> new nmea: 0, parsing |$GPRMC,000026.899,V,,,,,0.00,0.00,050180,,,N*4D
+
+0,,,M,,M,,*4D
+$GPGS
+>> new nmea: 1, parsing |$GPGGA,000027.000,,,,,0,0,,,M,,M,,*4D
+
+rtcLog
+batLog
+imuPositionLog
+gpsLog
+2023-11-24,23:23:20,VB,000,s,3,g,3,a,3,m,3,EU, 340.00,   2.94, 177.31,GY,   0.00,   0.00,  -0.00,LA,   0.00,  -0.01,   0.09,MA,  -8.50,  21.75,  35.75,AC,   0.50,  -0.46,  -9.68,GR,   0.50,  -0.45,  -9.78,T,27F,0,LA,           0,LO,           0,HD,  0.00,VD,  0.00,PD,  0.00,V,  0.00,S, 0,Q,0,DA,           0,DO,           0
+sdQueue
+sdQueue Flush
+
+=============================================================================================================
+.....
+
+,A,1,,,,,,,,,,,,,,,*1E
+
+>> is full: 1, parsing |$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+>> is full: 0, parsing |$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+
+$GPRMC,000014.000,V,,,,,0.00,0.00,050180,,  ,N*44
+
+>> is full: 1, parsing |$GPRMC,000014.000,V,,,,,0.00,0.00,050180,,,N*44
+
+$GPGGA,000014.100,,,,,,,,,,,,,,*1E 
+
+>> is full: 0, parsing |$GPGGA,000014.100,,,,,,,,,,,,,,*1E
+>> is full: 0, parsing |$GPGGA,000014.100,,,,,,,,,,,,,,*1E
+
+$GPRMC,000014.399,V,,,,,0.00,0.00,050180,,,N*47$
+
+>> is full: 1, parsing |$GPRMC,000014.399,V,,,,,0.00,0.00,050180,,,N*47
+>> is full: 0, parsing |$GPRMC,000014.399,V,,,,,0.00,0.00,050180,,,N*47
+
+GPGGA,000014.500,,,,,0,0,,,M,,M,,*48
+
+>> is full: 1, parsing |$GPGGA,000014.500,,,,,0,0,,,M,,M,,*48
+>> is full: 0, parsing |$GPGGA,000014.500,,,,,0,0,,,M,,M,,*48
+>> is full: 0, parsing |$GPGGA,000014.500,,,,,0,0,,,M,,M,,*48
+>> is full: 1, parsing |$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+
+$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+>> is full: 0, parsing |$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+
+$GPRMC,000014.500,V,,,,,0.00,0.00,050180,,,N*41
+>> is full: 1, parsing |$GPRMC,000014.500,V,,,,,0.00,0.00,050180,,,N*41
+>> is full: 0, parsing |$GPRMC,000014.500,V,,,,,0.00,0.00,050180,,,N*41
+
+$GPGGA,000014.600,,,,,0,0,,,M,,M,,*4B
+>> is full: 1, parsing |$GPGGA,000014.600,,,,,0,0,,,M,,M,,*4B
+>> is full: 0, parsing |$GPGGA,000014.600,,,,,0,0,,,M,,M,,*4B
+
+$GPGSA,A,1,,,,,,,,,,,,,,,*1E 
+>> is full: 1, parsing |$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+
+$GP.00,0.00,050180,,,N*43
+>> is full: 0, parsing |$GP.00,0.00,050180,,,N*43
+
+$GPGGA,000014.899,,,,,0,0,,,M,,M,,*
+>> is full: 0, parsing |$GP.00,0.00,050180,,,N*43
+45
+$GPGSA,A,1,,,,,,,,,,,gpsParse
+>> is full: 1, parsing |$GPGGA,000014.899,,,,,0,0,,,M,,M,,*45
+,,,,*1E
+$GPRMC,000gpsParse
+>> is full: 1, parsing |$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+|
+rtcLog
+batLog
+imuPositionLog
+gpsLog
+2023-11-24,23:01:47,VB,000,s,3,g,3,a,3,m,3,EU, 356.88,   3.06, 177.12,GY,   0.00,   0.00,  -0.00,LA,  -0.03,   0.05,   0.07,MA,  -2.56,  18.50,  36.75,AC,   0.48,  -0.42,  -9.70,GR,   0.52,  -0.48,  -9.78,T,27F,0,LA,           0,LO,           0,HD,  0.00,VD,  0.00,PD,  0.00,V,  0.00,S, 0,Q,0,DA,           0,DO,           0
+sdQueue
+rtcTime
+gpsQuality
+imuHeadinglog
+lcdUpdate start
+lcdUpdate done
+0gpsParse
+>> is full: 0, parsing |$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+|
+14.899,gpsParse
+>> is full: 0, parsing |$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+|
+V,,,,,0.00,0.00,050180,,,gpsParse
+>> is full: 0, parsing |$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+|
+N*4C
+$GPGGA,000015.000,,gpsParse
+>> is full: 1, parsing |$GPRMC,000014.899,V,,,,,0.00,0.00,050180,,,N*4C
+|
+rtcLog
+batLog
+imuPositionLog
+gpsLog
+2023-11-24,23:01:47,VB,000,s,3,g,3,a,3,m,3,EU, 356.88,   3.06, 177.12,GY,  -0.00,   0.00,  -0.00,LA,  -0.04,   0.04,   0.06,MA,  -2.56,  19.25,  36.06,AC,   0.49,  -0.42,  -9.70,GR,   0.52,  -0.48,  -9.78,T,27F,0,LA,           0,LO,           0,HD,  0.00,VD,  0.00,PD,  0.00,V,  0.00,S, 0,Q,0,DA,           0,DO,           0
+sdQueue
+sdQueue Flush
+sdQueue Flush Complete
+,,,0,0,,,M,,M,,*4C
+$GPgpsParse
+>> is full: 1, parsing |$GPGGA,000015.000,,,,,0,0,,,M,,M,,*4C
+|
+rtcLog
+batLog
+imuPositionLog
+gpsLog
+2023-11-24,23:01:47,VB,000,s,3,g,3,a,3,m,3,EU, 356.88,   3.06, 177.12,GY,   0.00,   0.00,  -0.00,LA,   0.00,   0.05,   0.07,MA,  -2.88,  18.88,  35.25,AC,   0.52,  -0.43,  -9.70,GR,   0.52,  -0.48,  -9.78,T,27F,0,LA,           0,LO,           0,HD,  0.00,VD,  0.00,PD,  0.00,V,  0.00,S, 0,Q,0,DA,           0,DO,           0
+sdQueue
+GSA,A,1,,,,,,,,,,,gpsParse
+>> is full: 0, parsing |$GPGGA,000015.000,,,,,0,0,,,M,,M,,*4C
+|
+,,,,*1E
+$GPRMC,000015.00gpsParse
+>> is full: 1, parsing |$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+|
+rtcLog
+batLog
+imuPositionLog
+gpsLog
+2023-11-24,23:01:47,VB,000,s,3,g,3,a,3,m,3,EU, 356.88,   3.06, 177.12,GY,   0.00,   0.00,   0.00,LA,  -0.02,   0.04,   0.06,MA,  -2.88,  18.88,  37.25,AC,   0.50,  -0.43,  -9.72,GR,   0.52,  -0.48,  -9.78,T,27F,0,LA,           0,LO,           0,HD,  0.00,VD,  0.00,PD,  0.00,V,  0.00,S, 0,Q,0,DA,           0,DO,           0
+sdQueue
+0,V,,,,,0.00,0.00,gpsParse
+>> is full: 0, parsing |$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+|
+050180,,,N*000015.200,,,,gpsParse
+>> is full: 0, parsing |$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+|
+,0,0,,,M,,M,,*4E
+$GPGSA,gpsParse
+>> is full: 0, parsing |$GPRMC,000015.000,V,,,,,0.00,0.00,050180,,,N*000015.200,,,,,0,0,,,M,,M,,*4E
+|
+A,1,,,,,,,,,,,,,,,*1E
+$GgpsParse
+>> is full: 1, parsing |$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+|
+rtcLog
+batLog
+imuPositionLog
+gpsLog
+2023-11-24,23:01:48,VB,000,s,3,g,3,a,3,m,3,EU, 356.88,   3.06, 177.12,GY,   0.00,   0.00,   0.00,LA,  -0.02,   0.05,   0.08,MA,  -2.56,  18.50,  35.69,AC,   0.50,  -0.43,  -9.69,GR,   0.52,  -0.48,  -9.78,T,27F,0,LA,           0,LO,           0,HD,  0.00,VD,  0.00,PD,  0.00,V,  0.00,S, 0,Q,0,DA,           0,DO,           0
+sdQueue
+PRMC,000015.200,V,,,gpsParse
+>> is full: 0, parsing |$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+|
+,,0.00,0.00,050180,,,N*47gpsParse
+>> is full: 0, parsing |$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+|
+
+$GPGGA,000015.299,,,,,0gpsParse
+>> is full: 1, parsing |$GPRMC,000015.200,V,,,,,0.00,0.00,050180,,,N*47
+|
+rtcLog
+batLog
+imuPositionLog
+gpsLog
+2023-11-24,23:01:48,VB,000,s,3,g,3,a,3,m,3,EU, 356.88,   3.06, 177.12,GY,   0.00,  -0.00,   0.00,LA,  -0.01,   0.08,   0.09,MA,  -2.56,  18.88,  35.25,AC,   0.51,  -0.39,  -9.68,GR,   0.52,  -0.48,  -9.78,T,27F,0,LA,           0,LO,           0,HD,  0.00,VD,  0.00,PD,  0.00,V,  0.00,S, 0,Q,0,DA,           0,DO,           0
+sdQueue
+rtcTime
+gpsQuality
+imuHeadinglog
+lcdUpdate start
+lcdUpdate done
+,gpsParse
+>> is full: 0, parsing |$GPRMC,000015.200,V,,,,,0.00,0.00,050180,,,N*47
+|
+0,,,M,gpsParse
+>> is full: 0, parsing |$GPRMC,000015.200,V,,,,,0.00,0.00,050180,,,N*47
+|
+,M,,*4E
+$GPGSA,A,1,,,,*1gpsParse
+>> is full: 1, parsing |$GPGGA,000015.299,,,,,0,0,,,M,,M,,*4E
+|
+rtcLog
+batLog
+imuPositionLog
+gpsLog
+2023-11-24,23:01:48,VB,000,s,3,g,3,a,3,m,3,EU, 356.88,   3.06, 177.12,GY,  -0.00,   0.00,   0.00,LA,  -0.01,   0.04,   0.11,MA,  -2.88,  18.88,  36.06,AC,   0.50,  -0.44,  -9.66,GR,   0.52,  -0.48,  -9.78,T,27F,0,LA,           0,LO,           0,HD,  0.00,VD,  0.00,PD,  0.00,V,  0.00,S, 0,Q,0,DA,           0,DO,           0
+sdQueue
+E
+$GPRMC,000015.399gpsParse
+>> is full: 0, parsing |$GPGSA,A,1,,,,*1E
+|
+,V,,,,,0.00,0.00,050180,,gpsParse
+>> is full: 0, parsing |$GPGSA,A,1,,,,*1E
+|
+,N*46
+$GPGGA,000015.500,gpsParse
+>> is full: 1, parsing |$GPRMC,000015.399,V,,,,,0.00,0.00,050180,,,N*46
+|
+rtcLog
+batLog
+imuPositionLog
+gpsLog
+2023-11-24,23:01:48,VB,000,s,3,g,3,a,3,m,3,EU, 356.88,   3.06, 177.12,GY,  -0.00,   0.00,   0.00,LA,   0.00,   0.01,   0.05,MA,  -3.25,  18.88,  35.69,AC,   0.51,  -0.46,  -9.72,GR,   0.52,  -0.48,  -9.78,T,27F,0,LA,           0,LO,           0,HD,  0.00,VD,  0.00,PD,  0.00,V,  0.00,S, 0,Q,0,DA,           0,DO,           0
+sdQueue
+gpsParse,,M,,M,,*49
+>> is full: 0, parsing |$GPRMC,000015.399,V,,,,,0.00,0.00,050180,,,N*46
+|
+PRMC,000015.799,V,,,,,0.0gpsParse
+>> is full: 0, parsing |$GPRMC,000015.399,V,,,,,0.00,0.00,050180,,,N*46
+|
+0,0.00,050180,,,N*42
+$GPgpsParse
+PRMC,000015.799,V,,,,,0.00,0.00,050180,,,N*42,0,0,,,M,,M,,*49
+|
+GGA,000015.899,,,,,0,0,,,gpsParse
+PRMC,000015.799,V,,,,,0.00,0.00,050180,,,N*42,0,0,,,M,,M,,*49
+|
+M,,M,,*44
+$GPGSA,A,1,,,,gpsParse
+>> is full: 1, parsing |$GPGGA,000015.899,,,,,0,0,,,M,,M,,*44
+|
+rtcLog
+batLog
+imuPositionLog
+gpsLog
+2023-11-24,23:01:48,VB,000,s,3,g,3,a,3,m,3,EU, 356.88,   3.06, 177.12,GY,  -0.01,   0.01,   0.00,LA,  -0.07,   0.00,   0.10,MA,  -3.25,  19.25,  35.69,AC,   0.58,  -0.42,  -9.69,GR,   0.52,  -0.48,  -9.78,T,27F,0,LA,           0,LO,           0,HD,  0.00,VD,  0.00,PD,  0.00,V,  0.00,S, 0,Q,0,DA,           0,DO,           0
+sdQueue
+,,,,,,,,,,,*1E
+$GPRgpsParse
+>> is full: 1, parsing |$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+|
+rtcLog
+batLog
+imuPositionLog
+gpsLog
+2023-11-24,23:01:48,VB,000,s,3,g,3,a,3,m,3,EU, 356.88,   3.06, 177.12,GY,  -0.00,   0.01,   0.00,LA,   0.03,   0.07,   0.02,MA,  -2.88,  18.50,  35.69,AC,   0.66,  -0.38,  -9.72,GR,   0.52,  -0.48,  -9.78,T,27F,0,LA,           0,LO,           0,HD,  0.00,VD,  0.00,PD,  0.00,V,  0.00,S, 0,Q,0,DA,           0,DO,           0
+sdQueue
+MC,000015.899,V,,,,,gpsParse
+>> is full: 0, parsing |$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+|
+0.00,0.00,050180,,,N*4D
+gpsParse
+>> is full: 1, parsing |$GPRMC,000015.899,V,,,,,0.00,0.00,050180,,,N*4D
+|
+rtcLog
+batLog
+imuPositionLog
+gpsLog
+2023-11-24,23:01:48,VB,000,s,3,g,3,a,3,m,3,EU, 356.88,   3.06, 177.12,GY,   0.00,   0.00,  -0.00,LA,  -0.12,   0.02,   0.12,MA,  -2.56,  18.50,  36.75,AC,   0.40,  -0.45,  -9.65,GR,   0.52,  -0.48,  -9.78,T,27F,0,LA,           0,LO,           0,HD,  0.00,VD,  0.00,PD,  0.00,V,  0.00,S, 0,Q,0,DA,           0,DO,           0
+sdQueue
+$GPGGA,000016.000,,gpsParse
+>> is full: 0, parsing |$GPRMC,000015.899,V,,,,,0.00,0.00,050180,,,N*4D
+|
+rtcTime
+gpsQuality
+imuHeadinglog
+lcdUpdate start
+lcdUpdate done
+,gpsParse
+>> is full: 0, parsing |$GPRMC,000015.899,V,,,,,0.00,0.00,050180,,,N*4D
+|
+,,0,0,,,M,,M,,gpsParse
+>> is full: 0, parsing |$GPRMC,000015.899,V,,,,,0.00,0.00,050180,,,N*4D
+|
+*4F
+$GPGSA,A,1,,,,,,,,,,gpsParse
+>> is full: 1, parsing |$GPGGA,000016.000,,,,,0,0,,,M,,M,,*4F
+|
+rtcLog
+batLog
+imuPositionLog
+gpsLog
+2023-11-24,23:01:48,VB,000,s,3,g,3,a,3,m,3,EU, 356.88,   3.06, 177.12,GY,   0.00,   0.00,   0.00,LA,  -0.05,   0.03,   0.11,MA,  -2.19,  18.50,  36.75,AC,   0.50,  -0.45,  -9.65,GR,   0.52,  -0.48,  -9.78,T,27F,0,LA,           0,LO,           0,HD,  0.00,VD,  0.00,PD,  0.00,V,  0.00,S, 0,Q,0,DA,           0,DO,           0
+sdQueue
+sdQueue Flush
+sdQueue Flush Complete
+,,,,,*1E
+$GPRMC,000016.00gpsParse
+>> is full: 1, parsing |$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+|
+rtcLog
+batLog
+imuPositionLog
+gpsLog
+2023-11-24,23:01:48,VB,000,s,3,g,3,a,3,m,3,EU, 356.88,   3.06, 177.12,GY,  -0.00,  -0.00,   0.00,LA,   0.01,   0.05,   0.06,MA,  -1.75,  18.88,  36.75,AC,   0.54,  -0.42,  -9.71,GR,   0.52,  -0.48,  -9.78,T,27F,0,LA,           0,LO,           0,HD,  0.00,VD,  0.00,PD,  0.00,V,  0.00,S, 0,Q,0,DA,           0,DO,           0
+sdQueue
+0,V,,,,,0.00,0.00,0gpsParse
+>> is full: 0, parsing |$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+|
+50180,,,N*46
+$GPGGA,0000gpsParse
+>> is full: 1, parsing |$GPRMC,000016.000,V,,,,,0.00,0.00,050180,,,N*46
+|
+rtcLog
+batLog
+imuPositionLog
+gpsLog
+2023-11-24,23:01:48,VB,000,s,3,g,3,a,3,m,3,EU, 356.88,   3.06, 177.12,GY,  -0.00,  -0.00,   0.00,LA,  -0.08,   0.06,   0.10,MA,  -2.88,  19.56,  37.25,AC,   0.44,  -0.41,  -9.67,GR,   0.52,  -0.48,  -9.78,T,27F,0,LA,           0,LO,           0,HD,  0.00,VD,  0.00,PD,  0.00,V,  0.00,S, 0,Q,0,DA,           0,DO,           0
+sdQueue
+16.100,,,,,0,0,,,M,,gpsParse
+>> is full: 0, parsing |$GPRMC,000016.000,V,,,,,0.00,0.00,050180,,,N*46
+|
+M,,*4E
+$GPGSA,A,1,,,,,,,gpsParse
+>> is full: 1, parsing |$GPGGA,000016.100,,,,,0,0,,,M,,M,,*4E
+|
+rtcLog
+batLog
+imuPositionLog
+gpsLog
+2023-11-24,23:01:49,VB,000,s,3,g,3,a,3,m,3,EU, 356.88,   3.06, 177.12,GY,  -0.00,  -0.00,   0.00,LA,  -0.04,   0.04,   0.09,MA,  -2.56,  19.56,  36.88,AC,   0.48,  -0.44,  -9.68,GR,   0.52,  -0.48,  -9.78,T,27F,0,LA,           0,LO,           0,HD,  0.00,VD,  0.00,PD,  0.00,V,  0.00,S, 0,Q,0,DA,           0,DO,           0
+sdQueue
+,,,,,,,,*1E
+$GPRMC,gpsParse
+>> is full: 1, parsing |$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+|
+rtcLog
+batLog
+imuPositionLog
+gpsLog
+2023-11-24,23:01:49,VB,000,s,3,g,3,a,3,m,3,EU, 356.88,   3.06, 177.12,GY,   0.00,   0.00,  -0.00,LA,  -0.02,   0.05,   0.07,MA,  -2.88,  18.88,  35.25,AC,   0.50,  -0.43,  -9.70,GR,   0.52,  -0.48,  -9.78,T,27F,0,LA,           0,LO,           0,HD,  0.00,VD,  0.00,PD,  0.00,V,  0.00,S, 0,Q,0,DA,           0,DO,           0
+sdQueue
+000016.100,V,,,,,0.gpsParse
+>> is full: 0, parsing |$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+|
+0$GPGGA,000016.399,,,,,0,gpsParse
+>> is full: 0, parsing |$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+|
+0,,,M,,M,,*4C
+$GPGSA,A,1gpsParse
+>> is full: 0, parsing |$GPRMC,000016.100,V,,,,,0.0$GPGGA,000016.399,,,,,0,0,,,M,,M,,*4C
+|
+,,,,,,,,,,,,,,,*1E
+$GPRMgpsParse
+>> is full: 1, parsing |$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+|
+rtcLog
+batLog
+imuPositionLog
+gpsLog
+2023-11-24,23:01:49,VB,000,s,3,g,3,a,3,m,3,EU, 356.88,   3.06, 177.12,GY,   0.00,   0.00,  -0.00,LA,  -0.04,   0.06,   0.08,MA,  -2.88,  18.88,  35.25,AC,   0.48,  -0.42,  -9.69,GR,   0.52,  -0.48,  -9.78,T,27F,0,LA,           0,LO,           0,HD,  0.00,VD,  0.00,PD,  0.00,V,  0.00,S, 0,Q,0,DA,           0,DO,           0
+sdQueue
+rtcTime
+gpsQuality
+imuHeadinglog
+lcdUpdate start
+lcdUpdate done
+CgpsParse
+>> is full: 0, parsing |$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+|
+,000016.gpsParse
+>> is full: 0, parsing |$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+|
+399,V,,,,,0.00,0.00,05018gpsParse
+>> is full: 0, parsing |$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+|
+0,,,N*45
+$GPGGA,000016.5gpsParse
+>> is full: 1, parsing |$GPRMC,000016.399,V,,,,,0.00,0.00,050180,,,N*45
+|
+rtcLog
+batLog
+imuPositionLog
+gpsLog
+2023-11-24,23:01:49,VB,000,s,3,g,3,a,3,m,3,EU, 356.88,   3.06, 177.12,GY,   0.00,   0.00,  -0.00,LA,  -0.01,   0.04,   0.05,MA,  -2.88,  18.88,  35.69,AC,   0.51,  -0.44,  -9.73,GR,   0.52,  -0.48,  -9.78,T,27F,0,LA,           0,LO,           0,HD,  0.00,VD,  0.00,PD,  0.00,V,  0.00,S, 0,Q,0,DA,           0,DO,           0
+sdQueue
+00,,,,,0,0,,,M,,M,,gpsParse
+>> is full: 0, parsing |$GPRMC,000016.399,V,,,,,0.00,0.00,050180,,,N*45
+|
+*4A
+$GPGSA,A,1,,,,,,,,,,gpsParse
+>> is full: 1, parsing |$GPGGA,000016.500,,,,,0,0,,,M,,M,,*4A
+|
+rtcLog
+batLog
+imuPositionLog
+gpsLog
+2023-11-24,23:01:49,VB,000,s,3,g,3,a,3,m,3,EU, 356.88,   3.06, 177.12,GY,  -0.01,  -0.00,  -0.00,LA,  -0.20,   0.02,   0.09,MA,  -2.56,  19.25,  34.88,AC,   0.32,  -0.45,  -9.68,GR,   0.52,  -0.48,  -9.78,T,27F,0,LA,           0,LO,           0,HD,  0.00,VD,  0.00,PD,  0.00,V,  0.00,S, 0,Q,0,DA,           0,DO,           0
+sdQueue
+,,,,,*1E
+$GPRMC,0000gpsParse
+>> is full: 1, parsing |$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+|
+rtcLog
+batLog
+imuPositionLog
+gpsLog
+2023-11-24,23:01:49,VB,000,s,3,g,3,a,3,m,3,EU, 357.69,   3.06, 177.19,GY,  -0.05,  -0.07,   0.48,LA,   0.07,  -0.28,   0.15,MA,  -2.56,  19.56,  35.69,AC,   0.60,  -0.75,  -9.62,GR,   0.53,  -0.47,  -9.78,T,27F,0,LA,           0,LO,           0,HD,  0.00,VD,  0.00,PD,  0.00,V,  0.00,S, 0,Q,0,DA,           0,DO,           0
+sdQueue
+16.500,V,,,,,0.00,0.00gpsParse
+>> is full: 0, parsing |$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+|
+,050180,,,N*43
+$GPGGA,00gpsParse
+>> is full: 1, parsing |$GPRMC,000016.500,V,,,,,0.00,0.00,050180,,,N*43
+|
+rtcLog
+batLog
+imuPositionLog
+gpsLog
+2023-11-24,23:01:49,VB,000,s,3,g,3,a,3,m,3,EU, 357.88,   3.06, 177.19,GY,  -0.02,  -0.01,  -0.02,LA,  -0.17,  -0.20,  -0.03,MA,  -2.88,  18.88,  36.38,AC,   0.35,  -0.68,  -9.81,GR,   0.52,  -0.47,  -9.78,T,27F,0,LA,           0,LO,           0,HD,  0.00,VD,  0.00,PD,  0.00,V,  0.00,S, 0,Q,0,DA,           0,DO,           0
+sdQueue
+0016.600,,,,,,*48
+gpsParse
+>> is full: 0, parsing |$GPGGA,000016.600,,,,,,*48
+|
+$GPGSA,A,1,,,,,,,,,,,,,,,gpsParse
+>> is full: 0, parsing |$GPGGA,000016.600,,,,,,*48
+|
+*1E
+$GPRMC,000016.700,V,gpsParse
+>> is full: 1, parsing |$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+|
+rtcLog
+batLog
+imuPositionLog
+gpsLog
+2023-11-24,23:01:49,VB,000,s,3,g,3,a,3,m,3,EU, 358.06,   3.06, 177.31,GY,  -0.05,   0.01,   0.12,LA,   0.18,   0.31,   0.25,MA,  -3.25,  18.50,  36.06,AC,   0.70,  -0.13,  -9.52,GR,   0.52,  -0.44,  -9.78,T,27F,0,LA,           0,LO,           0,HD,  0.00,VD,  0.00,PD,  0.00,V,  0.00,S, 0,Q,0,DA,           0,DO,           0
+sdQueue
+sdQueue Flush
+sdQueue Flush Complete
+,,,,0.00,0.00,050180,,,N*gpsParse
+>> is full: 0, parsing |$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+|
+41
+$GPGGA,000016.799,,,,gpsParse
+>> is full: 1, parsing |$GPRMC,000016.700,V,,,,,0.00,0.00,050180,,,N*41
+|
+rtcLog
+batLog
+imuPositionLog
+gpsLog
+2023-11-24,23:01:49,VB,000,s,3,g,3,a,3,m,3,EU, 358.06,   3.00, 177.19,GY,   0.03,  -0.01,  -0.01,LA,  -0.06,   0.03,   0.02,MA,  -3.69,  18.50,  36.75,AC,   0.45,  -0.45,  -9.75,GR,   0.51,  -0.48,  -9.78,T,27F,0,LA,           0,LO,           0,HD,  0.00,VD,  0.00,PD,  0.00,V,  0.00,S, 0,Q,0,DA,           0,DO,           0
+sdQueue
+rtcTime
+gpsQuality
+imuHeadinglog
+lcdUpdate start
+lcdUpdate done
+,gpsParse
+>> is full: 0, parsing |$GPRMC,000016.700,V,,,,,0.00,0.00,050180,,,N*41
+|
+0,0,,,gpsParse
+>> is full: 0, parsing |$GPRMC,000016.700,V,,,,,0.00,0.00,050180,,,N*41
+|
+M,,M,,*48
+$GPGSA,017.100gpsParse
+>> is full: 1, parsing |$GPGGA,000016.799,,,,,0,0,,,M,,M,,*48
+|
+rtcLog
+batLog
+imuPositionLog
+gpsLog
+2023-11-24,23:01:49,VB,000,s,3,g,3,a,3,m,3,EU, 358.12,   3.00, 177.19,GY,  -0.02,   0.01,   0.01,LA,  -0.09,  -0.03,   0.08,MA,  -2.56,  18.50,  36.38,AC,   0.41,  -0.50,  -9.70,GR,   0.51,  -0.47,  -9.78,T,27F,0,LA,           0,LO,           0,HD,  0.00,VD,  0.00,PD,  0.00,V,  0.00,S, 0,Q,0,DA,           0,DO,           0
+sdQueue
+,V,,,,,0.00,0.00,05gpsParse
+>> is full: 0, parsing |$GPGGA,000016.799,,,,,0,0,,,M,,M,,*48
+|
+0180,,,N*46
+$GPGGA,00001gpsParse
+>> is full: 0, parsing |$GPGSA,017.100,V,,,,,0.00,0.00,050180,,,N*46
+|
+7.200,,,,,0,0,,,M,,M,,*4CgpsParse
+>> is full: 0, parsing |$GPGSA,017.100,V,,,,,0.00,0.00,050180,,,N*46
+|
+
+$GPGSA,A,1,,,,,,,,,,,,,gpsParse
+>> is full: 1, parsing |$GPGGA,000017.200,,,,,0,0,,,M,,M,,*4C
+|
+rtcLog
+batLog
+imuPositionLog
+gpsLog
+2023-11-24,23:01:49,VB,000,s,3,g,3,a,3,m,3,EU, 358.12,   2.94, 177.12,GY,   0.01,  -0.01,  -0.00,LA,  -0.22,  -0.39,   0.00,MA,  -3.25,  18.50,  36.06,AC,   0.28,  -0.88,  -9.78,GR,   0.51,  -0.48,  -9.78,T,27F,0,LA,           0,LO,           0,HD,  0.00,VD,  0.00,PD,  0.00,V,  0.00,S, 0,Q,0,DA,           0,DO,           0
+sdQueue
+,,*1E
+$GPRMC,000017.gpsParse
+>> is full: 1, parsing |$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+|
+rtcLog
+batLog
+imuPositionLog
+gpsLog
+2023-11-24,23:01:50,VB,000,s,3,g,3,a,3,m,3,EU, 358.12,   2.94, 177.12,GY,  -0.01,   0.01,   0.01,LA,   0.07,   0.07,   0.09,MA,  -3.25,  18.88,  36.06,AC,   0.58,  -0.41,  -9.68,GR,   0.51,  -0.48,  -9.78,T,27F,0,LA,           0,LO,           0,HD,  0.00,VD,  0.00,PD,  0.00,V,  0.00,S, 0,Q,0,DA,           0,DO,           0
+sdQueue
+200,V,,,,,0.00,0.00,0gpsParse
+>> is full: 0, parsing |$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+|
+50180,,,N*45
+$GPGGA,0000gpsParse
+>> is full: 1, parsing |$GPRMC,000017.200,V,,,,,0.00,0.00,050180,,,N*45
+|
+rtcLog
+batLog
+imuPositionLog
+gpsLog
+2023-11-24,23:01:50,VB,000,s,3,g,3,a,3,m,3,EU, 358.12,   2.94, 177.12,GY,  -0.00,   0.01,   0.00,LA,  -0.08,  -0.02,   0.04,MA,  -2.56,  18.50,  35.69,AC,   0.43,  -0.50,  -9.73,GR,   0.51,  -0.48,  -9.78,T,27F,0,LA,           0,LO,           0,HD,  0.00,VD,  0.00,PD,  0.00,V,  0.00,S, 0,Q,0,DA,           0,DO,           0
+sdQueue
+17.299,,,,,0,0,,,M,gpsParse
+>> is full: 0, parsing |$GPRMC,000017.200,V,,,,,0.00,0.00,050180,,,N*45
+|
+,M,,*4C
+$GPGSA,A,1,,,,,,gpsParse
+>> is full: 1, parsing |$GPGGA,000017.299,,,,,0,0,,,M,,M,,*4C
+|
+rtcLog
+batLog
+imuPositionLog
+gpsLog
+2023-11-24,23:01:50,VB,000,s,3,g,3,a,3,m,3,EU, 358.12,   2.94, 177.12,GY,  -0.00,   0.00,   0.00,LA,  -0.02,   0.01,   0.07,MA,  -2.88,  18.88,  36.06,AC,   0.48,  -0.46,  -9.71,GR,   0.51,  -0.48,  -9.78,T,27F,0,LA,           0,LO,           0,HD,  0.00,VD,  0.00,PD,  0.00,V,  0.00,S, 0,Q,0,DA,           0,DO,           0
+sdQueue
+,,,,,,,,,*1E
+$GPRMC,gpsParse
+>> is full: 1, parsing |$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+|
+rtcLog
+batLog
+imuPositionLog
+gpsLog
+2023-11-24,23:01:50,VB,000,s,3,g,3,a,3,m,3,EU, 358.12,   3.00, 177.12,GY,  -0.02,   0.01,   0.02,LA,   0.05,   0.04,   0.08,MA,  -3.25,  18.88,  36.06,AC,   0.56,  -0.43,  -9.69,GR,   0.51,  -0.48,  -9.78,T,27F,0,LA,           0,LO,           0,HD,  0.00,VD,  0.00,PD,  0.00,V,  0.00,S, 0,Q,0,DA,           0,DO,           0
+sdQueue
+rtcTime
+gpsQuality
+imuHeadinglog
+lcdUpdate start
+lcdUpdate done
+0gpsParse
+>> is full: 0, parsing |$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+|
+00017.299gpsParse
+>> is full: 0, parsing |$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+|
+,V,,,,,0.00,0,,N*44

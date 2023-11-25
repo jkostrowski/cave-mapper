@@ -1,1 +1,1 @@
-#define TRACE Serial.println
+#define TRACE(a) Serial.println(a)

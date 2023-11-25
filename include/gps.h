@@ -14,8 +14,6 @@ void gpsOnFixGood( void (*f)(void) );
 
 int gpsLog(char*);
 
-char * gpsFixUi(void);
-
 char* gpsQuality(void);
 
 // char* gpsFix(void);

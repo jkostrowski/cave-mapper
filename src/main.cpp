@@ -14,6 +14,11 @@
 
 // ==============================================
 
+Ticker tickerUiUpdate;
+Ticker tickerGpsRead;
+Ticker tickerGpsParse;
+
+// ==============================================
 
 char log1[SDLOG_SIZE];
 
@@ -21,7 +26,6 @@ char * getLog(void) {
   char* log = (char *) &log1;
   int i = 0;
 
-  // Serial.printf("rtc i=%i\n",i);
   i = rtcFullLog(log); 
   log += i;
   i = batLog(log);
@@ -44,10 +48,9 @@ void onNmea(void) {
 }
 
 void onFix(void) {
-    char label[]= "F-";
+    char label[]= "F_";
     lcd1r( label );
     rtcSet( gpsNow() );
-    Serial.println( rtcTimeLog() );
 }
 
 void onFixHighAccuracy(void) {
@@ -57,12 +60,9 @@ void onFixHighAccuracy(void) {
 
 // ==============================================
 
-char buff7[100];
-
 void loopUiRefresh(void) {
 
   lcd1( rtcTimeLog() );
-//  lcd1r( gpsFixUi() );
   lcd2( imuCalibrationUi() );
   lcd3( gpsQuality());
   lcd4( imuPositionUi());
@@ -70,68 +70,8 @@ void loopUiRefresh(void) {
   lcdUpdate();
 }
 
-
 // ==============================================
 
-Ticker tickerUiUpdate;
-Ticker tickerGpsRead;
-Ticker tickerGpsParse;
-
-volatile bool gpsReadFlag  = false;
-volatile bool gpsParseFlag = false;
-volatile bool uiUpdateFlag = false;
-
-// hw_timer_t * timerGpsRead = NULL;
-// portMUX_TYPE timerGpsReadMux = portMUX_INITIALIZER_UNLOCKED;
-
-// hw_timer_t * timerGpsParse = NULL;
-// portMUX_TYPE timerGpsParseMux = portMUX_INITIALIZER_UNLOCKED;
-
-// hw_timer_t * timerUiUpdate = NULL;
-// portMUX_TYPE timerUiUpdateMux = portMUX_INITIALIZER_UNLOCKED;
-
-void onTimerGpsRead() {
-  // portENTER_CRITICAL_ISR(&timerGpsReadMux);
-  gpsReadFlag = true;
-  // portEXIT_CRITICAL_ISR(&timerGpsReadMux);
-}
-
-void onTimerGpsParse() {
-  // portENTER_CRITICAL_ISR(&timerGpsParseMux);
-  gpsParseFlag = true;
-  // portEXIT_CRITICAL_ISR(&timerGpsParseMux);
-}
-
-void onTimerUiUpdate() {
-  // portENTER_CRITICAL_ISR(&timerUiUpdateMux);
-  uiUpdateFlag = true;
-  // portEXIT_CRITICAL_ISR(&timerUiUpdateMux);
-}
-
-
-void isrInitialize(void) {
-  tickerGpsRead.attach_ms( 1, onTimerGpsRead );
-  tickerGpsParse.attach_ms( 25, onTimerGpsParse );
-  tickerUiUpdate.attach_ms( 500, onTimerUiUpdate );
-
-  // timerGpsRead = timerBegin(0, 80, true);
-  // timerAttachInterrupt(timerGpsRead, &onTimerGpsRead, true);
-  // timerAlarmWrite(timerGpsRead, 1*1000, true);
-  // timerAlarmEnable(timerGpsRead);  
-
-  // timerGpsParse = timerBegin(0, 80, true);
-  // timerAttachInterrupt(timerGpsParse, &onTimerGpsParse, true);
-  // timerAlarmWrite(timerGpsParse, 25*1000, true);
-  // timerAlarmEnable(timerGpsParse);  
-
-  // timerUiUpdate = timerBegin(0, 80, true);
-  // timerAttachInterrupt(timerUiUpdate, &onTimerUiUpdate, true);
-  // timerAlarmWrite(timerUiUpdate, 500*1000, true);
-  // timerAlarmEnable(timerUiUpdate);  
-}
-
-
-// ==============================================
 #undef GPS
 #define GPS 
 
@@ -144,52 +84,23 @@ void setup(void) {
   rtcInitialize();
   sdInitialize();
 
+  imuCalibrate();
+
 #ifdef GPS
   gpsInitialize();
   gpsOnNmea( &onNmea );
   gpsOnFix( &onFix );
   gpsOnFixGood( &onFixHighAccuracy );
+
+  tickerGpsRead.attach_ms(    1, gpsRead );
+  tickerGpsParse.attach_ms(  20, gpsParse );
 #endif
 
-  // imuCalibrate();
-  isrInitialize();
+  tickerUiUpdate.attach_ms( 500, loopUiRefresh );
 }
 
 // ==============================================
 
-void loop(void) {
-
-#ifdef GPS
-  if (gpsReadFlag) {
-    gpsRead();
-    gpsReadFlag = false;
-  }
-
-  if (gpsParseFlag) {
-    gpsParse();
-    gpsParseFlag = false;
-  }
-#endif
-
-  if (uiUpdateFlag) {
-    loopUiRefresh();
-    uiUpdateFlag = false;
-  }
-}
+void loop(void) {}
 
 // ==============================================
-
-
-
-/*
-
-imu offsets saved
-[ 99682][E][esp32-hal-cpu.c:110] addApbChangeCallback(): duplicate func=0x4200db38 arg=0x3fc92994
-E (99552) timer_group: timer_isr_callback_add(236): register interrupt service failed
-[ 99690][E][esp32-hal-cpu.c:110] addApbChangeCallback(): duplicate func=0x4200db38 arg=0x3fc92994
-E (99568) timer_group: timer_isr_callback_add(236): register interrupt service failed
-
-
-
-*/
-

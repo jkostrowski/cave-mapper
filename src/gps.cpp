@@ -53,7 +53,7 @@ void gpsInitialize(void) {
 //===================================================================
 
 void gpsRead(void) {
-  TRACE("gpsRead");
+  // TRACE("gpsRead");
 
   if (!GPS.available())
     return;
@@ -63,8 +63,9 @@ void gpsRead(void) {
 }
 
 void gpsParse(void) {
-  TRACE("gpsRead");
+  // TRACE("gpsParse");
   bool fullMessage = GPS.newNMEAreceived() && GPS.parse(GPS.lastNMEA()); 
+  Serial.printf( "\n>> new nmea: %d, parsing |%s\n", (int) fullMessage, GPS.lastNMEA() );
 
   if (!onFix1Sent && fullMessage && GPS.fix ) {
     onFix1();
@@ -103,46 +104,12 @@ int gpsLog(char* log) {
 
 }
 
-char buff4[] = "xx";
-char* gpsFixUi(void) {
-  TRACE("gpsFixUi");
-  buff4[0] = (GPS.fix) ? 'F' : '-';
-  buff4[1] =  (homeLo != 0) ? 'H': '-';
-  return buff4;
-}
-
 char buff5[30];
 char* gpsQuality(void) {
   TRACE("gpsQuality");
   sprintf( buff5, "H:%6.2f V:%6.2f", GPS.HDOP, GPS.VDOP );
   return buff5;
 }
-
-// char buff2[100];
-// char* gpsLat(void) {
-//   if (GPS.fix) {
-//     sprintf( buff2, "LA:%09.4f", GPS.latitude );
-//     return buff2;
-//   } else {
-//     return noFix;
-//   }
-// }
-
-// char buff3[100];
-// char* gpsLon(void) {
-//   if (GPS.fix) {
-//     sprintf( buff3, "LO: %09.4f", GPS.longitude );
-//     return buff3;
-//   } else {
-//     return noFix;
-//   }
-// }
-
-// char buff4[30];
-// char* gpsSpeed(void) {
-//   sprintf( buff4, "VE: %05.2f", GPS.speed );
-//   return buff4;
-// }
 
 DateTime gpsNow(void) {
   return DateTime( GPS.year, GPS.month, GPS.day, GPS.hour, GPS.minute, GPS.seconds ) - TimeSpan(6 * 3600);

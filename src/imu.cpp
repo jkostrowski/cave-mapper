@@ -148,39 +148,39 @@ void imuCalibrate(void) {
   
   adafruit_bno055_offsets_t o = {};
 
-  // Serial.println("imu load offsets"); 
-  // if (!loadImu(o)) {
-  //   o =  { -37, -66, 2, -1, -4, 0, -351, 474, 170, 1000, 455 };
+  Serial.println("imu load offsets"); 
+  if (!loadImu(o)) {
+    o =  { -37, -66, 2, -1, -4, 0, -351, 474, 170, 1000, 455 };
+  }
+
+  Serial.println("imu bootstrap offsets"); 
+  displaySensorOffsets(o);
+  bno.setSensorOffsets(o);
+  delay(1000);
+  displaySensorDetails();
+  bno.setExtCrystalUse(true);
+
+  // Serial.println("imu re-calibrate"); 
+  // while (!bno.isFullyCalibrated()) {
+  //   sensors_event_t event;
+  //   bno.getEvent(&event);
+  //   Serial.println( imuCalibrationUi() );
+  //   delay(50);
   // }
 
-  // Serial.println("imu bootstrap offsets"); 
-  // displaySensorOffsets(o);
-  // bno.setSensorOffsets(o);
-  // delay(1000);
-  // displaySensorDetails();
-  // bno.setExtCrystalUse(true);
+  // Serial.println("imu calibrated"); 
 
-  Serial.println("imu re-calibrate"); 
-  while (!bno.isFullyCalibrated()) {
-    sensors_event_t event;
-    bno.getEvent(&event);
-    Serial.println( imuCalibrationUi() );
-    delay(50);
-  }
+  // adafruit_bno055_offsets_t p = {};
 
-  Serial.println("imu calibrated"); 
-
-  adafruit_bno055_offsets_t p = {};
-
-  if (bno.getSensorOffsets(p)) {
-    displaySensorOffsets(o);
-    if (saveImu(o))
-      Serial.println("imu offsets saved");
-    else 
-      Serial.println("imu offsets not saved - sd error");
-  } else {
-    Serial.println("imu offsets not saved - callibration error");
-  }
+  // if (bno.getSensorOffsets(p)) {
+  //   displaySensorOffsets(o);
+  //   if (saveImu(o))
+  //     Serial.println("imu offsets saved");
+  //   else 
+  //     Serial.println("imu offsets not saved - sd error");
+  // } else {
+  //   Serial.println("imu offsets not saved - callibration error");
+  // }
 }
 
 void imuCalibrateWithEeprom(void) {

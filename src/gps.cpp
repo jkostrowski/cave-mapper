@@ -81,9 +81,9 @@ void gpsLoop(void) {
 
 //===================================================================
 
-char buff0[200];   
-char* getGps(void) {
-  sprintf( buff0, "F,%1d,LA,%10d,LO,%10d,HD,%6.2f,VD,%6.2f,PD,%6.2f,V,%6.2f,S,%2d,Q,%1d"
+int gpsLog(char* log) {
+
+  return sprintf( log, "F,%1d,LA,% 12d,LO,% 12d,HD,%6.2f,VD,%6.2f,PD,%6.2f,V,%6.2f,S,%2d,Q,%1d,DA,% 12d,DO,% 12d"
   , (int) GPS.fix
   , GPS.latitude_fixed 
   , GPS.longitude_fixed
@@ -93,23 +93,10 @@ char* getGps(void) {
   , GPS.speed 
   , GPS.satellites
   , GPS.fixquality
+  , onFix2Sent ? GPS.latitude_fixed  - homeLa : 0
+  , onFix2Sent ? GPS.latitude_fixed  - homeLo : 0
   );
 
-  // sprintf( buff0, "F,%1d,LA,%10d,LO,%10d,HD,%6.2f,VD,%6.2f,PD,%6.2f,V,%6.2f,S,%2d,Q,%1d,DA,% 10d,DO,% 10d"
-  // , (int) GPS.fix
-  // , GPS.latitude_fixed 
-  // , GPS.longitude_fixed
-  // , GPS.HDOP
-  // , GPS.VDOP
-  // , GPS.PDOP
-  // , GPS.speed 
-  // , GPS.satellites
-  // , GPS.fixquality
-  // , onFix2Sent ? GPS.latitude_fixed  - homeLa : 0
-  // , onFix2Sent ? GPS.longitude_fixed - homeLo : 0
-  // );
-
-  return buff0;
 }
 
 char noFix[] = "no fix";

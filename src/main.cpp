@@ -20,13 +20,20 @@ DateTime reboot;
 char log1[SDLOG_SIZE];
 
 char * getLog(void) {
-  sprintf( log1, "%.19s,%.9s,%.19s,%.199s,%.150s"
-    , rtcLog()
-    , getBat()
-    , imuCalibrationLog()
-    , imu9pof()
-    , getGps()
-    );
+  char* log = (char *) &log1;
+  int i = 0;
+
+  // Serial.printf("rtc i=%i\n",i);
+  i = rtcLog(log); 
+  log += i;
+  i = batLog( log);
+  log += i;
+  i = imuCalibrationLog( log);
+  log += i;
+  i = imuPositionLog( log);
+  log += i;
+  i = gpsLog( log);
+
   return log1;
 }
 
@@ -86,8 +93,8 @@ void isrInitialize(void) {
 
 
 // ==============================================
-#define GPS 
 #undef GPS
+#define GPS 
 
 typedef struct {
   int16_t a;
@@ -118,6 +125,7 @@ void setup(void) {
 // ==============================================
 
 void loop(void) {
+
 #ifdef GPS
     gpsLoop();
 #endif

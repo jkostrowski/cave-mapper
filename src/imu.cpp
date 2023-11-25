@@ -3,6 +3,10 @@
 #include <EEPROM.h>
 #include <SD.h>
 
+#define BNO055_SAMPLERATE_DELAY_MS  200
+#define BNO055_EEPROM               0
+
+
 Adafruit_BNO055 bno = Adafruit_BNO055(55, 0x29, &Wire1);
 char msgImu1[50];
 char msgImu2[50];
@@ -28,6 +32,43 @@ void imuInitialize(void) {
     // bno.isFullyCalibrated();
 }
 
+int imuCalibrationLog(char* log) {
+  uint8_t sys, gyro, accel, mag;
+  bno.getCalibration(&sys, &gyro, &accel, &mag);
+  return sprintf( log, "s,%1d,g,%1d,a,%1d,m,%1d,", sys, gyro, accel, mag );
+}
+
+char* imuCalibrationLog(void) {
+  imuCalibrationLog( msgImu1 );
+  return msgImu1;
+}
+
+
+int imuPositionLog(char* log) {
+  // imu::Quaternion quat = bno.getQuat(); // TODO
+
+  sensors_event_t  orientationData , angVelocityData , linearAccelData, magnetometerData, accelerometerData, gravityData;
+  bno.getEvent(&orientationData  , Adafruit_BNO055::VECTOR_EULER);
+  bno.getEvent(&angVelocityData  , Adafruit_BNO055::VECTOR_GYROSCOPE);
+  bno.getEvent(&linearAccelData  , Adafruit_BNO055::VECTOR_LINEARACCEL);
+  bno.getEvent(&magnetometerData , Adafruit_BNO055::VECTOR_MAGNETOMETER);
+  bno.getEvent(&accelerometerData, Adafruit_BNO055::VECTOR_ACCELEROMETER);
+  bno.getEvent(&gravityData      , Adafruit_BNO055::VECTOR_GRAVITY);
+
+  return sprintf(log,"EU,% 7.2f,% 7.2f,% 7.2f,GY,% 7.2f,% 7.2f,% 7.2f,LA,% 7.2f,% 7.2f,% 7.2f,MA,% 7.2f,% 7.2f,% 7.2f,AC,% 7.2f,% 7.2f,% 7.2f,GR,% 7.2f,% 7.2f,% 7.2f,T,%02d", 
+    orientationData.orientation.x,  orientationData.orientation.y, orientationData.orientation.z,
+    angVelocityData.gyro.x, angVelocityData.gyro.y, angVelocityData.gyro.z, 
+    linearAccelData.acceleration.x, linearAccelData.acceleration.y, linearAccelData.acceleration.z,
+    magnetometerData.magnetic.x, magnetometerData.magnetic.y, magnetometerData.magnetic.z,
+    accelerometerData.acceleration.x,accelerometerData.acceleration.y,accelerometerData.acceleration.z,
+    gravityData.acceleration.x,gravityData.acceleration.y,gravityData.acceleration.z,
+    bno.getTemp());  
+}
+
+
+
+
+// ======================================================================================
 
 void displaySensorDetails(void) {
     sensor_t sensor;
@@ -44,8 +85,7 @@ void displaySensorDetails(void) {
     delay(500);
 }
 
-void displaySensorOffsets(const adafruit_bno055_offsets_t &calibData)
-{
+void displaySensorOffsets(const adafruit_bno055_offsets_t &calibData) {
     Serial.print("Acc: ");
     Serial.print(calibData.accel_offset_x); Serial.print(" ");
     Serial.print(calibData.accel_offset_y); Serial.print(" ");
@@ -69,17 +109,6 @@ void displaySensorOffsets(const adafruit_bno055_offsets_t &calibData)
     Serial.print("\nMag Radius: ");
     Serial.print(calibData.mag_radius);
     Serial.print("\n");
-}
-
-#define BNO055_SAMPLERATE_DELAY_MS  200
-#define BNO055_EEPROM               0
-
-char* imuCalibrationLog(void) {
-  uint8_t sys, gyro, accel, mag;
-  bno.getCalibration(&sys, &gyro, &accel, &mag);
-
-  sprintf( msgImu1, "s,%1d,g,%1d,a,%1d,m,%1d", sys, gyro, accel, mag );
-  return msgImu1;
 }
 
 // ======================================================================================
@@ -107,20 +136,7 @@ size_t loadImu(adafruit_bno055_offsets_t &data) {
   return x;
 }
 
-/*
-size_t loadImu(adafruit_bno055_offsets_t &data) {
-  if (!SD.exists(IMUDAT)) 
-    return 0;
-
-  Serial.printf( "loadImu: %d\n", sizeof(data)/sizeof(char) );
-
-  File imu = SD.open( IMUDAT, FILE_READ );
-  size_t x = imu.readBytes((char *) &data, sizeof(data)/sizeof(char) );
-  imu.close();
-  return x;
-}
-
-*/
+// ======================================================================================
 
 void imuCalibrate(void) {
 
@@ -158,48 +174,12 @@ void imuCalibrate(void) {
   } else {
     Serial.println("imu offsets not saved - callibration error");
   }
-
-
-/*
-  boolean foundCalib = false;
-  sensors_event_t event;
-  double degToRad = 57.295779513;
-
-  adafruit_bno055_offsets_t so;
-    if (sdLoadImu(so)) {
-      Serial.println("Found calibration data");
-      displaySensorOffsets(so);
-      bno.setSensorOffsets(so);
-      Serial.println("Calibration data loaded into BNO055");
-      foundCalib = true;
-    }
-
-    Serial.println("Please Re-Calibrate Sensor: ");
-    while (!bno.isFullyCalibrated()) {
-        bno.getEvent(&event);
-        Serial.println( imuCalibrationLog() );
-        delay(BNO055_SAMPLERATE_DELAY_MS);
-    }
- 
-    Serial.println("Fully calibrated!");
-    Serial.println("--------------------------------");
-    Serial.println("Calibration Results: ");
-
-      
-    adafruit_bno055_offsets_t nc;
-    bno.getSensorOffsets(nc);
-    displaySensorOffsets(nc);
-    Serial.println("Storing calibration data to SD...");
-    sdSaveImu(nc);
-
-  */
-
 }
 
 
 void imuCalibrateWithEeprom(void) {
 
-      // double degToRad = 57.295779513;
+    // double degToRad = 57.295779513;
     // int eeAddress = BNO055_EEPROM;
     // long id;
     // bool foundCalib = false;
@@ -255,7 +235,6 @@ void imuCalibrateWithEeprom(void) {
 
 }
 
-
 char* imuPosition(void) {
   sensors_event_t event; 
   bno.getEvent(&event);
@@ -269,62 +248,3 @@ sensors_event_t imuPositionEvent(void) {
   bno.getEvent(&event);
   return event;
 }
-
-
-char* imu9pof(void) {
-  // imu::Quaternion quat = bno.getQuat(); // TODO
-
-  sensors_event_t  orientationData , angVelocityData , linearAccelData, magnetometerData, accelerometerData, gravityData;
-  bno.getEvent(&orientationData  , Adafruit_BNO055::VECTOR_EULER);
-  bno.getEvent(&angVelocityData  , Adafruit_BNO055::VECTOR_GYROSCOPE);
-  bno.getEvent(&linearAccelData  , Adafruit_BNO055::VECTOR_LINEARACCEL);
-  bno.getEvent(&magnetometerData , Adafruit_BNO055::VECTOR_MAGNETOMETER);
-  bno.getEvent(&accelerometerData, Adafruit_BNO055::VECTOR_ACCELEROMETER);
-  bno.getEvent(&gravityData      , Adafruit_BNO055::VECTOR_GRAVITY);
-
-  sprintf(msgImu3,"EU,% 7.2f,% 7.2f,% 7.2f,GY,% 7.2f,% 7.2f,% 7.2f,LA,% 7.2f,% 7.2f,% 7.2f,MA,% 7.2f,% 7.2f,% 7.2f,AC,% 7.2f,% 7.2f,% 7.2f,GR,% 7.2f,% 7.2f,% 7.2f,T,%02d", 
-    orientationData.orientation.x,  orientationData.orientation.y, orientationData.orientation.z,
-    angVelocityData.gyro.x, angVelocityData.gyro.y, angVelocityData.gyro.z, 
-    linearAccelData.acceleration.x, linearAccelData.acceleration.y, linearAccelData.acceleration.z,
-    magnetometerData.magnetic.x, magnetometerData.magnetic.y, magnetometerData.magnetic.z,
-    accelerometerData.acceleration.x,accelerometerData.acceleration.y,accelerometerData.acceleration.z,
-    gravityData.acceleration.x,gravityData.acceleration.y,gravityData.acceleration.z,
-    bno.getTemp());  
-
-   return( msgImu3 );
-}
-
-
-/*
-void displaySensorDetails(void)
-{
-  sensor_t sensor;
-  bno.getSensor(&sensor);
-  Serial.println("------------------------------------");
-  Serial.print  ("Sensor:       "); Serial.println(sensor.name);
-  Serial.print  ("Driver Ver:   "); Serial.println(sensor.version);
-  Serial.print  ("Unique ID:    "); Serial.println(sensor.sensor_id);
-  Serial.print  ("Max Value:    "); Serial.print(sensor.max_value); Serial.println(" xxx");
-  Serial.print  ("Min Value:    "); Serial.print(sensor.min_value); Serial.println(" xxx");
-  Serial.print  ("Resolution:   "); Serial.print(sensor.resolution); Serial.println(" xxx");
-  Serial.println("------------------------------------");
-  Serial.println("");
-  delay(500);
-}
-
-void displaySensorStatus(void) {
-  uint8_t system_status, self_test_results, system_error;
-  system_status = self_test_results = system_error = 0;
-  bno.getSystemStatus(&system_status, &self_test_results, &system_error);
-
-  Serial.println("");
-  Serial.print("System Status: 0x");
-  Serial.println(system_status, HEX);
-  Serial.print("Self Test:     0x");
-  Serial.println(self_test_results, HEX);
-  Serial.print("System Error:  0x");
-  Serial.println(system_error, HEX);
-  Serial.println("");
-  delay(500);
-}
-*/

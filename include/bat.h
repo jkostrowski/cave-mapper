@@ -1,3 +1,3 @@
 #include <Arduino.h>
 
-char * getBat(void);
+int batLog(char *);

@@ -17,11 +17,9 @@ void rtcInitialize(void) {
     // reboot = rtcTimestamp();
 }
 
-char msgRtc1[30];
-char* rtcLog(void) {
+int rtcLog(char* buff) {
     DateTime now = rtc.now();
-    sprintf( msgRtc1, "%04d-%02d-%02d,%02d:%02d:%02d", now.year(), now.month(), now.day(), now.hour(), now.minute(), now.second() );
-    return msgRtc1;
+    return sprintf( buff, "%04d-%02d-%02d,%02d:%02d:%02d,", now.year(), now.month(), now.day(), now.hour(), now.minute(), now.second() );
 }
 
 char msgRtc2[30];

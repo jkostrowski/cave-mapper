@@ -11,8 +11,11 @@
 
 void  imuInitialize(void);
 char* imuPosition(void);
-char* imu9pof(void);
+int imuPositionLog(char*);
+
+int imuCalibrationLog(char*);
 char* imuCalibrationLog(void);
+
 void  imuCalibrate(void);
 
 sensors_event_t imuPositionEvent(void);

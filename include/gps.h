@@ -9,7 +9,8 @@ void gpsOnNmea( void (*f)(void) );
 void gpsOnFix( void (*f)(void) );
 void gpsOnFixGood( void (*f)(void) );
 
-char* getGps(void);
+int gpsLog(char*);
+
 char* gpsQuality(void);
 
 // char* gpsFix(void);

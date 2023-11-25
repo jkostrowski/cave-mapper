@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <Ticker.h>
 
 // #include <AsyncTCP.h>
 // #include <ESPAsyncWebServer.h>
@@ -13,9 +14,6 @@
 
 // ==============================================
 
-DateTime reboot;
-
-// ==============================================
 
 char log1[SDLOG_SIZE];
 
@@ -24,15 +22,15 @@ char * getLog(void) {
   int i = 0;
 
   // Serial.printf("rtc i=%i\n",i);
-  i = rtcLog(log); 
+  i = rtcFullLog(log); 
   log += i;
-  i = batLog( log);
+  i = batLog(log);
   log += i;
-  i = imuCalibrationLog( log);
+  i = imuCalibrationLog(log);
   log += i;
-  i = imuPositionLog( log);
+  i = imuPositionLog(log);
   log += i;
-  i = gpsLog( log);
+  i = gpsLog(log);
 
   return log1;
 }
@@ -46,15 +44,15 @@ void onNmea(void) {
 }
 
 void onFix(void) {
-    char label[]= "FIX";
-    lcd4( label );
+    char label[]= "F-";
+    lcd1r( label );
     rtcSet( gpsNow() );
-    Serial.println( rtcTime() );
+    Serial.println( rtcTimeLog() );
 }
 
 void onFixHighAccuracy(void) {
-    char label[]= "FIX & Home Set";
-    lcd4( label );
+    char label[]= "FH";
+    lcd1r( label );
 }
 
 // ==============================================
@@ -63,9 +61,11 @@ char buff7[100];
 
 void loopUiRefresh(void) {
 
-  lcd1( rtcTime() );
-  lcd2( imuCalibrationLog() );
+  lcd1( rtcTimeLog() );
+//  lcd1r( gpsFixUi() );
+  lcd2( imuCalibrationUi() );
   lcd3( gpsQuality());
+  lcd4( imuPositionUi());
    
   lcdUpdate();
 }
@@ -73,34 +73,67 @@ void loopUiRefresh(void) {
 
 // ==============================================
 
-volatile bool updateUi = false;
+Ticker tickerUiUpdate;
+Ticker tickerGpsRead;
+Ticker tickerGpsParse;
 
-hw_timer_t * timer = NULL;
-portMUX_TYPE timerMux = portMUX_INITIALIZER_UNLOCKED;
+volatile bool gpsReadFlag  = false;
+volatile bool gpsParseFlag = false;
+volatile bool uiUpdateFlag = false;
 
-void IRAM_ATTR onTimer() {
-  portENTER_CRITICAL_ISR(&timerMux);
-  updateUi = true;
-  portEXIT_CRITICAL_ISR(&timerMux);
+// hw_timer_t * timerGpsRead = NULL;
+// portMUX_TYPE timerGpsReadMux = portMUX_INITIALIZER_UNLOCKED;
+
+// hw_timer_t * timerGpsParse = NULL;
+// portMUX_TYPE timerGpsParseMux = portMUX_INITIALIZER_UNLOCKED;
+
+// hw_timer_t * timerUiUpdate = NULL;
+// portMUX_TYPE timerUiUpdateMux = portMUX_INITIALIZER_UNLOCKED;
+
+void onTimerGpsRead() {
+  // portENTER_CRITICAL_ISR(&timerGpsReadMux);
+  gpsReadFlag = true;
+  // portEXIT_CRITICAL_ISR(&timerGpsReadMux);
 }
 
+void onTimerGpsParse() {
+  // portENTER_CRITICAL_ISR(&timerGpsParseMux);
+  gpsParseFlag = true;
+  // portEXIT_CRITICAL_ISR(&timerGpsParseMux);
+}
+
+void onTimerUiUpdate() {
+  // portENTER_CRITICAL_ISR(&timerUiUpdateMux);
+  uiUpdateFlag = true;
+  // portEXIT_CRITICAL_ISR(&timerUiUpdateMux);
+}
+
+
 void isrInitialize(void) {
-  timer = timerBegin(0, 80, true);
-  timerAttachInterrupt(timer, &onTimer, true);
-  timerAlarmWrite(timer, 500*1000, true);
-  timerAlarmEnable(timer);  
+  tickerGpsRead.attach_ms( 1, onTimerGpsRead );
+  tickerGpsParse.attach_ms( 25, onTimerGpsParse );
+  tickerUiUpdate.attach_ms( 500, onTimerUiUpdate );
+
+  // timerGpsRead = timerBegin(0, 80, true);
+  // timerAttachInterrupt(timerGpsRead, &onTimerGpsRead, true);
+  // timerAlarmWrite(timerGpsRead, 1*1000, true);
+  // timerAlarmEnable(timerGpsRead);  
+
+  // timerGpsParse = timerBegin(0, 80, true);
+  // timerAttachInterrupt(timerGpsParse, &onTimerGpsParse, true);
+  // timerAlarmWrite(timerGpsParse, 25*1000, true);
+  // timerAlarmEnable(timerGpsParse);  
+
+  // timerUiUpdate = timerBegin(0, 80, true);
+  // timerAttachInterrupt(timerUiUpdate, &onTimerUiUpdate, true);
+  // timerAlarmWrite(timerUiUpdate, 500*1000, true);
+  // timerAlarmEnable(timerUiUpdate);  
 }
 
 
 // ==============================================
 #undef GPS
 #define GPS 
-
-typedef struct {
-  int16_t a;
-  int16_t b;
-  int16_t c; 
-} tuple_t;
 
 
 void setup(void) {
@@ -118,7 +151,7 @@ void setup(void) {
   gpsOnFixGood( &onFixHighAccuracy );
 #endif
 
-  imuCalibrate();
+  // imuCalibrate();
   isrInitialize();
 }
 
@@ -127,20 +160,36 @@ void setup(void) {
 void loop(void) {
 
 #ifdef GPS
-    gpsLoop();
+  if (gpsReadFlag) {
+    gpsRead();
+    gpsReadFlag = false;
+  }
+
+  if (gpsParseFlag) {
+    gpsParse();
+    gpsParseFlag = false;
+  }
 #endif
 
-#ifndef GPS
-    delay(10);
-#endif
-
-  if (updateUi) {
+  if (uiUpdateFlag) {
     loopUiRefresh();
-    updateUi = false;
+    uiUpdateFlag = false;
   }
 }
 
 // ==============================================
 
 
+
+/*
+
+imu offsets saved
+[ 99682][E][esp32-hal-cpu.c:110] addApbChangeCallback(): duplicate func=0x4200db38 arg=0x3fc92994
+E (99552) timer_group: timer_isr_callback_add(236): register interrupt service failed
+[ 99690][E][esp32-hal-cpu.c:110] addApbChangeCallback(): duplicate func=0x4200db38 arg=0x3fc92994
+E (99568) timer_group: timer_isr_callback_add(236): register interrupt service failed
+
+
+
+*/
 

@@ -3,6 +3,7 @@
 #include <SD.h>
 #include <SPI.h>
 
+#include "trace.h"
 #include "pinout.h"
 
 #define SDLOG_SIZE 512

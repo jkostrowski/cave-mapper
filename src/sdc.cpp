@@ -41,16 +41,19 @@ int queueHead = 0;
 char queue[QUEUE_SIZE][SDLOG_SIZE];
 
 void sdQueue(char* log) {
+  TRACE("sdQueue");
   
   strcpy( queue[queueHead], log);
   queueHead++;
 
   if (queueHead == QUEUE_SIZE) {
+    TRACE("sdQueue Flush");
     queueHead = 0;
     for (int i=0; i<QUEUE_SIZE; i++) {
       sd.println(queue[i]);
     }
     sd.flush();
+    TRACE("sdQueue Flush Complete");
   }
 
 }

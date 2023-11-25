@@ -13,14 +13,11 @@ char msgImu2[50];
 char msgImu3[200];
 
 void imuInitialize(void) {
-    
     if (!Wire1.begin(SDA2, SCL2)) {
         Serial.println("Problem with Wire1");     
-        // lcd1("Wire1 error.");
     }
 
-    if(!bno.begin())
-    {
+    if(!bno.begin()) {
         Serial.print("Ooops, no BNO055 detected ... Check your wiring or I2C ADDR!");
         while(1);
     } 
@@ -28,23 +25,13 @@ void imuInitialize(void) {
     Serial.println("IMU Orientation Sensor OK."); 
     bno.setMode( OPERATION_MODE_NDOF );
     bno.setExtCrystalUse(true);
-
-    // bno.isFullyCalibrated();
 }
 
-int imuCalibrationLog(char* log) {
-  uint8_t sys, gyro, accel, mag;
-  bno.getCalibration(&sys, &gyro, &accel, &mag);
-  return sprintf( log, "s,%1d,g,%1d,a,%1d,m,%1d,", sys, gyro, accel, mag );
-}
-
-char* imuCalibrationLog(void) {
-  imuCalibrationLog( msgImu1 );
-  return msgImu1;
-}
-
+// ======================================================================================
 
 int imuPositionLog(char* log) {
+  TRACE( "imuPositionLog" );
+  
   // imu::Quaternion quat = bno.getQuat(); // TODO
 
   sensors_event_t  orientationData , angVelocityData , linearAccelData, magnetometerData, accelerometerData, gravityData;
@@ -65,8 +52,27 @@ int imuPositionLog(char* log) {
     bno.getTemp());  
 }
 
+char* imuPositionUi(void) {
+  TRACE("imuHeadinglog");
+  sensors_event_t event; 
+  bno.getEvent(&event);
 
+  sprintf(msgImu2, "IMU:% 7.2f", event.orientation.x );
+  return msgImu2;
+}
 
+// ======================================================================================
+
+int imuCalibrationLog(char* log) {
+  uint8_t sys, gyro, accel, mag;
+  bno.getCalibration(&sys, &gyro, &accel, &mag);
+  return sprintf( log, "s,%1d,g,%1d,a,%1d,m,%1d,", sys, gyro, accel, mag );
+}
+
+char* imuCalibrationUi(void) {
+  imuCalibrationLog( msgImu1 );
+  return msgImu1;
+}
 
 // ======================================================================================
 
@@ -139,25 +145,26 @@ size_t loadImu(adafruit_bno055_offsets_t &data) {
 // ======================================================================================
 
 void imuCalibrate(void) {
-
-  Serial.println("imu load offsets"); 
+  
   adafruit_bno055_offsets_t o = {};
-  if (!loadImu(o)) {
-    o =  { -37, -66, 2, -1, -4, 0, -351, 474, 170, 1000, 455 };
-  }
 
-  Serial.println("imu bootstrap offsets"); 
-  displaySensorOffsets(o);
-  bno.setSensorOffsets(o);
-  delay(1000);
-  displaySensorDetails();
-  bno.setExtCrystalUse(true);
+  // Serial.println("imu load offsets"); 
+  // if (!loadImu(o)) {
+  //   o =  { -37, -66, 2, -1, -4, 0, -351, 474, 170, 1000, 455 };
+  // }
+
+  // Serial.println("imu bootstrap offsets"); 
+  // displaySensorOffsets(o);
+  // bno.setSensorOffsets(o);
+  // delay(1000);
+  // displaySensorDetails();
+  // bno.setExtCrystalUse(true);
 
   Serial.println("imu re-calibrate"); 
   while (!bno.isFullyCalibrated()) {
     sensors_event_t event;
     bno.getEvent(&event);
-    Serial.println( imuCalibrationLog() );
+    Serial.println( imuCalibrationUi() );
     delay(50);
   }
 
@@ -175,7 +182,6 @@ void imuCalibrate(void) {
     Serial.println("imu offsets not saved - callibration error");
   }
 }
-
 
 void imuCalibrateWithEeprom(void) {
 
@@ -235,16 +241,8 @@ void imuCalibrateWithEeprom(void) {
 
 }
 
-char* imuPosition(void) {
-  sensors_event_t event; 
-  bno.getEvent(&event);
-
-  sprintf(msgImu2, "EU,% 7.2f,% 7.2f,% 7.2f", event.orientation.x, event.orientation.y, event.orientation.z );
-  return msgImu2;
-}
-
-sensors_event_t imuPositionEvent(void) {
-  sensors_event_t event; 
-  bno.getEvent(&event);
-  return event;
-}
+// sensors_event_t imuPositionEvent(void) {
+//   sensors_event_t event; 
+//   bno.getEvent(&event);
+//   return event;
+// }
